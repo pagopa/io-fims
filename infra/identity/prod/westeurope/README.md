@@ -30,6 +30,6 @@ No inputs.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_managed_identity_github_cd_name"></a> [managed\_identity\_github\_cd\_name](#output\_managed\_identity\_github\_cd\_name) | n/a |
+| <a name="output_managed_identity_github_cd"></a> [managed\_identity\_github\_cd](#output\_managed\_identity\_github\_cd) | n/a |
 | <a name="output_managed_identity_github_ci"></a> [managed\_identity\_github\_ci](#output\_managed\_identity\_github\_ci) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
