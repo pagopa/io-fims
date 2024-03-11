@@ -6,15 +6,11 @@ on:
     paths:
       - "infra/repository/**"
 
-env:
-  DIR: "infra/repository"
-
 jobs:
-  code_review:
+  release:
     uses: ./.github/workflows/call_release_infra.yaml
     name: Terraform Plan
     secrets: inherit
     with:
       environment: 'prod'
-      dir: ${{ env.DIR }}
-      require_azure_login: false
+      dir: 'infra/repository'
