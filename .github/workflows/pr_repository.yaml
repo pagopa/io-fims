@@ -18,8 +18,8 @@ on:
 jobs:
   code_review:
     uses: ./.github/workflows/call_code_review_infra.yaml
-    name: Terraform Plan
+    name: Review Repository Settings
     secrets: inherit
     with:
       environment: 'prod'
-      dir: 'infra/repository"'
+      dir: 'infra/repository'

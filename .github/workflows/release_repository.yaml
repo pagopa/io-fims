@@ -9,7 +9,7 @@ on:
 jobs:
   release:
     uses: ./.github/workflows/call_release_infra.yaml
-    name: Terraform Plan
+    name: Release Repository Settings
     secrets: inherit
     with:
       environment: 'prod'
