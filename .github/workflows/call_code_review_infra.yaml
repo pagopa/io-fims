@@ -50,7 +50,7 @@ jobs:
           done
 
       - name: Azure Login
-        uses: azure/login@v2 # v2.0.0
+        uses: azure/login@81e1d9f360e1ba776e93b8ead1c4320761356b2a # v2.0.0
         if: ${{ inputs.require_azure_login == true }}
         with:
           client-id: ${{ env.ARM_CLIENT_ID }}
@@ -66,6 +66,10 @@ jobs:
         name: Setup Terraform
         with:
           terraform_version: ${{ steps.set-terraform-version.outputs.terraform_version }}
+<<<<<<< HEAD
+=======
+          terraform_wrapper: true
+>>>>>>> d688c59 (restore things fixed in #5)
 
       - name: Terraform Init
         working-directory: ${{ inputs.dir }}

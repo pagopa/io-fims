@@ -1,0 +1,29 @@
+name: (PR) Repository Settings
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "infra/repository/**"
+      - ".github/workflows/pr_repository.yaml"
+      - ".github/workflows/call_code_review_infra.yaml"
+      - ".github/workflows/call_release_infra.yaml"
+
+env:
+  DIR: "infra/repository"
+
+jobs:
+  code_review:
+    uses: ./.github/workflows/call_code_review_infra.yaml
+    name: Terraform Plan
+    secrets: inherit
+    with:
+      environment: 'prod'
+      dir: ${{ env.DIR }}
+      require_azure_login: false
