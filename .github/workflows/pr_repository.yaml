@@ -23,4 +23,4 @@ jobs:
     with:
       environment: 'prod'
       dir: 'infra/repository'
-      env_vars: 'GH_TOKEN=${{ secrets.GH_PAT_TEAMS }}'
+      gh_pat: ${{ secrets.GH_PAT_TEAMS }}
