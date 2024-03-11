@@ -15,11 +15,13 @@ locals {
     secrets = {
       "ARM_CLIENT_ID" = data.azurerm_user_assigned_identity.identity_prod_ci.client_id
     }
+    reviewers_teams = ["io-communication-backend"]
   }
 
   cd = {
     secrets = {
       "ARM_CLIENT_ID" = data.azurerm_user_assigned_identity.identity_prod_cd.client_id
     }
+    reviewers_teams = ["io-communication-backend"]
   }
 }
