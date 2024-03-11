@@ -1,4 +1,4 @@
-module "cosmosdb_sql_database_fims" {
+module "cosmosdb_database_fims" {
   source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v7.67.1"
 
   name                = "fims"

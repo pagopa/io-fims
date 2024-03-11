@@ -27,5 +27,8 @@ No inputs.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_cosmos_fims"></a> [cosmos\_fims](#output\_cosmos\_fims) | n/a |
+| <a name="output_resource_group_fims"></a> [resource\_group\_fims](#output\_resource\_group\_fims) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
