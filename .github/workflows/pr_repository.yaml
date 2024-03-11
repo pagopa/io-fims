@@ -15,9 +15,6 @@ on:
       - ".github/workflows/call_code_review_infra.yaml"
       - ".github/workflows/call_release_infra.yaml"
 
-env:
-  DIR: "infra/repository"
-
 jobs:
   code_review:
     uses: ./.github/workflows/call_code_review_infra.yaml
@@ -25,5 +22,4 @@ jobs:
     secrets: inherit
     with:
       environment: 'prod'
-      dir: ${{ env.DIR }}
-      require_azure_login: false
+      dir: 'infra/repository"'
