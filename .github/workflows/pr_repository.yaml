@@ -24,6 +24,6 @@ jobs:
     name: Terraform Plan
     secrets: inherit
     with:
-      environment: ''
+      environment: 'prod'
       dir: ${{ env.DIR }}
       require_azure_login: false
