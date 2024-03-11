@@ -13,7 +13,6 @@ on:
         description: List of environment variables to set up, given in env=value format.
 
 env:
-  GH_TOKEN: ${{ secrets.GH_PAT_TEAMS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
   ARM_USE_OIDC: true
@@ -71,6 +70,7 @@ jobs:
         working-directory: ${{ inputs.dir }}
         continue-on-error: ${{ github.event_name == 'pull_request' }}
         run: |
+          echo '${{github.event_name}}'
           terraform plan -lock-timeout=3000s | tee plan_output.txt
           OUTPUT="$(cat plan_output.txt | grep -v "Refreshing state" | tail -c 60000)"
           echo "$OUTPUT" > plan_output_multiline.txt
