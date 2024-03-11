@@ -1,0 +1,26 @@
+name: (PR) Infra WestEurope
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "infra/**/westeurope/**"
+      - "infra/**/_modules"
+      - ".github/workflows/pr_infra.yaml"
+      - ".github/workflows/call_code_review_infra.yaml"
+      - ".github/workflows/call_release_infra.yaml"
+
+jobs:
+  code_review:
+    uses: ./.github/workflows/call_code_review_infra.yaml
+    name: PR Prod WestEurope
+    secrets: inherit
+    with:
+      environment: 'prod'
+      dir: 'infra/prod/westeurope'
