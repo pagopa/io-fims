@@ -23,4 +23,3 @@ jobs:
     with:
       environment: 'prod'
       dir: 'infra/repository'
-      gh_pat: ${{ secrets.GH_PAT_TEAMS }}
