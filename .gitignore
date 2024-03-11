@@ -9,3 +9,12 @@ override.tf.json
 *.DS_Store
 **/modules/**/.terraform.lock.hcl
 **/_modules/**/.terraform.lock.hcl
+
+# yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
