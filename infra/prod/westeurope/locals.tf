@@ -1,7 +1,9 @@
 locals {
-  prefix    = "io"
   env_short = "p"
+  prefix    = "io"
+  domain    = "fims"
   project   = "${local.prefix}-${local.env_short}"
+  product   = "${local.prefix}-${local.env_short}-${local.domain}"
 
   location = "westeurope"
 
@@ -10,6 +12,6 @@ locals {
     CreatedBy   = "Terraform"
     Environment = "Prod"
     Owner       = "IO Comunicazione"
-    Source      = "https://github.com/pagopa/io-fims/blob/main/infra/prod/west-europe"
+    Source      = "https://github.com/pagopa/io-fims/blob/main/infra/prod/westeurope"
   }
 }
