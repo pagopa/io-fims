@@ -15,9 +15,6 @@ on:
       - ".github/workflows/call_code_review_infra.yaml"
       - ".github/workflows/call_release_infra.yaml"
 
-env:
-  GH_TOKEN: ${{ secrets.GH_PAT_TEAMS }}
-
 jobs:
   code_review:
     uses: ./.github/workflows/call_code_review_infra.yaml
