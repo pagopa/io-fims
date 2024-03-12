@@ -1,6 +1,6 @@
 resource "azurerm_cosmosdb_sql_container" "fims_interaction" {
 
-  name                = "interaction"
+  name                = "Interaction"
   resource_group_name = var.resource_group_name
   account_name        = module.cosmosdb_account_fims.name
   database_name       = module.cosmosdb_database_fims.name
