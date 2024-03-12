@@ -13,7 +13,7 @@ on:
       - ready_for_review
     paths:
       - "infra/**/westeurope/**"
-      - "infra/**/_modules"
+      - "infra/**/_modules/**"
       - ".github/workflows/pr_infra.yaml"
       - ".github/workflows/call_code_review_infra.yaml"
       - ".github/workflows/call_release_infra.yaml"
