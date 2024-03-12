@@ -19,3 +19,8 @@ module "fims_snet" {
     }
   }
 }
+
+resource "azurerm_subnet_nat_gateway_association" "nat_fims_association" {
+  nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
+  subnet_id      = module.fims_snet.id
+}
