@@ -24,6 +24,9 @@ locals {
       terraform-state-rg = [
         "Storage Blob Data Contributor"
       ]
+      io-p-fims-rg = [
+        "DocumentDB Account Contributor"
+      ]
     }
   }
 
