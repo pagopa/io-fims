@@ -7,12 +7,7 @@ resource "azurerm_cosmosdb_sql_container" "fims_interaction" {
 
   partition_key_path    = "/id"
   partition_key_version = 2
-
-  autoscale_settings {
-    max_throughput = 1000
-  }
-
-  default_ttl = -1
+  default_ttl           = -1
 
   indexing_policy {
     indexing_mode = "consistent"
