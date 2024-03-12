@@ -3,6 +3,8 @@ name: (Release) Infra WestEurope
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - "infra/**/westeurope/**"
       - "infra/**/_modules"
