@@ -1,0 +1,14 @@
+{
+  "name": "io-fims",
+  "type": "module",
+  "packageManager": "yarn@4.1.1",
+  "license": "UNLICENSED",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "typescript": "^5.4.2"
+  }
+}
