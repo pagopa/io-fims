@@ -18,6 +18,9 @@ on:
       - ".github/workflows/call_code_review_infra.yaml"
       - ".github/workflows/call_release_infra.yaml"
 
+concurrency:
+  group: ${{ github.workflow }}
+
 jobs:
   code_review:
     uses: ./.github/workflows/call_code_review_infra.yaml
