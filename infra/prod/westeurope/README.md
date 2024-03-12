@@ -15,6 +15,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_app_services"></a> [app\_services](#module\_app\_services) | ../_modules/app_services | n/a |
 | <a name="module_cosmos"></a> [cosmos](#module\_cosmos) | ../_modules/cosmos | n/a |
 | <a name="module_key_vaults"></a> [key\_vaults](#module\_key\_vaults) | ../_modules/key_vaults | n/a |
 | <a name="module_networking"></a> [networking](#module\_networking) | ../_modules/networking | n/a |
