@@ -141,7 +141,8 @@ jobs:
       - name: Terraform Apply
         working-directory: ${{ inputs.dir }}
         run: |
-          terraform apply tfplan-${{ github.sha }} \
+          terraform apply \
             -lock-timeout=3000s \
             -auto-approve \
-            -input=false
+            -input=false \
+            tfplan-${{ github.sha }}
