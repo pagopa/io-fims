@@ -1,13 +1,10 @@
-# io-p-fims-oidc-provider-app
 module "appservice_fims" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v7.67.1"
 
-  # App service plan
   plan_type = "internal"
   plan_name = "${var.product}-oidc-provider-plan"
   sku_name  = "B3"
 
-  # App service
   name                = "${var.product}-oidc-provider-app"
   resource_group_name = var.resource_group_name
   location            = var.location

@@ -38,7 +38,7 @@ locals {
       COSMOSDB_CONNECTION_STRING      = format("AccountEndpoint=%s;AccountKey=%s;", var.cosmos_db.endpoint, var.cosmos_db.primary_key)
       AUTHENTICATION_COOKIE_KEY       = "X-IO-FIMS-Token"
       GRANT_TTL_IN_SECONDS            = "86400"
-      ISSUER                          = "https://io-p-citizen-auth-weu-prod01-app-fims.azurewebsites.net"
+      ISSUER                          = "https://io-p-fims-oidc-provider-app.azurewebsites.net"
       COOKIES_KEY                     = data.azurerm_key_vault_secret.cookies_key_fims.value
       ENABLE_FEATURE_REMEMBER_GRANT   = "true",
       APPINSIGHTS_SAMPLING_PERCENTAGE = 100,
