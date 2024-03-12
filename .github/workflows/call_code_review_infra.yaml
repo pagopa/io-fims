@@ -78,7 +78,6 @@ jobs:
         continue-on-error: ${{ github.event_name == 'pull_request' }}
         run: |
           terraform plan -lock-timeout=3000s -no-color | tee plan_output.txt
-          # OUTPUT="$(cat plan_output.txt | grep -v "Refreshing state" | grep -v "state lock" | grep -v "Reading" | grep -v "Read" | tail -c 60000)"
           OUTPUT=$(grep -Ev "Refreshing state|state lock|Reading|Read" plan_output.txt | tail -c 60000)
           echo "$OUTPUT" > plan_output_multiline.txt
 
@@ -97,7 +96,7 @@ jobs:
             const botComment = comments.find(comment => {
               return comment.user.type === 'Bot' && comment.body.includes('Terraform Plan')
             })
-            const commentBody = `#### Terraform Plan (${{ inputs.dir }}) 📖
+            const commentBody = `#### Terraform Plan ('${{ inputs.dir }}') 📖
             <details>
             <summary>Terraform Plan</summary>
 
