@@ -67,6 +67,7 @@ jobs:
         name: Setup Terraform
         with:
           terraform_version: ${{ steps.set-terraform-version.outputs.terraform_version }}
+          terraform_wrapper: true
 
       - name: Terraform Init
         working-directory: ${{ inputs.dir }}
