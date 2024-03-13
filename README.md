@@ -53,6 +53,6 @@ All infrastructure-related configurations are within the `infra` folder, except 
 
 In details:
 
-- `identity`: user-assigned managed identity definition used by the GitHub workflows of this repository. Must be run from local environment and high-level roles are required on target subscription
-- `repository`: this GitHub repository settings. Due to some GitHub limitations, this must run from local environment. Depends on the `identity` configuration since it gets the client ids of the user-assigned managed identity and stores them as repository secrets
+- `identity`: user-assigned managed identity definition used by the GitHub workflows of this repository. Must be run from the local development environment and high-level roles are required on target subscription
+- `repository`: this GitHub repository settings. Due to some GitHub limitations, this must run from local development environment. Depends on the `identity` configuration since it gets the client ids of the user-assigned managed identity and stores them as repository secrets
 - `prod`: the actual infrastructure where FIMS code runs. This configuration is fully automated by GitHub workflows
