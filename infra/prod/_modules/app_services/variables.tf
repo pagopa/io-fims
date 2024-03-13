@@ -31,3 +31,7 @@ variable "cosmos_db" {
 
   sensitive = true
 }
+
+variable "key_vault_id" {
+  type = string
+}

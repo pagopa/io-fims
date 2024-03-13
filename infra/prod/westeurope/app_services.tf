@@ -12,5 +12,7 @@ module "app_services" {
     primary_key = module.cosmos.cosmos_account_fims_primary_key
   }
 
+  key_vault_id = module.key_vaults.key_vault_fims.id
+
   tags = local.tags
 }
