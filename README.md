@@ -46,3 +46,13 @@ This project requires specific versions of the following tools. To make sure you
    ```sh
    yarn install
    ```
+
+## Terraform Configurations
+
+All infrastructure-related configurations are within the `infra` folder, except for the `.terraform-version` file necessarily defined at the root level to set the Terraform version for the entire repository.
+
+In details:
+
+- `identity`: user-assigned managed identity definition used by the GitHub workflows of this repository. Must be run from the local development environment and high-level roles are required on target subscription
+- `repository`: this GitHub repository settings. Due to some GitHub limitations, this must run from local development environment. Depends on the `identity` configuration since it gets the client ids of the user-assigned managed identity and stores them as repository secrets
+- `prod`: the actual infrastructure where FIMS code runs. This configuration is fully automated by GitHub workflows
