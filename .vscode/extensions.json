@@ -1,5 +1,11 @@
 {
   "recommendations": [
-    "arcanis.vscode-zipfs"
+    "arcanis.vscode-zipfs",
+    "hashicorp.terraform",
+    "ms-azuretools.vscode-azureterraform",
+    "ms-vscode.azurecli",
+    "EditorConfig.EditorConfig",
+    "github.vscode-github-actions",
+    "GitHub.vscode-pull-request-github"
   ]
 }
