@@ -16,3 +16,14 @@ module "managed_identity_cd" {
 
   tags = var.tags
 }
+
+resource "azurerm_key_vault_access_policy" "key_vault_access_policy_identity_cd" {
+  key_vault_id = data.azurerm_key_vault.kv_citizen.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.managed_identity_cd.identity_principal_id
+
+  secret_permissions = [
+    "Get",
+    "List",
+  ]
+}
