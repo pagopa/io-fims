@@ -10,8 +10,8 @@ module "appservice_fims" {
   location            = var.location
 
   always_on        = true
-  node_version     = "18-lts"
-  app_command_line = "npm run start"
+  node_version     = "20-lts"
+  app_command_line = "node ."
 
   health_check_path            = "/info"
   health_check_maxpingfailures = 3
