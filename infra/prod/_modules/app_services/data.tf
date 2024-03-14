@@ -20,6 +20,12 @@ data "azurerm_subnet" "subnet_apim" {
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
 }
 
+data "azurerm_subnet" "subnet_azdoa" {
+  name                 = "azure-devops"
+  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
+}
+
 data "azurerm_key_vault_secret" "cookies_key_fims" {
   name         = "${var.project}-fims-cookies-key"
   key_vault_id = var.key_vault_id

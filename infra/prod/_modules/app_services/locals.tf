@@ -2,6 +2,9 @@ locals {
 
   resource_group_name_common = "${var.project}-rg-common"
 
+  node_version = "20-lts"
+  app_cmd      = "node ."
+
   app_service_fims_oidc_provider = {
     app_settings_common = {
       # No downtime on slots swap
