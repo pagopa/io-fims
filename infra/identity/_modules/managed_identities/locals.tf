@@ -18,7 +18,8 @@ locals {
   environment_ci_roles = {
     subscription = [
       "Reader",
-      "Reader and Data Access"
+      "Reader and Data Access",
+      "PagoPA IaC Reader"
     ]
     resource_groups = {
       terraform-state-rg = [

@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - "infra/**/westeurope/**"
-      - "infra/**/_modules"
+      - "infra/**/_modules/**"
 
 jobs:
   release:
