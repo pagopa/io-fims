@@ -14,7 +14,7 @@ module "apim_product_fims_admin" {
   policy_xml = file("${path.module}/apis/admin/_product_base_policy.xml")
 }
 
-module "api_fims_admin" {
+module "apim_api_fims_admin" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.67.1"
 
   name                = "fims-admin-api"
