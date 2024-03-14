@@ -6,7 +6,7 @@ module "apim_product_fims_openid_provider" {
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
 
   display_name          = "IO FIMS OpenId Provider API"
-  description           = "Public API for FIMS OpenId Provider."
+  description           = "Product for FIMS OpenId Provider APIs."
   subscription_required = false
   approval_required     = false
   published             = true
