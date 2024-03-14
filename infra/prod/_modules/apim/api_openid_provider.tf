@@ -14,7 +14,7 @@ module "apim_product_fims_openid_provider" {
   policy_xml = file("${path.module}/apis/openid-provider/_product_base_policy.xml")
 }
 
-module "apim_api_fims_public" {
+module "apim_api_fims_openid_provider" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.67.1"
 
   name                = "io-fims-openid-provider-api"
