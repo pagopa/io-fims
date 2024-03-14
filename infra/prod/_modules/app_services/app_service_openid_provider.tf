@@ -3,7 +3,7 @@ module "appservice_fims" {
 
   plan_type = "internal"
   plan_name = "${var.product}-openid-provider-plan"
-  sku_name  = "B3"
+  sku_name  = "S1"
 
   name                = "${var.product}-openid-provider-app"
   resource_group_name = var.resource_group_name
