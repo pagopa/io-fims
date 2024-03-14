@@ -1,4 +1,4 @@
-module "appservice_fims" {
+module "appservice_openid_provider" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v7.67.1"
 
   plan_type = "internal"
@@ -33,11 +33,11 @@ module "appservice_fims" {
   tags = var.tags
 }
 
-module "appservice_fims_slot_staging" {
+module "appservice_openid_provider_staging" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v7.67.1"
 
-  app_service_id   = module.appservice_fims.id
-  app_service_name = module.appservice_fims.name
+  app_service_id   = module.appservice_openid_provider.id
+  app_service_name = module.appservice_openid_provider.name
 
   name                = "staging"
   resource_group_name = var.resource_group_name
