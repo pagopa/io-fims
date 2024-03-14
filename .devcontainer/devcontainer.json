@@ -1,0 +1,33 @@
+{
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
+    "ghcr.io/devcontainers/features/java:1": {},
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers/features/terraform:1": {
+      "version": "1.7.4",
+      "tflint": "0.50.3",
+      "installTFsec": true,
+      "installTerraformDocs": true
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "arcanis.vscode-zipfs",
+        "Esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "EditorConfig.EditorConfig",
+        "GitHub.vscode-github-actions",
+        "GitHub.vscode-pull-request-github",
+        "jebbs.plantuml",
+        "-vscjava.vscode-java-pack"
+      ],
+      "settings": {
+        "plantuml.render": "Local"
+      }
+    }
+  }
+}

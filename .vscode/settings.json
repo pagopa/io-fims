@@ -3,5 +3,10 @@
     "**/.yarn": true,
     "**/.pnp.*": true
   },
-  "typescript.tsdk": ".yarn/sdks/typescript/lib"
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "plantuml.diagramsRoot": "docs/diagrams",
+  "plantuml.exportOutDir": "docs/diagrams",
+  "plantuml.exportSubFolder": false,
+  "plantuml.exportFormat": "svg"
 }

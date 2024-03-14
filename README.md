@@ -1,5 +1,7 @@
 # io-fims
 
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/pagopa/io-fims)
+
 ## Prerequisites
 
 This project requires specific versions of the following tools. To make sure your development setup matches with production follow the recommended installation methods.
