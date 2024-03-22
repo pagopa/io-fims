@@ -1,0 +1,104 @@
+@startuml consents
+autoactivate on
+
+title Storico consensi ed esportazione
+
+actor Cittadino as cit
+participant "App IO" as app
+participant "io-backend" as be
+participant "io-fims-user-func" as userfn
+participant "pdv-tokenizer" as pdv
+participant "Email Service" as email
+
+== Storico dei consensi ==
+
+cit->app: Apre la schermata\n"Storico accessi a servizi\ndi terze parti"
+
+
+app->be: HTTP GET /fims/consents
+
+note left
+Le chiamate HTTP verso
+io-backend contengono un
+JWT nell'intestazione
+della richiesta
+end note
+
+be->userfn: HTTP POST /users
+
+userfn->pdv: saveUsingPUT
+userfn<--pdv: HTTP 200 Token
+
+note right
+PDV Tokenizer genera
+un nuovo token (UUIDv4)
+da cui è possibile ottenere
+indietro PII (fiscal code)
+solo con API Key di FIMS
+end note
+
+be<--userfn: HTTP 200 {"id": "$Token"}
+
+note left
+io-backend ha ottenuto
+un ID Opaco (token) che
+può utilizzare come ID
+utente per FIMS
+end note
+
+be->userfn: HTTP GET /users/id/consents
+be<--userfn: HTTP 200 Lista dei consensi
+
+app<--be: HTTP 200 Lista dei consensi
+
+cit<--app: Mostra la lista\ndei consensi in app
+
+== Esportazione consensi ==
+
+cit->app: Richiede l'esportazione\ndello storico degli\naccessi alle terze parti
+
+app->be: HTTP POST /fims/export
+
+be->userfn: HTTP POST /users
+userfn->pdv: saveUsingPUT
+userfn<--pdv: HTTP 200 Token
+be<--userfn: HTTP 200 {"id": "$Token"}
+
+be->userfn: HTTP POST /exports
+be<--userfn: HTTP 202 Accepted
+
+note right
+io-fims-user-func prende
+in carico la richiesta
+di esportazione dello storico
+dei consensi
+end note
+
+app<--be: HTTP 202 Accepted
+
+cit<--app: Notifica la presa in carico\ndella richiesta
+
+...Qualche minuto dopo...
+
+autoactivate off
+
+userfn->userfn: Un job asincrono esegue\nl'esportazione dei consensi
+activate userfn
+
+note right
+I consensi vengono esportati
+in un formato facilmente
+leggibile da cittadino (CSV, JSON)
+ma consumabile da computer
+end note
+
+userfn->email: Programma invio email con\nexport in allegato
+activate email
+
+userfn<--email
+deactivate userfn
+
+cit<--email: Invia e-mail con export in allegato
+deactivate email
+
+@enduml

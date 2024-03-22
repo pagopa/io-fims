@@ -1,0 +1,54 @@
+{
+  "$id": "http://io.pagopa.it/schemas/fims/oidc-client-config",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "ulid"
+    },
+    "for": {
+      "type": "string",
+      "enum": ["service"]
+    },
+    "serviceId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "institutionId": {
+      "type": "string",
+      "format": "institutionId"
+    },
+    "callbacks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uri": {
+            "type": "string",
+            "format": "uri"
+          },
+          "displayName": {
+            "type": "string"
+          }
+        },
+        "required": ["uri", "displayName"]
+      }
+    },
+    "scopes": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "string",
+          "enum": ["openid"]
+        },
+        {
+          "type": "string",
+          "enum": ["profile"]
+        }
+      ],
+      "items": false
+    }
+  },
+  "required": ["id", "serviceId", "institutionId", "callbacks", "scopes"]
+}

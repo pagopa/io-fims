@@ -13,6 +13,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"openid-provider-app@workspace:apps/openid-provider-app":
+  version: 0.0.0-use.local
+  resolution: "openid-provider-app@workspace:apps/openid-provider-app"
+  languageName: unknown
+  linkType: soft
+
+"relying-party-func@workspace:apps/relying-party-func":
+  version: 0.0.0-use.local
+  resolution: "relying-party-func@workspace:apps/relying-party-func"
+  languageName: unknown
+  linkType: soft
+
 "typescript@npm:^5.4.2":
   version: 5.4.2
   resolution: "typescript@npm:5.4.2"
@@ -32,3 +44,9 @@ __metadata:
   checksum: 10c0/fcf6658073d07283910d9a0e04b1d5d0ebc822c04dbb7abdd74c3151c7aa92fcddbac7d799404e358197222006ccdc4c0db219d223d2ee4ccd9e2b01333b49be
   languageName: node
   linkType: hard
+
+"user-func@workspace:apps/user-func":
+  version: 0.0.0-use.local
+  resolution: "user-func@workspace:apps/user-func"
+  languageName: unknown
+  linkType: soft
