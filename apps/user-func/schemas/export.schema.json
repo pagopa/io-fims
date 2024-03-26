@@ -1,0 +1,26 @@
+{
+  "$id": "https://io.pagopa.it/schemas/fims/export",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "ulid"
+    },
+    "userId": {
+      "type": "string",
+      "format": "ulid"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["requested", "exporting", "completed"]
+    },
+    "requestedAt": {
+      "type": "date"
+    },
+    "completedAt": {
+      "type": "date"
+    }
+  },
+  "required": ["id", "userId", "status", "requestedAt", "completedAt"]
+}

@@ -1,0 +1,103 @@
+openapi: 3.1.0
+info:
+  title: relying-party-func REST API
+  version: 0.1.0
+
+paths:
+  /oidc-client-configs:
+    post:
+      operationId: createOIDCClientConfig
+      security:
+        - AzureFunction: []
+      requestBody:
+        $ref: "#/components/requestBodies/CreateOIDCClientConfig"
+      responses:
+        201:
+          description: "OIDC Client Configuration Created"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/OIDCClientConfig"
+                  - type: object
+                    properties:
+                      id:
+                        $ref: "#/components/schemas/Id"
+                    required: [id]
+                examples:
+                  - {
+                      "id": "01BX5ZZKBKACTAV9WEVGEMMVS1",
+                      "serviceId": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+                      "institutionId": "63632b50-e5c8-413b-ace0-e3f5f36068b4",
+                      "callbacks":
+                        [
+                          {
+                            "uri": "https://io-d-openid-rp-example.azurewebsites.net/callback",
+                            "displayName": "Example RP",
+                          },
+                        ],
+                    }
+
+components:
+  securitySchemes:
+    AzureFunction:
+      type: apiKey
+      in: header
+      name: x-function-key
+
+  requestBodies:
+    CreateOIDCClientConfig:
+      description: "OIDC Client Configuration"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OIDCClientConfig"
+
+  schemas:
+    OIDCClientConfig:
+      type: object
+      properties:
+        serviceId:
+          $ref: "#/components/schemas/Id"
+        institutionId:
+          type: string
+          format: uuid
+        callbacks:
+          type: array
+          minItems: 1
+          item:
+            type: object
+      examples:
+        - {
+            "serviceId": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+            "institutionId": "63632b50-e5c8-413b-ace0-e3f5f36068b4",
+            "callbacks":
+              [
+                {
+                  "uri": "https://io-d-openid-rp-example.azurewebsites.net/callback",
+                  "displayName": "Example RP",
+                },
+              ],
+          }
+
+    Callback:
+      type: object
+      properties:
+        uri:
+          type: string
+          format: uri
+        display_name:
+          type: string
+          min: 3
+      required:
+        - uri
+        - display_name
+      examples:
+        - { "uri": "https://", "display_name": "Mio sito" }
+
+    Id:
+      type: string
+      format: ulid
+      examples:
+        - 01ARZ3NDEKTSV4RRFFQ69G5FAV

@@ -1,0 +1,166 @@
+@startuml oidc-flow
+autonumber
+
+actor Cittadino as cit
+participant "App IO" as app
+participant "HTTP Client" as httpclient
+participant "In-App Browser" as inappbrowser
+participant "OpenID Provider (OP)" as op
+participant "io-backend" as be
+participant "Relying Party (RP)" as rp
+
+cit->app: Clicca CTA su Messaggio
+
+activate app
+
+note right
+CTA contiene
+un link verso
+RP protetta da OAuth
+end note
+
+app->httpclient: Crea
+activate httpclient
+
+httpclient->rp: HTTP GET RP
+httpclient<--rp: HTTP 302\nHost: openid-provider.io.pagopa.it \nLocation: /oauth/authorize?...\nx-pagopa-lollipop-nonce: ...
+
+app<--httpclient: HTTP MESSAGE
+deactivate httpclient
+
+note left
+HTTP MESSAGE contiene
+una richiesta valida
+di redirect verso OP
+end note
+
+app->httpclient: Crea
+activate httpclient
+
+httpclient->op: HTTP GET /oauth/authorize?...
+activate op
+
+op->be: Get User Identity
+op<--be: User Identity
+
+httpclient<--op: HTTP 303 Redirect /oauth/authorize/:id
+
+note left
+User Identity ottenuta,
+ma è necessario chiedere
+il consenso al trasferimento
+dei dati
+end note
+
+httpclient->op: HTTP GET /oauth/authorize/:id
+httpclient<--op: HTTP 303 Redirect /interactions/:id
+
+httpclient->op: HTTP GET /interactions/:id
+
+note right
+HTTP Client aggiunge
+l'intestazione "Accept: application/json"
+alla richiesta per ottenere una risposta
+facile da deserializzare
+end note
+
+httpclient<--op: HTTP 200 /interactions/:id
+app<--httpclient: HTTP MESSAGE
+deactivate httpclient
+
+note right
+HTTP MESSAGE contiene
+un oggetto JSON che
+rappresenta la richiesta
+di Consenso alla trasmissione
+delle informazioni del Cittadino
+end note
+
+cit<--app: Mostra schermata nativa\ncon Richiesta Consenso
+cit->app: Acconsente alla\n condivisione dei dati con RP
+
+app->httpclient: Crea
+activate httpclient
+
+httpclient->op: HTTP GET /interactions/:id/confirm
+
+op->be: Get User Identity
+op<--be: User Identity
+
+op->op: Costruisce ID TOKEN\n con User Identity
+
+httpclient<--op: HTTP 303 Redirect /oauth/authorize/:id
+
+httpclient->op: HTTP GET /oauth/authorize/:id
+httpclient<--op: HTTP 200 /oauth/authorize/:id
+
+deactivate op
+
+note right
+OP restituisce una pagina HTML
+contenente ID TOKEN e un form
+con un autosubmit JavaScript verso
+redirection_uri di RP
+end note
+
+app<--httpclient: HTTP MESSAGE
+deactivate httpclient
+
+note left
+La pagina HTML con ID TOKEN
+ha un contenuto standard
+descritto nella specifica
+di OpenID Connect
+end note
+
+app->app: Ottiene ID TOKEN da HTML
+
+== START LOLLIPOP ==
+
+app->httpclient: Crea
+activate httpclient
+
+httpclient->be: HTTP POST verso Redirection URI con ID TOKEN (Proxy BE)
+activate be
+
+be->rp: HTTP POST\nCon LOLLIPOP
+rp->rp: Usa ID TOKEN\nper autenticare utente
+
+be<--rp: HTTP 302 Redirect
+
+httpclient<--be: HTTP 200
+deactivate be
+
+app<--httpclient: HTTP MESSAGE
+deactivate httpclient
+
+== END LOLLIPOP ==
+
+note left
+HTTP MESSAGE contiene
+un link ad una pagina web
+di RP, con un query param
+per identificare l'utente
+autenticato (nonce, uniqueid...)
+end note
+
+app->inappbrowser: Apre
+activate inappbrowser
+
+inappbrowser->rp: HTTP GET verso pagina restituita da Redirection URI
+rp->rp: Identifica utente
+
+inappbrowser<--rp: HTTP 200
+deactivate rp
+
+app<-inappbrowser: Mostra pagina web di RP
+
+...Cittadino naviga sul servizio web di RP tramite In-App Browser...
+
+cit->app: Termina la sessione
+
+app->inappbrowser: Chiude
+deactivate inappbrowser
+deactivate app
+
+@enduml

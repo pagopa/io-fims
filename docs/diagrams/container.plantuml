@@ -1,0 +1,55 @@
+@startuml container
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+
+title Container Diagram
+
+System_Boundary(io, "IO") {
+
+  Container(app, "io-app", "Mobile App")
+
+  Container(appgw, "io-p-appgw", "Azure App Gateway")
+
+  System(iobe, "io-backend")
+  Container(apim, "io-p-apim-v2", "Azure API Management")
+
+  Rel(appgw, iobe, "Chiama")
+  Rel(appgw, apim, "Chiama")
+
+  Rel(app, appgw, "Chiama")
+
+  Boundary(fims, "FIMS") {
+    'rp
+    Container(rpfn, "relying-party-func", "Azure Function App")
+    ContainerDb(rpdb, "relying-party", "DB")
+    Rel(rpfn, rpdb, "Persiste")
+    ContainerQueue(configq, "config-queue", "Azure Queue Storage")
+    Rel(rpfn, configq, "Scrive")
+
+    'op
+    Container(op, "openid-provider-app", "Azure App Service", "OpenID Provider")
+    ContainerDb(opdb, "openid-provider", "DB")
+    Rel(op, opdb, "Persiste")
+    ContainerQueue(accessq, "access-queue", "Azure Queue Storage")
+    Rel(op, accessq, "Scrive")
+    Rel(op, configq, "Legge")
+    Container(legalst, "access-storage", "Azure Blob Storage", "Registro degli eventi")
+    Rel(op, legalst, "Scrive")
+
+    'user
+    Container(userfn, "user-func", "Azure Function App")
+    ContainerDb(userdb, "user", "DB")
+    Rel(userfn, userdb, "Persiste")
+    Rel(userfn, accessq, "Legge")
+  }
+
+  'iobe -> fims
+  Rel(iobe, userfn, "Chiama")
+
+  BiRel(apim, op, "Chiama")
+}
+
+
+@enduml

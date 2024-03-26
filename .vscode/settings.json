@@ -8,5 +8,5 @@
   "plantuml.diagramsRoot": "docs/diagrams",
   "plantuml.exportOutDir": "docs/diagrams",
   "plantuml.exportSubFolder": false,
-  "plantuml.exportFormat": "svg"
+  "plantuml.exportFormat": "png"
 }
