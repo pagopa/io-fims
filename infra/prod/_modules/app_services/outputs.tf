@@ -11,6 +11,7 @@ output "app_service_opendid_provider" {
     id                  = module.appservice_openid_provider.id
     name                = module.appservice_openid_provider.name
     resource_group_name = module.appservice_openid_provider.resource_group_name
+    hostname            = module.appservice_openid_provider.default_site_hostname
     staging = {
       id                  = module.appservice_openid_provider_staging.id
       name                = module.appservice_openid_provider_staging.name
