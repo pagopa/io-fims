@@ -1,0 +1,105 @@
+openapi: 3.1.0
+info:
+  title: user-func REST API
+  version: 0.1.0
+paths:
+  /users:
+    post:
+      operationId: getUserByFiscalCode
+      summary: Get an user by fiscal code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fiscal_code:
+                  type: string
+                  examples:
+                    - "CVLLCU95L14C351Q"
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        404:
+          description: User not found
+
+  /users/{userId}/consents:
+    get:
+      operationId: getUserConsents
+      summary: Get consents given by an user
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: true
+      responses:
+        200:
+          description: List of Consent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Consent"
+        404:
+          description: User not found
+
+  /exports:
+    post:
+      operationId: requireExport
+      summary: Require an export of user data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Export"
+      responses:
+        202:
+          description: Accepted
+        404:
+          description: User not found
+
+components:
+  schemas:
+    UserId:
+      type: string
+      format: uuid
+
+    User:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UserId"
+      required:
+        - id
+
+    Export:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - consents
+        userId:
+          $ref: "#/components/schemas/UserId"
+      required:
+        - type
+        - userId
+
+    Institution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+      required:
+        - id
+        - description
+
+    Consent:
+      type: object

@@ -1,0 +1,30 @@
+@startuml system-context
+!include <C4/C4_Context>
+
+LAYOUT_WITH_LEGEND()
+
+title System Context Diagram
+
+System_Ext(rp, "Applicativo web di terze parti", "Client OAuth 2.0 che richiede a IO le informazioni di un cittadino")
+System_Ext(mail, "Email Service")
+
+Boundary(pagopa, "PagoPA") {
+
+  System_Ext(tok, "PDV Tokenizer")
+  System_Ext(sc, "Area Riservata")
+
+  Boundary(io, "IO") {
+    System(fims, "FIMS")
+    System_Ext(lollipop, "Lollipop")
+    System_Ext(services_cms, "IO Services CMS")
+  }
+
+  Rel_Up(fims, lollipop, "Proof-of-possession")
+  Rel_Up(fims, services_cms, "Dettaglio servizio")
+  Rel(fims, tok, "Tokenizza PII")
+  Rel(fims, sc, "Dettaglio ente")
+}
+
+Rel(fims, rp, "Trasmette le informazioni del cittadino")
+Rel_Up(fims, mail, "Programma invio e-mail")
+@enduml

@@ -1,0 +1,53 @@
+{
+  "$id": "https://io.pagopa.it/schemas/fims/client",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "ulid"
+    },
+    "grantTypes": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "string",
+          "enum": "implicit"
+        }
+      ],
+      "items": false
+    },
+    "issuedAt": {
+      "type": "date"
+    },
+    "redirectUris": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "responseTypes": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "string",
+          "enum": "id_token"
+        }
+      ],
+      "items": false
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["openid profile"]
+    }
+  },
+  "required": [
+    "id",
+    "grantTypes",
+    "issuedAt",
+    "redirectUris",
+    "responseTypes",
+    "scope"
+  ]
+}

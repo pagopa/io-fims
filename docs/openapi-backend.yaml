@@ -1,0 +1,48 @@
+openapi: 3.1.0
+info:
+  title: io-backend FIMS REST API
+  version: 0.1.0
+paths:
+  /fims/consents:
+    get:
+      operationId: getConsents
+      responses:
+        200:
+          description: Consents List
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Consent"
+
+  /fims/exports:
+    post:
+      operationId: requireExport
+      requestBody:
+        description: Export Request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Export"
+      responses:
+        202:
+          description: "Accepted"
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: "Conflict"
+
+components:
+  schemas:
+    Export:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - consents
+      required:
+        - type
+    Consent:
+      type: object
