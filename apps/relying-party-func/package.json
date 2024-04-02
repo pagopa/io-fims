@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start": "func start"
   },
   "dependencies": {
     "@azure/functions": "^4.3.0",
