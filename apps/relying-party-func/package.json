@@ -8,5 +8,9 @@
   "dependencies": {
     "@azure/functions": "^4.3.0",
     "@pagopa/handler-kit": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.2",
+    "typescript": "^5.4.3"
   }
 }
