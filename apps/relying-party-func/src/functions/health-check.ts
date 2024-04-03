@@ -5,9 +5,9 @@ export const healthcheckHandler = async (): Promise<HttpResponseInit> => ({
   body: "Function up and running",
 });
 
-app.http("health", {
+app.http("HealthCheck", {
   methods: ["GET"],
-  route: "v1/healthcheck",
+  route: "health",
   authLevel: "anonymous",
   handler: healthcheckHandler,
 });
