@@ -1,4 +1,3 @@
-import * as H from "@pagopa/handler-kit";
 import { app, HttpResponseInit } from "@azure/functions";
 
 export const healthcheckHandler = async (): Promise<HttpResponseInit> => ({
@@ -6,7 +5,7 @@ export const healthcheckHandler = async (): Promise<HttpResponseInit> => ({
   body: "Function up and running",
 });
 
-app.http("httpTrigger1", {
+app.http("healthcheck", {
   methods: ["GET"],
   authLevel: "anonymous",
   handler: healthcheckHandler,
