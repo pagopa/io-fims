@@ -1,3 +1,4 @@
+# We want to be able to call the function internally
 resource "azurerm_private_endpoint" "relying_party" {
   name                = "${var.product}-relying-party-app-endpoint"
   location            = var.location
