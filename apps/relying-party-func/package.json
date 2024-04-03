@@ -1,14 +1,15 @@
 {
   "name": "relying-party-func",
   "private": true,
+  "main": "dist/src/functions/*.js",
   "type": "module",
   "scripts": {
     "build": "tsc",
+    "watch": "tsc -w",
     "start": "func start"
   },
   "dependencies": {
-    "@azure/functions": "^4.3.0",
-    "@pagopa/handler-kit": "^1.1.0"
+    "@azure/functions": "^4.3.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.2",
