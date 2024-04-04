@@ -1,0 +1,39 @@
+<% missingOIDCScope = new Set(p_missingScope); missingOIDCScope.delete('openid'); missingOIDCScope.delete('offline_access') %>
+
+<div>
+    <h3>Autorizzi l'invio dei dati?</h3>
+    <p>I seguenti dati stanno per essere condivisi con <strong><%= p_client.name %> </strong></p>
+
+    <div>
+      <ul>
+        <% if (missingOIDCScope.size) { %>
+            <% missingOIDCScope.forEach((scope) => { %>
+              <li>
+                  <div>
+                      <span><%= scope %></span>
+                  </div>
+              </li>
+            <% }) %>
+        <% } %>
+      </ul>
+    </div>
+
+    <form autocomplete="off" action="<%= p_submitUrl %>" method="post">
+        <% if (p_showRememberMeFeature) { %>
+            <div>
+                <input id="checkbox10" type="checkbox" name="to_remember" aria-labelledby="checkbox10-help">
+                <label for="checkbox10">Non richiedere più il consenso per questo servizio</label>
+                <small id="checkbox10-help">Alla prossima occasione di richiesta accesso da parte di questo servizio non ti verrà più richiesto il consenso. Chiaramente se il servizio avrà bisogno di più informazioni allora ti verrà richiesto</small>
+            </div>
+        <% } %>
+        <div>
+            <div>
+              <a href="<%= p_abortUrl %>">Annulla</a>
+            </div>
+            <div>
+              <button autotype="button">Conferma</button>
+            </div>
+        </div>
+    </form>
+
+</div>
