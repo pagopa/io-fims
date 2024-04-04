@@ -4,11 +4,13 @@
     "Esbenp.prettier-vscode",
     "Hashicorp.terraform",
     "ms-azuretools.vscode-azureterraform",
+    "ms-azuretools.vscode-azurefunctions",
     "ms-vscode.azurecli",
     "ms-azuretools.vscode-docker",
     "EditorConfig.EditorConfig",
     "GitHub.vscode-github-actions",
     "GitHub.vscode-pull-request-github",
-    "jebbs.plantuml"
+    "jebbs.plantuml",
+    "esbenp.prettier-vscode"
   ]
 }

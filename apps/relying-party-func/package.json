@@ -1,5 +1,18 @@
 {
   "name": "relying-party-func",
   "private": true,
-  "type": "module"
+  "main": "dist/src/functions/*.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "start": "func start"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.2",
+    "typescript": "^5.4.3"
+  }
 }

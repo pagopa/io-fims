@@ -18,3 +18,8 @@ override.tf.json
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+dist
+.env
+node_modules
+.turbo
