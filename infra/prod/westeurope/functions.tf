@@ -10,6 +10,10 @@ module "functions" {
         name  = "NODE_ENV",
         value = "production"
       },
+      {
+        name  = "COSMOS_DB_ENDPOINT",
+        value = module.cosmos.cosmos_account_fims_endpoint
+      }
     ]
   }
 
