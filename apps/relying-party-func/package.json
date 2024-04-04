@@ -1,18 +1,31 @@
 {
   "name": "relying-party-func",
   "private": true,
-  "main": "dist/src/functions/*.js",
+  "main": "dist/main.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
-    "start": "func start"
+    "build": "tsup-node",
+    "build:watch": "tsc -w",
+    "start": "func start",
+    "format": "prettier --write .",
+    "typecheck": "tsc"
   },
   "dependencies": {
-    "@azure/functions": "^4.3.0"
+    "@azure/cosmos": "^4.0.0",
+    "@azure/functions": "^4.3.0",
+    "@azure/identity": "^4.0.1",
+    "@pagopa/handler-kit": "^1.1.0",
+    "@pagopa/handler-kit-azure-func": "^2.0.2",
+    "@pagopa/logger": "^1.0.1",
+    "fp-ts": "^2.16.5",
+    "io-fims-common": "workspace:^",
+    "tsup": "^8.0.2",
+    "ulid": "^2.3.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.12.2",
+    "prettier": "^3.2.5",
     "typescript": "^5.4.3"
   }
 }
