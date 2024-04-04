@@ -1,6 +1,4 @@
 .git/
-.husky/
-**/node_modules/
 .env.default
 .eslintrc.js
 .gitignore

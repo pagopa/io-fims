@@ -5,7 +5,6 @@ module.exports = {
     "node": true
   },
   "ignorePatterns": [
-    "node_modules",
     "generated",
     "**/__tests__/*",
     "**/__mocks__/*",
