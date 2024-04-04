@@ -8,6 +8,6 @@
     "noImplicitAny": true,
     "moduleResolution": "NodeNext",
     "sourceMap": true,
-    "strict": true,
+    "strict": true
   }
 }
