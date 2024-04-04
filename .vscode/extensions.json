@@ -10,6 +10,7 @@
     "EditorConfig.EditorConfig",
     "GitHub.vscode-github-actions",
     "GitHub.vscode-pull-request-github",
-    "jebbs.plantuml"
+    "jebbs.plantuml",
+    "esbenp.prettier-vscode"
   ]
 }
