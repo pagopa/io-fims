@@ -5,6 +5,7 @@ import { Config } from "./config.js";
 import { Logger } from "./logger/index.js";
 import { makeRouter } from "./routes/index.js";
 import { makeAuthConfig } from "./oidc/client-utils.js";
+import { rateLimit } from "express-rate-limit";
 
 type Application = express.Application;
 
@@ -29,6 +30,14 @@ const propagateUserInfoToViews =
 
 const makeApplication = (config: Config, logger: Logger): Application => {
   const application = express();
+
+  var limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 1000, // max 1000 requests per windowMs
+  });
+  
+  // apply rate limiter to all requests
+  application.use(limiter);
 
   // Serve static files
   application.use(express.static(path.join(__dirname, "public")));
