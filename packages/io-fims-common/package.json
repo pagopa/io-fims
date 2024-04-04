@@ -2,13 +2,26 @@
   "name": "io-fims-common",
   "license": "UNLICENSED",
   "type": "module",
+  "exports": {
+    "./*": "./dist/*.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*"
+      ]
+    }
+  },
   "devDependencies": {
+    "@types/node": "^20.12.4",
     "prettier": "^3.2.5",
     "typescript": "^5.4.3",
     "zod-to-json-schema": "^3.22.5"
   },
   "dependencies": {
-    "@types/node": "^20.12.4",
+    "@pagopa/handler-kit": "^1.1.0",
+    "@pagopa/logger": "^1.0.1",
+    "fp-ts": "^2.16.5",
     "zod": "^3.22.4"
   },
   "scripts": {

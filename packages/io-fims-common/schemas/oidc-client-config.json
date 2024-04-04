@@ -1,55 +1,33 @@
 {
-  "allOf": [
-    {
-      "type": "object",
-      "properties": {
-        "id": { "type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$" },
-        "institutionId": { "type": "string", "format": "uuid" },
-        "callbacks": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "uri": { "type": "string", "format": "uri" },
-              "displayName": {
-                "type": "string",
-                "minLength": 3,
-                "maxLength": 15
-              }
-            },
-            "required": ["uri", "displayName"],
-            "additionalProperties": false
-          },
-          "minItems": 1
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$" },
+    "institutionId": { "type": "string", "format": "uuid" },
+    "callbacks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uri": { "type": "string", "format": "uri" },
+          "displayName": { "type": "string", "minLength": 3, "maxLength": 15 }
         },
-        "scopes": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": [
-            { "type": "string", "const": "openid" },
-            { "type": "string", "const": "profile" }
-          ]
-        }
+        "required": ["uri", "displayName"],
+        "additionalProperties": false
       },
-      "required": ["id", "institutionId", "callbacks", "scopes"]
+      "minItems": 1
     },
-    {
-      "anyOf": [
-        {
-          "type": "object",
-          "properties": {
-            "for": { "type": "string", "const": "service" },
-            "serviceId": {
-              "type": "string",
-              "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
-            }
-          },
-          "required": ["for", "serviceId"],
-          "additionalProperties": false
-        }
+    "scopes": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": [
+        { "type": "string", "const": "openid" },
+        { "type": "string", "const": "profile" }
       ]
-    }
-  ],
+    },
+    "serviceId": { "type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$" }
+  },
+  "required": ["id", "institutionId", "callbacks", "scopes", "serviceId"],
+  "additionalProperties": false,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
