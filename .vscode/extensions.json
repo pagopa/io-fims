@@ -4,6 +4,7 @@
     "Esbenp.prettier-vscode",
     "Hashicorp.terraform",
     "ms-azuretools.vscode-azureterraform",
+    "ms-azuretools.vscode-azurefunctions",
     "ms-vscode.azurecli",
     "ms-azuretools.vscode-docker",
     "EditorConfig.EditorConfig",
