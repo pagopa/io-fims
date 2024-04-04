@@ -3,9 +3,9 @@ import * as E from "fp-ts/Either";
 import * as D from "io-ts/Decoder";
 import { Application } from "express";
 import { pipe } from "fp-ts/function";
-import { makeApplication } from "./application";
-import * as c from "./config";
-import { Logger, makeLogger, makeSubLogger } from "./logger";
+import { makeApplication } from "./application.js";
+import * as c from "./config.js";
+import { Logger, makeLogger, makeSubLogger } from "./logger/index.js";
 
 const start = (application: Application, log: Logger): void => {
   log.info("Starting application");

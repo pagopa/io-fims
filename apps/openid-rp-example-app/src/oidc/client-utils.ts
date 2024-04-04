@@ -1,6 +1,6 @@
 import { ConfigParams, Session } from "express-openid-connect";
 import { Request, Response } from "express";
-import { Logger } from "../logger";
+import { Logger } from "../logger/index.js";
 
 interface ClientConfig {
   readonly clientId: string;

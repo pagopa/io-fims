@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { requiresAuth } from "express-openid-connect";
-import { Logger } from "../logger";
-import { Config } from "../config";
+import { Logger } from "../logger/index.js";
+import { Config } from "../config.js";
 
 const handleIndex =
   (logger: Logger) => (req: Request, res: Response, _next: NextFunction) => {

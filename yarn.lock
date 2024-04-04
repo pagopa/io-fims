@@ -1652,10 +1652,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:~18.13.0":
-  version: 18.13.0
-  resolution: "@types/node@npm:18.13.0"
-  checksum: 10c0/985ca4e6e19fb0ee8bf5618f96f0b6d96a434c28a9123c93f25a3dcc202c3fa903cf234fcee649e10977b057ccb3b796e81b094d9c84eadbaa2b7c4b97a8866e
+"@types/node@npm:^20":
+  version: 20.12.4
+  resolution: "@types/node@npm:20.12.4"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 10c0/9b142fcd839a48c348d6b9acfc753dfa4b3fb1f3e23ed67e8952bee9b2dfdaffdddfbcf0e4701557b88631591a5f9968433910027532ef847759f8682e27ffe7
   languageName: node
   linkType: hard
 
@@ -5060,7 +5062,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-openid-connect@npm:^2.5.2":
+"express-openid-connect@npm:^2.17.1":
   version: 2.17.1
   resolution: "express-openid-connect@npm:2.17.1"
   dependencies:
@@ -5542,7 +5544,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fp-ts@npm:^2.11.0, fp-ts@npm:^2.11.4":
+"fp-ts@npm:^2.11.0, fp-ts@npm:^2.16.2":
   version: 2.16.5
   resolution: "fp-ts@npm:2.16.5"
   checksum: 10c0/7208a91dcfd3aadd356ee727df351ae86017cfe8c61a6375c6b8f642bb68028edcf928ec5075b3e9884d723cdac3103317c0398ccd6825448eaf01f6298cb61f
@@ -7753,15 +7755,15 @@ __metadata:
   linkType: hard
 
 "joi@npm:^17.7.0":
-  version: 17.12.2
-  resolution: "joi@npm:17.12.2"
+  version: 17.12.3
+  resolution: "joi@npm:17.12.3"
   dependencies:
     "@hapi/hoek": "npm:^9.3.0"
     "@hapi/topo": "npm:^5.1.0"
     "@sideway/address": "npm:^4.1.5"
     "@sideway/formula": "npm:^3.0.1"
     "@sideway/pinpoint": "npm:^2.0.0"
-  checksum: 10c0/2cc89f0fc71282018a9032d48652fe6c62009689a7919512fb5a76735225875d4554da580d8b5c074bc4abd5b0ca0e4b32b3f2ab7e32c9f0b338d43f6bdf1162
+  checksum: 10c0/818e51bd2d219339cff91f9d6fef8bab2da396e80a051cf73fb8ce7362c191af395bfa2d0e54eaa9c9cb8d5afafddb54eb768bc3068ab33908cbd5a1697e7d3e
   languageName: node
   linkType: hard
 
@@ -9772,7 +9774,7 @@ __metadata:
     "@types/copyfiles": "npm:^2.4.1"
     "@types/express": "npm:^4.17.13"
     "@types/jest": "npm:^27.0.2"
-    "@types/node": "npm:~18.13.0"
+    "@types/node": "npm:^20"
     "@types/rimraf": "npm:^3.0.2"
     "@types/supertest": "npm:^2.0.11"
     dotenv: "npm:^10.0.0"
@@ -9780,8 +9782,8 @@ __metadata:
     eslint: "npm:^7.32.0"
     eslint-plugin-prettier: "npm:^4.0.0"
     express: "npm:^4.17.1"
-    express-openid-connect: "npm:^2.5.2"
-    fp-ts: "npm:^2.11.4"
+    express-openid-connect: "npm:^2.17.1"
+    fp-ts: "npm:^2.16.2"
     gulp: "npm:^4.0.2"
     husky: "npm:^7.0.2"
     io-ts: "npm:^2.2.16"
@@ -9794,7 +9796,7 @@ __metadata:
     rimraf: "npm:^3.0.2"
     supertest: "npm:^6.1.6"
     ts-jest: "npm:^27.0.5"
-    typescript: "npm:^4.4.3"
+    typescript: "npm:^5.4.2"
     winston: "npm:^3.3.3"
   languageName: unknown
   linkType: soft
@@ -12558,16 +12560,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.4.3":
-  version: 4.9.5
-  resolution: "typescript@npm:4.9.5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/5f6cad2e728a8a063521328e612d7876e12f0d8a8390d3b3aaa452a6a65e24e9ac8ea22beb72a924fd96ea0a49ea63bb4e251fb922b12eedfb7f7a26475e5c56
-  languageName: node
-  linkType: hard
-
 "typescript@npm:^5.4.2":
   version: 5.4.3
   resolution: "typescript@npm:5.4.3"
@@ -12575,16 +12567,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/22443a8760c3668e256c0b34b6b45c359ef6cecc10c42558806177a7d500ab1a7d7aac1f976d712e26989ddf6731d2fbdd3212b7c73290a45127c1c43ba2005a
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A^4.4.3#optional!builtin<compat/typescript>":
-  version: 4.9.5
-  resolution: "typescript@patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/e3333f887c6829dfe0ab6c1dbe0dd1e3e2aeb56c66460cb85c5440c566f900c833d370ca34eb47558c0c69e78ced4bfe09b8f4f98b6de7afed9b84b8d1dd06a1
   languageName: node
   linkType: hard
 

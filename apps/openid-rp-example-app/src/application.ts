@@ -1,10 +1,10 @@
 import path from "path";
 import express from "express";
 import { auth } from "express-openid-connect";
-import { Config } from "./config";
-import { Logger } from "./logger";
-import { makeRouter } from "./routes";
-import { makeAuthConfig } from "./oidc/client-utils";
+import { Config } from "./config.js";
+import { Logger } from "./logger/index.js";
+import { makeRouter } from "./routes/index.js";
+import { makeAuthConfig } from "./oidc/client-utils.js";
 
 type Application = express.Application;
 
