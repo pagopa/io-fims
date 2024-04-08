@@ -49,4 +49,9 @@ locals {
       ENABLE_PROXY                    = "true"
     }
   }
+
+  app_service_openid_rp_example = {
+    app_settings_common = {}
+  }
+
 }
