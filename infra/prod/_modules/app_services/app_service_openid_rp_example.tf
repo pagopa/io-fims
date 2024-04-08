@@ -2,10 +2,10 @@ module "appservice_openid_rp_example" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v7.76.0"
 
   plan_type = "internal"
-  plan_name = "${var.product}-openid-rp-example-plan"
+  plan_name = "${var.product}-rp-example-plan"
   sku_name  = "S1"
 
-  name                = "${var.product}-openid-rp-example-app"
+  name                = "${var.product}-rp-example-app"
   resource_group_name = var.resource_group_name
   location            = var.location
 
