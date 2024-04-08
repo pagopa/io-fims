@@ -8,7 +8,7 @@ locals {
 module "relying_party_func" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.72.2"
 
-  name                = format("%s-relying-party-func", var.project)
+  name                = "${var.product}-relying-party-func"
   location            = var.location
   resource_group_name = var.resource_group_name
 
