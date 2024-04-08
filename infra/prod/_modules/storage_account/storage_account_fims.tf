@@ -2,7 +2,6 @@ module "storage_account_fims" {
   source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.76.0"
 
   name                          = replace("${var.product}st", "-", "")
-  domain                        = upper(var.domain)
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   access_tier                   = "Hot"

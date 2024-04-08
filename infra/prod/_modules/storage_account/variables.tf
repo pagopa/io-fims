@@ -14,8 +14,3 @@ variable "location" {
 variable "tags" {
   type = map(any)
 }
-
-variable "domain" {
-  type        = string
-  description = "IO domain name"
-}
