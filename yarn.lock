@@ -7337,30 +7337,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"relying-party-func@workspace:apps/relying-party-func":
-  version: 0.0.0-use.local
-  resolution: "relying-party-func@workspace:apps/relying-party-func"
-  dependencies:
-    "@azure/cosmos": "npm:^4.0.0"
-    "@azure/functions": "npm:^4.3.0"
-    "@pagopa/handler-kit": "npm:^1.1.0"
-    "@pagopa/handler-kit-azure-func": "npm:^2.0.3"
-    "@pagopa/logger": "npm:^1.0.1"
-    "@types/node": "npm:^20.12.2"
-    "@zodios/core": "npm:^10.9.6"
-    axios: "npm:^1.6.8"
-    fp-ts: "npm:^2.16.5"
-    io-fims-common: "workspace:^"
-    openapi-zod-client: "npm:^1.16.4"
-    prettier: "npm:^3.2.5"
-    tsup: "npm:^8.0.2"
-    typescript: "npm:^5.4.3"
-    ulid: "npm:^2.3.0"
-    vitest: "npm:^1.4.0"
-    zod: "npm:^3.22.4"
-  languageName: unknown
-  linkType: soft
-
 "remark-frontmatter@npm:^2.0.0":
   version: 2.0.0
   resolution: "remark-frontmatter@npm:2.0.0"
@@ -7684,6 +7660,30 @@ __metadata:
   checksum: 10c0/90f8cdf9c2115223cbcfe91d932170a85c0928ae1943f45af6877907ea150585b80f656cf2bc471c6f809cb7e158dd85dbea9f91ab4fd5bce0eaf6c3f5f4fd92
   languageName: node
   linkType: hard
+
+"rp-func@workspace:apps/rp-func":
+  version: 0.0.0-use.local
+  resolution: "rp-func@workspace:apps/rp-func"
+  dependencies:
+    "@azure/cosmos": "npm:^4.0.0"
+    "@azure/functions": "npm:^4.3.0"
+    "@pagopa/handler-kit": "npm:^1.1.0"
+    "@pagopa/handler-kit-azure-func": "npm:^2.0.3"
+    "@pagopa/logger": "npm:^1.0.1"
+    "@types/node": "npm:^20.12.2"
+    "@zodios/core": "npm:^10.9.6"
+    axios: "npm:^1.6.8"
+    fp-ts: "npm:^2.16.5"
+    io-fims-common: "workspace:^"
+    openapi-zod-client: "npm:^1.16.4"
+    prettier: "npm:^3.2.5"
+    tsup: "npm:^8.0.2"
+    typescript: "npm:^5.4.3"
+    ulid: "npm:^2.3.0"
+    vitest: "npm:^1.4.0"
+    zod: "npm:^3.22.4"
+  languageName: unknown
+  linkType: soft
 
 "run-parallel@npm:^1.1.9":
   version: 1.2.0
