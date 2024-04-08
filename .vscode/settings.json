@@ -9,13 +9,5 @@
   "plantuml.exportOutDir": "docs/diagrams",
   "plantuml.exportSubFolder": false,
   "plantuml.exportFormat": "png",
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
-  "azureFunctions.deploySubpath": "apps/relying-party-func",
-  "azureFunctions.postDeployTask": "npm install (functions)",
-  "azureFunctions.projectLanguage": "TypeScript",
-  "azureFunctions.projectRuntime": "~4",
-  "debug.internalConsoleOptions": "neverOpen",
-  "azureFunctions.projectLanguageModel": 4,
-  "azureFunctions.projectSubpath": "apps/relying-party-func",
-  "azureFunctions.preDeployTask": "npm prune (functions)"
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs"
 }
