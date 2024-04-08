@@ -1,0 +1,7 @@
+.git/
+.env.default
+.eslintrc.js
+.gitignore
+.prettierrc
+open-api.yaml
+README.md
