@@ -1,7 +1,7 @@
 module "functions" {
   source = "../_modules/functions/"
 
-  relying_party_func = {
+  rp_func = {
     autoscale_default = 1
     autoscale_minimum = 1
     autoscale_maximum = 3

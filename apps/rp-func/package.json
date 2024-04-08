@@ -1,5 +1,5 @@
 {
-  "name": "relying-party-func",
+  "name": "rp-func",
   "private": true,
   "main": "dist/main.js",
   "type": "module",

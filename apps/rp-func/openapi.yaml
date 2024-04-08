@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: relying-party-func REST API
+  title: rp-func REST API
   version: 0.1.0
 
 paths:
@@ -73,7 +73,8 @@ components:
           format: uri
         display_name:
           type: string
-          min: 3
+          minLength: 3
+          maxLength: 30
       required:
         - uri
         - display_name
