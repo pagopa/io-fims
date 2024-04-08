@@ -11,8 +11,8 @@ module "functions" {
         value = "production"
       },
       {
-        name  = "COSMOS_DB_ENDPOINT",
-        value = module.cosmos.cosmos_account_fims_endpoint
+        name  = "COSMOS_DB_CONNECTION_STRING",
+        value = module.cosmos.cosmos_account_fims_primary_connection_string
       }
     ]
   }
