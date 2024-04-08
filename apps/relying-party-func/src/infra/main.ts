@@ -1,7 +1,6 @@
 import { app } from "@azure/functions";
 
 import { CosmosClient } from "@azure/cosmos";
-import { DefaultAzureCredential } from "@azure/identity";
 
 import { httpAzureFunction } from "@pagopa/handler-kit-azure-func";
 
@@ -14,19 +13,14 @@ import { configSchema } from "./config.js";
 
 const config = configSchema.parse({
   cosmos: {
-    endpoint: process.env.COSMOS_DB_ENDPOINT,
+    connectionString: process.env.COSMOS_DB_CONNECTION_STRING,
     databaseName: process.env.COSMOS_DB_NAME,
   },
 });
 
-const credential = new DefaultAzureCredential();
+const cosmosClient = new CosmosClient(config.cosmos.connectionString);
 
-const cosmosClient = new CosmosClient({
-  endpoint: config.cosmos.endpoint,
-  aadCredentials: credential,
-});
-
-const database = cosmosClient.database("relying-party");
+const database = cosmosClient.database(config.cosmos.databaseName);
 
 const oidcClientConfigRepository = new CosmosOIDCClientConfigRepository(
   database,
@@ -40,7 +34,7 @@ app.http("Health", {
 });
 
 app.http("CreateOIDCClientConfig", {
-  methods: ["POST"],
+  methods: ["PUT"],
   authLevel: "function",
   route: "oidc-client-configs",
   handler: httpAzureFunction(createOIDCClientConfigHandler)({

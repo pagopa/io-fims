@@ -5,7 +5,9 @@ import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
 
 import { flow } from "fp-ts/lib/function.js";
 
-const isValidationError = (e: Error): e is H.ValidationError =>
+import { ValidationError } from "./parse.js";
+
+const isValidationError = (e: Error): e is ValidationError =>
   e.name === "ValidationError";
 
 const isHttpError = (e: Error): e is H.HttpError => e.name === "HttpError";
@@ -15,9 +17,9 @@ export const toProblemJson = (e: Error): H.ProblemJson => {
     return {
       type: "http://io.pagopa.it/problems/validation-error",
       title: "Validation Error",
-      detail: "Your request didn't validate",
+      detail: e.message,
       status: 422,
-      violations: e.violations,
+      issues: e.issues,
     };
   }
   if (isHttpError(e)) {

@@ -8,6 +8,9 @@
     "apps/*",
     "packages/*"
   ],
+  "scripts": {
+    "build": "turbo run build"
+  },
   "devDependencies": {
     "prettier": "^3.2.5",
     "turbo": "^1.13.2",

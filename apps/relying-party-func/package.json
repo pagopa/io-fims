@@ -8,15 +8,18 @@
     "build:watch": "tsc -w",
     "start": "func start",
     "format": "prettier --write .",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "test": "vitest run",
+    "generate:openapi-schema": "openapi-zod-client openapi.yaml -o src/infra/openapi.ts"
   },
   "dependencies": {
     "@azure/cosmos": "^4.0.0",
     "@azure/functions": "^4.3.0",
-    "@azure/identity": "^4.0.1",
     "@pagopa/handler-kit": "^1.1.0",
-    "@pagopa/handler-kit-azure-func": "^2.0.2",
+    "@pagopa/handler-kit-azure-func": "^2.0.3",
     "@pagopa/logger": "^1.0.1",
+    "@zodios/core": "^10.9.6",
+    "axios": "^1.6.8",
     "fp-ts": "^2.16.5",
     "io-fims-common": "workspace:^",
     "tsup": "^8.0.2",
@@ -25,7 +28,9 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.2",
+    "openapi-zod-client": "^1.16.4",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "vitest": "^1.4.0"
   }
 }

@@ -1,0 +1,24 @@
+meta {
+  name: Create OIDC Client Config
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{relying_party_func_url}}/oidc-client-configs
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "callbacks": [
+      {
+        "uri": "https://example-rp.io.pagopa.it",
+        "display_name": "Example RP",
+      }
+    ],
+    "service_id": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "institution_id": "328b5e41-b386-47c6-8142-c5209fa00a5b"
+  }
+}
