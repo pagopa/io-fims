@@ -33,6 +33,8 @@ app.http("Health", {
   handler: httpAzureFunction(healthCheckHandler)({}),
 });
 
+// CreateOIDCClientConfig manages the creation
+// and persistence (via upsert) of OIDCClientConfig objects
 app.http("CreateOIDCClientConfig", {
   methods: ["PUT"],
   authLevel: "function",
