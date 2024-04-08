@@ -1,43 +1,23 @@
 openapi: 3.1.0
 info:
-  title: relying-party-func REST API
+  title: rp-func REST API
   version: 0.1.0
 
 paths:
   /oidc-client-configs:
-    post:
+    put:
       operationId: createOIDCClientConfig
       security:
         - AzureFunction: []
       requestBody:
         $ref: "#/components/requestBodies/CreateOIDCClientConfig"
       responses:
-        201:
+        200:
           description: "OIDC Client Configuration Created"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: "#/components/schemas/OIDCClientConfig"
-                  - type: object
-                    properties:
-                      id:
-                        $ref: "#/components/schemas/Id"
-                    required: [id]
-                examples:
-                  - {
-                      "id": "01BX5ZZKBKACTAV9WEVGEMMVS1",
-                      "serviceId": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
-                      "institutionId": "63632b50-e5c8-413b-ace0-e3f5f36068b4",
-                      "callbacks":
-                        [
-                          {
-                            "uri": "https://io-d-openid-rp-example.azurewebsites.net/callback",
-                            "displayName": "Example RP",
-                          },
-                        ],
-                    }
+                $ref: "#/components/schemas/OIDCClientConfig"
 
 components:
   securitySchemes:
@@ -58,9 +38,9 @@ components:
     OIDCClientConfig:
       type: object
       properties:
-        serviceId:
+        service_id:
           $ref: "#/components/schemas/Id"
-        institutionId:
+        institution_id:
           type: string
           format: uuid
         callbacks:
@@ -68,15 +48,19 @@ components:
           minItems: 1
           item:
             type: object
+      required:
+        - service_id
+        - institution_id
+        - callbacks
       examples:
         - {
-            "serviceId": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
-            "institutionId": "63632b50-e5c8-413b-ace0-e3f5f36068b4",
+            "service_id": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+            "institution_id": "63632b50-e5c8-413b-ace0-e3f5f36068b4",
             "callbacks":
               [
                 {
                   "uri": "https://io-d-openid-rp-example.azurewebsites.net/callback",
-                  "displayName": "Example RP",
+                  "display_name": "Example RP",
                 },
               ],
           }
@@ -89,7 +73,8 @@ components:
           format: uri
         display_name:
           type: string
-          min: 3
+          minLength: 3
+          maxLength: 30
       required:
         - uri
         - display_name

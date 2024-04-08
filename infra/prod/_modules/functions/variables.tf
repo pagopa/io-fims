@@ -27,7 +27,7 @@ variable "key_vault_id" {
   type = string
 }
 
-variable "relying_party_func" {
+variable "rp_func" {
   type = object({
     autoscale_default = number
     autoscale_minimum = number

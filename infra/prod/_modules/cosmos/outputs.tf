@@ -20,3 +20,8 @@ output "cosmos_account_fims_primary_key" {
   value     = module.cosmosdb_account_fims.primary_key
   sensitive = true
 }
+
+output "cosmos_account_fims_primary_connection_string" {
+  value     = module.cosmosdb_account_fims.connection_strings[0]
+  sensitive = true
+}

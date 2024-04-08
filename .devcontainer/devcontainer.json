@@ -11,7 +11,8 @@
       "tflint": "0.50.3",
       "installTFsec": true,
       "installTerraformDocs": true
-    }
+    },
+    "ghcr.io/jlaundry/devcontainer-features/azure-functions-core-tools:1": {}
   },
   "customizations": {
     "vscode": {
@@ -23,7 +24,8 @@
         "GitHub.vscode-github-actions",
         "GitHub.vscode-pull-request-github",
         "jebbs.plantuml",
-        "-vscjava.vscode-java-pack"
+        "-vscjava.vscode-java-pack",
+        "ms-azuretools.vscode-azurefunctions"
       ],
       "settings": {
         "plantuml.render": "Local"

@@ -1,7 +1,7 @@
 module "functions" {
   source = "../_modules/functions/"
 
-  relying_party_func = {
+  rp_func = {
     autoscale_default = 1
     autoscale_minimum = 1
     autoscale_maximum = 3
@@ -10,6 +10,10 @@ module "functions" {
         name  = "NODE_ENV",
         value = "production"
       },
+      {
+        name  = "COSMOS_DB_CONNECTION_STRING",
+        value = module.cosmos.cosmos_account_fims_primary_connection_string
+      }
     ]
   }
 

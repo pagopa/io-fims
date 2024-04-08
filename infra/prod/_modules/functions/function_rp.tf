@@ -1,6 +1,6 @@
 locals {
   relying_party_func_settings = {
-    for s in var.relying_party_func.app_settings :
+    for s in var.rp_func.app_settings :
     s.name => s.key_vault_secret_name != null ? "@Microsoft.KeyVault(VaultName=${var.product}-kv;SecretName=${s.key_vault_secret_name})" : s.value
   }
 }
@@ -8,7 +8,7 @@ locals {
 module "relying_party_func" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.72.2"
 
-  name                = format("%s-relying-party-func", var.project)
+  name                = "${var.product}-rp-func"
   location            = var.location
   resource_group_name = var.resource_group_name
 
