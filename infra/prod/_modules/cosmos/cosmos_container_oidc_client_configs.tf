@@ -4,7 +4,7 @@ resource "azurerm_cosmosdb_sql_container" "relying_party_oidc_client_configs" {
   account_name        = module.cosmosdb_account_fims.name
   database_name       = module.cosmosdb_database_relying_party.name
 
-  partition_key_path    = "/serviceId"
+  partition_key_path    = "/institutionId"
   partition_key_version = 2
   default_ttl           = -1
 
