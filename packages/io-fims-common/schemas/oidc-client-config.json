@@ -9,7 +9,7 @@
         "type": "object",
         "properties": {
           "uri": { "type": "string", "format": "uri" },
-          "displayName": { "type": "string", "minLength": 3, "maxLength": 15 }
+          "displayName": { "type": "string", "minLength": 3, "maxLength": 30 }
         },
         "required": ["uri", "displayName"],
         "additionalProperties": false
@@ -24,10 +24,9 @@
         { "type": "string", "const": "openid" },
         { "type": "string", "const": "profile" }
       ]
-    },
-    "serviceId": { "type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$" }
+    }
   },
-  "required": ["id", "institutionId", "callbacks", "scopes", "serviceId"],
+  "required": ["id", "institutionId", "callbacks", "scopes"],
   "additionalProperties": false,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
