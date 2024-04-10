@@ -15,8 +15,6 @@ import * as clients from "./clients/index.js";
 import * as grants from "./grants/index.js";
 import * as info from "./info/index.js";
 
-//const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-
 /**
  * This trait defined all the dependencies required by the Application.
  * Because of nodeOidcProvider, we need the services to wrap them into the

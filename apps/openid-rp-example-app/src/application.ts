@@ -1,4 +1,3 @@
-import path from "path";
 import express from "express";
 import { auth } from "express-openid-connect";
 import { Config } from "./config.js";
@@ -40,7 +39,7 @@ const makeApplication = (config: Config, logger: Logger): Application => {
   application.use(limiter);
 
   // Serve static files
-  application.use(express.static(path.join(__dirname, "public")));
+  application.use(express.static("public"));
 
   // Add a middleware that parses JSON HTTP
   // request bodies into JavaScript objects
@@ -64,7 +63,7 @@ const makeApplication = (config: Config, logger: Logger): Application => {
   application.set("hostname", serverConfig.hostname);
 
   // Template engine configuration
-  application.set("views", path.join(__dirname, "views"));
+  application.set("views", "views");
   application.set("view engine", "ejs");
   return application;
 };

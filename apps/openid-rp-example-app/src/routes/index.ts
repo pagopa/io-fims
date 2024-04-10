@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { requiresAuth } from "express-openid-connect";
+import expressOIDC from "express-openid-connect";
 import { Logger } from "../logger/index.js";
 import { Config } from "../config.js";
+
+const { requiresAuth } = expressOIDC;
 
 const handleIndex =
   (logger: Logger) => (req: Request, res: Response, _next: NextFunction) => {
@@ -43,7 +45,7 @@ const makeRouter =
     router.get(
       "/book_appointment",
       requiresAuth(),
-      handleBookAppointment(logger)
+      handleBookAppointment(logger),
     );
 
     router.get("/info", (_req, res) => {
