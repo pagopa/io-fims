@@ -5,4 +5,9 @@ locals {
     app_settings     = {}
     staging_disabled = ["onSelfcareContractsMessage"]
   }
+
+  user_func = {
+    app_settings     = {}
+    staging_disabled = ["onSelfcareContractsMessage"]
+  }
 }
