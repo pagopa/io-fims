@@ -23,6 +23,14 @@ module "openid_provider_func" {
 
   app_service_plan_name = "${var.product}-openid-provider-plan"
 
+  app_service_plan_info = {
+    kind                         = "Linux"
+    sku_size                     = "S1"
+    maximum_elastic_worker_count = 0
+    worker_count                 = 1
+    zone_balancing_enabled       = false
+  }
+
   subnet_id = var.subnet_id
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
