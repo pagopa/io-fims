@@ -239,7 +239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/functions@npm:^4.0.1, @azure/functions@npm:^4.3.0":
+"@azure/functions@npm:^4.0.1, @azure/functions@npm:^4.3.0, @azure/functions@npm:^4.4.0":
   version: 4.4.0
   resolution: "@azure/functions@npm:4.4.0"
   dependencies:
@@ -2948,6 +2948,15 @@ __metadata:
   dependencies:
     undici-types: "npm:~5.26.4"
   checksum: 10c0/2da65516fba98f0417620e42bddbe53e144d4782d69cd37f99df2537c6850b9cfbdb8a017f02c61e9a074bcac84f9f3f221b250474ac8c6b95d507a47e8d53f9
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.12.7":
+  version: 20.12.7
+  resolution: "@types/node@npm:20.12.7"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 10c0/dce80d63a3b91892b321af823d624995c61e39c6a223cc0ac481a44d337640cc46931d33efb3beeed75f5c85c3bda1d97cef4c5cd4ec333caf5dee59cff6eca0
   languageName: node
   linkType: hard
 
@@ -17147,7 +17156,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.3.3, typescript@npm:^5.4.2, typescript@npm:^5.4.3":
+"typescript@npm:^5.3.3, typescript@npm:^5.4.2, typescript@npm:^5.4.3, typescript@npm:^5.4.4":
   version: 5.4.4
   resolution: "typescript@npm:5.4.4"
   bin:
@@ -17167,7 +17176,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.4.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.4.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.4.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.4.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.4.4#optional!builtin<compat/typescript>":
   version: 5.4.4
   resolution: "typescript@patch:typescript@npm%3A5.4.4#optional!builtin<compat/typescript>::version=5.4.4&hash=5adc0c"
   bin:
@@ -17542,6 +17551,15 @@ __metadata:
 "user-func@workspace:apps/user-func":
   version: 0.0.0-use.local
   resolution: "user-func@workspace:apps/user-func"
+  dependencies:
+    "@azure/functions": "npm:^4.4.0"
+    "@pagopa/handler-kit": "npm:^1.1.0"
+    "@pagopa/handler-kit-azure-func": "npm:^2.0.3"
+    "@types/node": "npm:^20.12.7"
+    fp-ts: "npm:^2.16.5"
+    prettier: "npm:^3.2.5"
+    tsup: "npm:^8.0.2"
+    typescript: "npm:^5.4.4"
   languageName: unknown
   linkType: soft
 
