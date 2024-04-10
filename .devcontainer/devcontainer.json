@@ -25,7 +25,8 @@
         "GitHub.vscode-pull-request-github",
         "jebbs.plantuml",
         "-vscjava.vscode-java-pack",
-        "ms-azuretools.vscode-azurefunctions"
+        "ms-azuretools.vscode-azurefunctions",
+        "bruno-api-client.bruno"
       ],
       "settings": {
         "plantuml.render": "Local"
