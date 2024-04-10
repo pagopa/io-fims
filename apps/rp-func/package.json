@@ -7,7 +7,8 @@
     "build": "tsup-node",
     "build:watch": "tsc -w",
     "start": "func start",
-    "format": "prettier --write .",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
     "typecheck": "tsc",
     "test": "vitest run",
     "generate:openapi-schema": "openapi-zod-client openapi.yaml -o src/infra/openapi.ts"
