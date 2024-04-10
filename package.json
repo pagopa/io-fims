@@ -9,7 +9,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "code-review": "turbo run typecheck format:check lint test"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

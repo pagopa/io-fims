@@ -5,6 +5,10 @@
       "dependsOn": ["^build"],
       "inputs": ["src/**/*.ts"],
       "outputs": ["dist/**"]
-    }
+    },
+    "lint": {},
+    "test": {},
+    "format:check": {},
+    "typecheck": {}
   }
 }
