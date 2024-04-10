@@ -35,7 +35,7 @@ const makeApplication = (config: Config, logger: Logger): Application => {
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 1000, // max 1000 requests per windowMs
   });
-  
+
   // apply rate limiter to all requests
   application.use(limiter);
 

@@ -3,14 +3,14 @@ declare module "openid-client" {
     essential?: boolean;
     value?: string;
     values?: string[];
-  
+
     [key: string]: unknown;
   }
 
   interface UnknownObject {
     [key: string]: unknown;
   }
-  
+
   type KnownKeys<T> = {
     [K in keyof T]: string extends K ? never : number extends K ? never : K;
   } extends { [_ in keyof T]: infer U }
@@ -89,7 +89,7 @@ declare module "openid-client" {
 
   export type UserinfoResponse<
     UserInfo extends {} = UnknownObject,
-    ExtendedAddress extends {} = UnknownObject,
+    ExtendedAddress extends {} = UnknownObject
   > = Override<
     {
       sub: string;
@@ -116,10 +116,17 @@ declare module "openid-client" {
   >;
 }
 declare module "jose" {
-  type use = 'sig' | 'enc';
-  type keyOperation = 'sign' | 'verify' | 'encrypt' | 'decrypt' | 'wrapKey' | 'unwrapKey' | 'deriveKey';
-  type ECCurve = 'P-256' | 'secp256k1' | 'P-384' | 'P-521';
-  type OKPCurve = 'Ed25519' | 'Ed448' | 'X25519' | 'X448';
+  type use = "sig" | "enc";
+  type keyOperation =
+    | "sign"
+    | "verify"
+    | "encrypt"
+    | "decrypt"
+    | "wrapKey"
+    | "unwrapKey"
+    | "deriveKey";
+  type ECCurve = "P-256" | "secp256k1" | "P-384" | "P-521";
+  type OKPCurve = "Ed25519" | "Ed448" | "X25519" | "X448";
 
   interface BasicParameters {
     alg?: string;
@@ -130,31 +137,32 @@ declare module "jose" {
   interface KeyParameters extends BasicParameters {
     x5c?: string[];
     x5t?: string;
-    'x5t#S256'?: string;
+    "x5t#S256"?: string;
   }
 
-  interface JWKOctKey extends BasicParameters { // no x5c
-    kty: 'oct';
+  interface JWKOctKey extends BasicParameters {
+    // no x5c
+    kty: "oct";
     k?: string;
   }
-  
+
   interface JWKECKey extends KeyParameters {
-    kty: 'EC';
+    kty: "EC";
     crv: ECCurve;
     x: string;
     y: string;
     d?: string;
   }
-  
+
   interface JWKOKPKey extends KeyParameters {
-    kty: 'OKP';
+    kty: "OKP";
     crv: OKPCurve;
     x: string;
     d?: string;
   }
-  
+
   interface JWKRSAKey extends KeyParameters {
-    kty: 'RSA';
+    kty: "RSA";
     e: string;
     n: string;
     d?: string;
