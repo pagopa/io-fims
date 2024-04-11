@@ -5,7 +5,7 @@ locals {
   }
 }
 
-module "openid_provider_func" {
+module "op_func" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.72.2"
 
   name                = "${var.product}-op-func"
@@ -42,27 +42,27 @@ module "openid_provider_func" {
 resource "azurerm_key_vault_access_policy" "openid_provider_func_key_vault_access_policy" {
   key_vault_id = var.key_vault_id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = module.openid_provider_func.system_identity_principal
+  object_id    = module.op_func.system_identity_principal
 
   secret_permissions      = ["Get"]
   storage_permissions     = []
   certificate_permissions = []
 }
 
-module "openid_provider_func_staging_slot" {
+module "op_func_staging_slot" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.72.2"
 
   name                = "staging"
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  function_app_id     = module.openid_provider_func.id
-  app_service_plan_id = module.openid_provider_func.app_service_plan_id
+  function_app_id     = module.op_func.id
+  app_service_plan_id = module.op_func.app_service_plan_id
 
   health_check_path = "/health"
 
-  storage_account_name       = module.openid_provider_func.storage_account.name
-  storage_account_access_key = module.openid_provider_func.storage_account.primary_access_key
+  storage_account_name       = module.op_func.storage_account.name
+  storage_account_access_key = module.op_func.storage_account.primary_access_key
 
   node_version                             = "18"
   runtime_version                          = "~4"
