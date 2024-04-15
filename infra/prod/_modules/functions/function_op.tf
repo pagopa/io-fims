@@ -1,3 +1,17 @@
+variable "op_func" {
+  type = object({
+    autoscale_default = number
+    autoscale_minimum = number
+    autoscale_maximum = number
+    app_settings = list(object({
+      name                  = string
+      value                 = optional(string, "")
+      key_vault_secret_name = optional(string)
+    }))
+  })
+  description = "Configuration of the openid-provider func app"
+}
+
 locals {
   openid_provider_func_settings = {
     for s in var.op_func.app_settings :
