@@ -22,8 +22,7 @@ No providers.
 | <a name="module_key_vaults"></a> [key\_vaults](#module\_key\_vaults) | ../_modules/key_vaults | n/a |
 | <a name="module_networking"></a> [networking](#module\_networking) | ../_modules/networking | n/a |
 | <a name="module_resource_groups"></a> [resource\_groups](#module\_resource\_groups) | ../_modules/resource_groups | n/a |
-| <a name="module_storage_account"></a> [storage\_account](#module\_storage\_account) | ../_modules/storage_account | n/a |
-| <a name="module_storage_queue"></a> [storage\_queue](#module\_storage\_queue) | ../_modules/storage_queue | n/a |
+| <a name="module_storage"></a> [storage](#module\_storage) | ../_modules/storage | n/a |
 
 ## Resources
 

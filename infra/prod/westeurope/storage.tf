@@ -1,5 +1,5 @@
-module "storage_account" {
-  source = "../_modules/storage_account"
+module "storage" {
+  source = "../_modules/storage"
 
   location            = module.resource_groups.resource_group_fims.location
   product             = local.product
