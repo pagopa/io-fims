@@ -12,13 +12,6 @@ variable "op_func" {
   description = "Configuration of the openid-provider func app"
 }
 
-locals {
-  openid_provider_func_settings = {
-    for s in var.op_func.app_settings :
-    s.name => s.key_vault_secret_name != null ? "@Microsoft.KeyVault(VaultName=${var.product}-kv;SecretName=${s.key_vault_secret_name})" : s.value
-  }
-}
-
 module "op_func" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.72.2"
 
@@ -28,7 +21,7 @@ module "op_func" {
 
   health_check_path = "/health"
 
-  app_settings = local.openid_provider_func_settings
+  app_settings = local.openid_provider_func.app_settings
 
   node_version    = "18"
   runtime_version = "~4"
@@ -84,7 +77,7 @@ module "op_func_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.openid_provider_func_settings,
+    local.openid_provider_func.app_settings,
     {
       # Disabled functions on slot triggered by queue and timer
       for to_disable in local.openid_provider_func.staging_disabled :

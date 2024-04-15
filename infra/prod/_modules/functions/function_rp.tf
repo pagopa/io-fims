@@ -12,13 +12,6 @@ variable "rp_func" {
   description = "Configuration of the relying-party func app"
 }
 
-locals {
-  relying_party_func_settings = {
-    for s in var.rp_func.app_settings :
-    s.name => s.key_vault_secret_name != null ? "@Microsoft.KeyVault(VaultName=${var.product}-kv;SecretName=${s.key_vault_secret_name})" : s.value
-  }
-}
-
 module "relying_party_func" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.72.2"
 
@@ -28,7 +21,7 @@ module "relying_party_func" {
 
   health_check_path = "/health"
 
-  app_settings = local.relying_party_func_settings
+  app_settings = local.relying_party_func.app_settings
 
   node_version    = "18"
   runtime_version = "~4"
@@ -81,7 +74,7 @@ module "relying_party_func_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.relying_party_func_settings,
+    local.relying_party_func.app_settings,
     {
       # Disabled functions on slot triggered by queue and timer
       for to_disable in local.relying_party_func.staging_disabled :
