@@ -8,6 +8,6 @@ locals {
 
   user_func = {
     app_settings     = {}
-    staging_disabled = ["onSelfcareContractsMessage"]
+    staging_disabled = []
   }
 }
