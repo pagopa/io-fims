@@ -1,10 +1,8 @@
-name: (PR) Infra WestEurope
+name: PR Infrastructure Plan
 
 on:
   workflow_dispatch:
   pull_request:
-    branches:
-      - main
     types:
       - opened
       - edited
@@ -12,20 +10,21 @@ on:
       - reopened
       - ready_for_review
     paths:
-      - "infra/**/westeurope/**"
-      - "infra/**/_modules/**"
+      # Trigger the workflow when resources are modified
+      - "infra/resources"
+      # Trigger the workflow when the involved workflows are modified
       - ".github/workflows/pr_infra.yaml"
-      - ".github/workflows/call_code_review_infra.yaml"
-      - ".github/workflows/call_release_infra.yaml"
+      - ".github/workflows/templates/infra_**"
 
 concurrency:
   group: ${{ github.workflow }}
 
 jobs:
   code_review:
-    uses: ./.github/workflows/call_code_review_infra.yaml
+    uses: ./.github/workflows/infra-plan.yaml
     name: PR Prod WestEurope
     secrets: inherit
     with:
-      environment: 'prod'
-      dir: 'infra/prod/westeurope'
+      environment: "prod"
+      region: westeurope
+      base_path: "infra/resources"
