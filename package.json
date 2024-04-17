@@ -10,7 +10,9 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "code-review": "turbo run typecheck format:check lint test"
+    "code-review": "turbo run typecheck format:check lint:check test",
+    "format": "turbo run format",
+    "lint": "turbo run lint"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

@@ -6,9 +6,25 @@
       "inputs": ["src/**/*.ts"],
       "outputs": ["dist/**"]
     },
-    "lint": {},
-    "test": {},
+    "lint": {
+      "inputs": ["src/**/*.ts"]
+    },
+    "lint:check": {
+      "inputs": ["src/**/*.ts"]
+    },
+    "test": {
+      "dependsOn": ["^test"],
+      "inputs": ["src/**/*.spec.ts"]
+    },
+    "test:coverage": {
+      "dependsOn": ["^test"],
+      "inputs": ["src/**/*.spec.ts"]
+    },
+    "format": {},
     "format:check": {},
-    "typecheck": {}
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
+      "inputs": ["src/**/*.ts"]
+    }
   }
 }

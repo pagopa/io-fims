@@ -35,7 +35,7 @@ const envDecoder = D.struct({
     "http",
     "verbose",
     "debug",
-    "silly",
+    "silly"
   ),
   SERVER_HOSTNAME: D.string,
   PORT: D.string,

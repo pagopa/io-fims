@@ -27,6 +27,8 @@
   "scripts": {
     "build": "tsc",
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
     "generate:schemas": "node generate-schemas.js"
   }
 }
