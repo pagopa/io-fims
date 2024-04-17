@@ -13,14 +13,13 @@ on:
       # Trigger the workflow when resources are modified
       - "infra/resources"
       # Trigger the workflow when the involved workflows are modified
-      - ".github/workflows/pr_infra.yaml"
-      - ".github/workflows/templates/infra_**"
+      - ".github/workflows/infra-plan.yaml"
 
 concurrency:
   group: ${{ github.workflow }}
 
 jobs:
-  code_review:
+  infra_review:
     uses: ./.github/workflows/infra-plan.yaml
     name: PR Prod WestEurope
     secrets: inherit
@@ -28,3 +27,4 @@ jobs:
       environment: "prod"
       region: westeurope
       base_path: "infra/resources"
+      use_private_agent: true
