@@ -14,22 +14,11 @@ module "storage_account_fims" {
   tags = var.tags
 }
 
-data "azurerm_subnet" "private_endpoints_subnet" {
-  name                 = "pendpoints"
-  virtual_network_name = format("%s-vnet-common", var.product)
-  resource_group_name  = format("%s-rg-common", var.product)
-}
-
-data "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
-  name                = "privatelink.queue.core.windows.net"
-  resource_group_name = format("%s-rg-common", var.product)
-}
-
 resource "azurerm_private_endpoint" "queue" {
   name                = format("%s-queue-endpoint", module.storage_account_fims.name)
   location            = var.location
   resource_group_name = var.resource_group_name
-  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+  subnet_id           = var.private_endpoints_subnet_id
 
   private_service_connection {
     name                           = format("%s-queue", module.storage_account_fims.name)
@@ -40,7 +29,7 @@ resource "azurerm_private_endpoint" "queue" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id]
+    private_dns_zone_ids = [var.private_dns_zones.privatelink_queue_core_windows_net.id]
   }
 
   tags = var.tags
