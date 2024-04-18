@@ -14,3 +14,15 @@ variable "location" {
 variable "tags" {
   type = map(any)
 }
+
+variable "private_endpoints_subnet_id" {
+  type = string
+}
+
+variable "private_dns_zones" {
+  type = object({
+    privatelink_queue_core_windows_net = object({
+      id = string
+    })
+  })
+}
