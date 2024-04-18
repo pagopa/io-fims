@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   infra_review:
-    uses: ./.github/workflows/infra-plan.yaml
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@2a6b15a40418406315ae881d3c5c5c1988630ae1
     name: PR Prod WestEurope
     secrets: inherit
     with:
