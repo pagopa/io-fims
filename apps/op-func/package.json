@@ -1,0 +1,27 @@
+{
+  "name": "op-func",
+  "private": true,
+  "main": "dist/main.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsup-node",
+    "build:watch": "tsc -w",
+    "start": "func start",
+    "format": "prettier --write .",
+    "typecheck": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.3.0",
+    "@pagopa/handler-kit": "^1.1.0",
+    "@pagopa/handler-kit-azure-func": "^2.0.3",
+    "fp-ts": "^2.16.5",
+    "tsup": "^8.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.2",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.3",
+    "vitest": "^1.4.0"
+  }
+}

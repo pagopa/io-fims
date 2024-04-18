@@ -17,6 +17,18 @@ module "functions" {
     ]
   }
 
+  op_func = {
+    autoscale_default = 1
+    autoscale_minimum = 1
+    autoscale_maximum = 3
+    app_settings = [
+      {
+        name  = "NODE_ENV",
+        value = "production"
+      }
+    ]
+  }
+
   user_func = {
     autoscale_default = 1
     autoscale_minimum = 1

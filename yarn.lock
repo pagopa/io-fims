@@ -13264,6 +13264,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"op-func@workspace:apps/op-func":
+  version: 0.0.0-use.local
+  resolution: "op-func@workspace:apps/op-func"
+  dependencies:
+    "@azure/functions": "npm:^4.3.0"
+    "@pagopa/handler-kit": "npm:^1.1.0"
+    "@pagopa/handler-kit-azure-func": "npm:^2.0.3"
+    "@types/node": "npm:^20.12.2"
+    fp-ts: "npm:^2.16.5"
+    prettier: "npm:^3.2.5"
+    tsup: "npm:^8.0.2"
+    typescript: "npm:^5.4.3"
+    vitest: "npm:^1.4.0"
+  languageName: unknown
+  linkType: soft
+
 "openapi-schema-validation@npm:^0.4.2":
   version: 0.4.2
   resolution: "openapi-schema-validation@npm:0.4.2"
