@@ -12,11 +12,17 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@azure/cosmos": "^4.0.0",
     "@azure/functions": "^4.3.0",
+    "@azure/identity": "^4.1.0",
     "@pagopa/handler-kit": "^1.1.0",
     "@pagopa/handler-kit-azure-func": "^2.0.3",
+    "@pagopa/logger": "^1.0.1",
     "fp-ts": "^2.16.5",
-    "tsup": "^8.0.2"
+    "io-fims-common": "workspace:^",
+    "io-ts": "^2.2.21",
+    "tsup": "^8.0.2",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.12.2",
