@@ -20,8 +20,8 @@ output "cosmos_fims" {
 
 output "app_service_openid_provider" {
   value = {
-    id   = module.app_services.app_service_opendid_provider.id
-    name = module.app_services.app_service_opendid_provider.name
+    id   = module.web_apps.app_service_opendid_provider.id
+    name = module.web_apps.app_service_opendid_provider.name
   }
 }
 

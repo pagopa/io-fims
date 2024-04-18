@@ -1,17 +1,3 @@
-variable "op_func" {
-  type = object({
-    autoscale_default = number
-    autoscale_minimum = number
-    autoscale_maximum = number
-    app_settings = list(object({
-      name                  = string
-      value                 = optional(string, "")
-      key_vault_secret_name = optional(string)
-    }))
-  })
-  description = "Configuration of the openid-provider func app"
-}
-
 module "op_func" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.72.2"
 
@@ -27,16 +13,7 @@ module "op_func" {
   runtime_version = "~4"
   always_on       = true
 
-
-  app_service_plan_name = "${var.product}-openid-provider-plan"
-
-  app_service_plan_info = {
-    kind                         = "Linux"
-    sku_size                     = "S1"
-    maximum_elastic_worker_count = 0
-    worker_count                 = 1
-    zone_balancing_enabled       = false
-  }
+  app_service_plan_id = module.appservice_openid_provider.plan_id
 
   subnet_id = var.subnet_id
 
