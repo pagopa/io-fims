@@ -9,7 +9,7 @@ module "storage_account_fims" {
   resource_group_name           = var.resource_group_name
   location                      = var.location
   advanced_threat_protection    = true
-  public_network_access_enabled = true
+  public_network_access_enabled = false
 
   tags = var.tags
 }
