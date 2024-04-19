@@ -23,6 +23,15 @@ variable "subnet_id" {
   type = string
 }
 
+variable "cosmos_db" {
+  type = object({
+    endpoint    = string
+    primary_key = string
+  })
+
+  sensitive = true
+}
+
 variable "key_vault_id" {
   type = string
 }
@@ -38,10 +47,10 @@ variable "rp_func" {
       key_vault_secret_name = optional(string)
     }))
   })
-  description = "Configuration of the relying-party func app"
+  description = "Configuration of the rp-func"
 }
 
-variable "user_func" {
+variable "op_func" {
   type = object({
     autoscale_default = number
     autoscale_minimum = number
@@ -52,5 +61,5 @@ variable "user_func" {
       key_vault_secret_name = optional(string)
     }))
   })
-  description = "Configuration of the user func app"
+  description = "Configuration of the op-func"
 }
