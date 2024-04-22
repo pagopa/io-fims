@@ -1,4 +1,4 @@
-name: (PR) GitHub Runner WestEurope
+name: (PR) GitHub Runner
 
 on:
   workflow_dispatch:
@@ -16,9 +16,6 @@ on:
       - ".github/workflows/pr_github_runner.yaml"
       - ".github/workflows/call_code_review_infra.yaml"
       - ".github/workflows/call_release_infra.yaml"
-
-concurrency:
-  group: ${{ github.workflow }}
 
 jobs:
   code_review:
