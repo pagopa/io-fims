@@ -10,7 +10,7 @@ on:
 
 jobs:
   infra_release:
-    uses: pagopa/dx-typescript/.github/workflows/infra_apply.yaml@ref=DEVEX-111-abbiamo-messo-in-sicurezza-le-pipeline-da-injection-attacks
+    uses: pagopa/dx-typescript/.github/workflows/infra_apply.yaml@DEVEX-111-abbiamo-messo-in-sicurezza-le-pipeline-da-injection-attacks
     name: Release Infrastructure
     secrets: inherit
     with:

@@ -13,7 +13,7 @@ on:
 
 jobs:
   infra_review:
-    uses: pagopa/dx-typescript/.github/workflows/infra_plan.yaml@ref=DEVEX-111-abbiamo-messo-in-sicurezza-le-pipeline-da-injection-attacks
+    uses: pagopa/dx-typescript/.github/workflows/infra_plan.yaml@DEVEX-111-abbiamo-messo-in-sicurezza-le-pipeline-da-injection-attacks
     name: PR Prod WestEurope
     secrets: inherit
     with:
