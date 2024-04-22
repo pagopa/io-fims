@@ -1,5 +1,5 @@
 # Step 1 - Compile code
-FROM node:20.12.0-alpine as build
+FROM node:20.12.0-alpine@sha256:ef3f47741e161900ddd07addcaca7e76534a9205e4cd73b2ed091ba339004a75 as build
 
 WORKDIR /app
 
@@ -7,7 +7,7 @@ COPY --chown=node:node . /app
 RUN yarn --frozen-lockfile && yarn run build
 
 # Step 2 - Prepare production image
-FROM node:20.12.0-alpine
+FROM node:20.12.0-alpine@sha256:ef3f47741e161900ddd07addcaca7e76534a9205e4cd73b2ed091ba339004a75
 
 USER node
 WORKDIR /app
