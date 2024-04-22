@@ -1,5 +1,5 @@
 module "container_app_job_selfhosted_runner" {
-  source = "github.com/pagopa/dx-typescript//infra/modules/github_selfhosted_runner_on_container_app_jobs?ref=DEVEX-110-abbiamo-un-modulo-terraform-per-facilitare-la-creazione-di-runner-git-hub-self-hosted"
+  source = "github.com/pagopa/dx//infra/modules/github_selfhosted_runner_on_container_app_jobs?ref=main"
 
   prefix    = local.prefix
   env_short = local.env_short
