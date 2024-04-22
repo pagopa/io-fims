@@ -6,7 +6,7 @@ export class CosmosOIDCClientRepository implements OIDCClientRepository {
   #container: Container;
 
   constructor(db: Database) {
-    this.#container = db.container("oidc-client-configs");
+    this.#container = db.container("clients");
   }
 
   async upsert(client: OIDCClient) {
