@@ -1,0 +1,18 @@
+name: (Release) GitHub Runner WestEurope
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "infra/github-runner/prod/westeurope/**"
+
+jobs:
+  release:
+    uses: ./.github/workflows/call_release_infra.yaml
+    name: Release Prod WestEurope
+    secrets: inherit
+    with:
+      environment: 'prod'
+      dir: 'infra/github-runner/prod/westeurope'

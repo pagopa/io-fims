@@ -1,4 +1,4 @@
-name: (PR) GitHub WestEurope
+name: (PR) GitHub Runner WestEurope
 
 on:
   workflow_dispatch:
