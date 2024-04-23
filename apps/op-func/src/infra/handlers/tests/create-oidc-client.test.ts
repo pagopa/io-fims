@@ -49,7 +49,7 @@ describe("createOIDCClientConfigHandler", () => {
     vi.spyOn(oidcClientRepository, "upsert").mockRejectedValue(undefined);
     const run = createOIDCClientHandler({
       inputDecoder: createOIDCClientInputDecoder,
-      input: [aValidOidcClientConfig],
+      input: aValidOidcClientConfig,
       oidcClientRepository,
       logger,
     });
@@ -66,7 +66,7 @@ describe("createOIDCClientConfigHandler", () => {
     vi.spyOn(oidcClientRepository, "upsert").mockResolvedValue();
     const run = createOIDCClientHandler({
       inputDecoder: createOIDCClientInputDecoder,
-      input: [aValidOidcClientConfig],
+      input: aValidOidcClientConfig,
       oidcClientRepository,
       logger,
     });
