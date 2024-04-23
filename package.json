@@ -10,13 +10,16 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "code-review": "turbo run typecheck format:check lint:check test",
+    "code-review": "turbo run typecheck format:check lint:check //#test:coverage",
     "format": "turbo run format",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^1.5.0",
     "prettier": "3.2.5",
     "turbo": "^1.13.2",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.2",
+    "vitest": "^1.5.0"
   }
 }
