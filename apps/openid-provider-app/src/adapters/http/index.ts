@@ -15,6 +15,11 @@ import * as clients from "./clients/index.js";
 import * as grants from "./grants/index.js";
 import * as info from "./info/index.js";
 
+import * as url from "node:url";
+import * as path from "node:path";
+
+const __dirname = url.fileURLToPath(new URL("..", import.meta.url));
+
 /**
  * This trait defined all the dependencies required by the Application.
  * Because of nodeOidcProvider, we need the services to wrap them into the
@@ -56,11 +61,9 @@ export const makeApplication = ({
   application.use(express.urlencoded());
   // Add a middleware that parse cookies
   application.use(cookies());
-  // Serve static files
-  application.use(express.static("public"));
 
   // Template engine configuration
-  application.set("views", "views");
+  application.set("views", path.resolve(__dirname, "../../views"));
   application.set("view engine", "ejs");
 
   application.use(info.makeRouter(config));
