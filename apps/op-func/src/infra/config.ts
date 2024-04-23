@@ -9,5 +9,6 @@ export const configSchema = z.object({
   cosmos: z.object({
     uri: z.string(),
     name: z.string().min(1),
+    connectionString: z.string().min(1),
   }),
 });

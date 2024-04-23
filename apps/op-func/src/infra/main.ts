@@ -9,7 +9,6 @@ import {
   createOIDCClientHandler,
   createOIDCClientInputDecoder,
 } from "./handlers/create-oidc-client.js";
-import { DefaultAzureCredential } from "@azure/identity";
 import { CosmosClient } from "@azure/cosmos";
 import { CosmosOIDCClientRepository } from "./cosmosdb/oidc-client.js";
 
@@ -19,14 +18,13 @@ const config = configSchema.parse({
   },
   cosmos: {
     uri: process.env.COSMOS_DB_URI,
+    connectionString: process.env.COSMOS_DB_CONNECTION_STRING,
     name: process.env.COSMOS_DB_NAME,
   },
 });
 
-const cosmosClient = new CosmosClient({
-  endpoint: config.cosmos.uri,
-  aadCredentials: new DefaultAzureCredential(),
-});
+// TODO: use DefaultAzureCredential
+const cosmosClient = new CosmosClient(config.cosmos.connectionString);
 
 const database = cosmosClient.database(config.cosmos.name);
 const oidcClientRepository = new CosmosOIDCClientRepository(database);

@@ -1,20 +1,15 @@
 import * as H from "@pagopa/handler-kit";
-import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
-import * as RA from "fp-ts/lib/ReadonlyArray.js";
-import * as z from "zod";
 
 import { pipe } from "fp-ts/lib/function.js";
 import {
   OIDCClientConfig,
   oidcClientConfigSchema,
 } from "io-fims-common/oidc-client-config";
-import { OIDCClient } from "io-fims-common/oidc-client";
 import { createOIDCClient } from "../../oidc-client.js";
 import { IoTsType } from "./validation.js";
+import { OIDCClient } from "io-fims-common/oidc-client";
 
-export const createOIDCClientInputDecoder = IoTsType(
-  z.array(oidcClientConfigSchema)
-);
+export const createOIDCClientInputDecoder = IoTsType(oidcClientConfigSchema);
 
 export const clientConfigToClient = (
   clientConfig: OIDCClientConfig
@@ -27,14 +22,6 @@ export const clientConfigToClient = (
   scope: clientConfig.scopes.join(" "),
 });
 
-type OIDCClientConfigs = ReadonlyArray<OIDCClientConfig>;
-
-export const createOIDCClientHandler = H.of(
-  (clientConfigs: OIDCClientConfigs) =>
-    pipe(
-      clientConfigs,
-      RA.map(clientConfigToClient),
-      RA.map(createOIDCClient),
-      RA.sequence(RTE.ApplicativePar)
-    )
+export const createOIDCClientHandler = H.of((clientConfigs: OIDCClientConfig) =>
+  pipe(clientConfigs, clientConfigToClient, createOIDCClient)
 );
