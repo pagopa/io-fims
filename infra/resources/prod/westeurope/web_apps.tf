@@ -29,6 +29,18 @@ module "web_apps" {
     ]
   }
 
+  user_func = {
+    autoscale_default = 1
+    autoscale_minimum = 1
+    autoscale_maximum = 3
+    app_settings = [
+      {
+        name  = "NODE_ENV",
+        value = "production"
+      }
+    ]
+  }
+
   location            = module.resource_groups.resource_group_fims.location
   project             = local.project
   product             = local.product
