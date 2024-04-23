@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4.1.3
         with:
           fetch-depth: 2
 
@@ -27,7 +27,7 @@ jobs:
         run: corepack enable
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
           node-version-file: ".node-version"
           cache: "yarn"
@@ -36,7 +36,7 @@ jobs:
         run: yarn install --immutable
 
       - name: Cache turbo build setup
-        uses: actions/cache@v3
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
         with:
           path: node_modules/.cache/turbo
           key: ${{ runner.os }}-turbo-${{ github.sha }}
@@ -45,3 +45,6 @@ jobs:
 
       - name: "Code review"
         run: yarn run code-review
+
+      - name: "Upload to codecov.io"
+        uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
