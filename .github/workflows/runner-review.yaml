@@ -1,0 +1,26 @@
+name: (PR) GitHub Runner WestEurope
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "infra/github-runner/**"
+      - ".github/workflows/pr_github_runner.yaml"
+
+jobs:
+  runner_review:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@2a6b15a40418406315ae881d3c5c5c1988630ae1
+    name: PR Prod WestEurope
+    secrets: inherit
+    with:
+      environment: "prod"
+      region: "westeurope"
+      base_path: "infra/github-runner"
