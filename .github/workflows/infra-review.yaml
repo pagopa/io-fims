@@ -10,6 +10,8 @@ on:
       - ready_for_review
     paths:
       - "infra/resources/**"
+      - ".github/workflows/infra-review.yaml"
+      - ".github/workflows/infra-release.yaml"
 
 jobs:
   infra_review:
