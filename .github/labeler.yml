@@ -9,3 +9,7 @@ user:
 relying-party:
   - changed-files:
       - any-glob-to-any-file: ["apps/rp-func/openapi.yaml"]
+
+openid-provider:
+  - changed-files:
+      - any-glob-to-any-file: ["apps/op-func/**", "apps/openid-provider-app/**"]
