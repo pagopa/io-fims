@@ -13,3 +13,7 @@ relying-party:
 openid-provider:
   - changed-files:
       - any-glob-to-any-file: ["apps/op-func/**", "apps/openid-provider-app/**"]
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: ["docs/**", "README.md"]
