@@ -5,3 +5,7 @@ infra:
 user:
   - changed-files:
       - any-glob-to-any-file: ["apps/user-func/openapi.yaml"]
+
+relying-party:
+  - changed-files:
+      - any-glob-to-any-file: ["apps/rp-func/openapi.yaml"]
