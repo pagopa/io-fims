@@ -1,3 +1,7 @@
 infra:
   - changed-files:
-    - any-glob-to-any-file: ['infra/**']
+      - any-glob-to-any-file: ["infra/**"]
+
+user:
+  - changed-files:
+      - any-glob-to-any-file: ["apps/user-func/openapi.yaml"]
