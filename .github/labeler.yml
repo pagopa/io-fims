@@ -4,11 +4,11 @@ infra:
 
 user:
   - changed-files:
-      - any-glob-to-any-file: ["apps/user-func/openapi.yaml"]
+      - any-glob-to-any-file: ["apps/user-func/**"]
 
 relying-party:
   - changed-files:
-      - any-glob-to-any-file: ["apps/rp-func/openapi.yaml"]
+      - any-glob-to-any-file: ["apps/rp-func/**"]
 
 openid-provider:
   - changed-files:
