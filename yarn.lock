@@ -108,6 +108,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/core-client@npm:^1.4.0":
+  version: 1.9.2
+  resolution: "@azure/core-client@npm:1.9.2"
+  dependencies:
+    "@azure/abort-controller": "npm:^2.0.0"
+    "@azure/core-auth": "npm:^1.4.0"
+    "@azure/core-rest-pipeline": "npm:^1.9.1"
+    "@azure/core-tracing": "npm:^1.0.0"
+    "@azure/core-util": "npm:^1.6.1"
+    "@azure/logger": "npm:^1.0.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/4dab1f3b070f7c2c5a8390f81c7afdf31c030ad0599e75e16b9684959fb666cb57d34b63977639a60a7535f63f30a8a708210e8e48ff68a30732b7518044ebce
+  languageName: node
+  linkType: hard
+
 "@azure/core-paging@npm:^1.1.1":
   version: 1.6.1
   resolution: "@azure/core-paging@npm:1.6.1"
@@ -250,12 +265,61 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/identity@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@azure/identity@npm:4.1.0"
+  dependencies:
+    "@azure/abort-controller": "npm:^1.0.0"
+    "@azure/core-auth": "npm:^1.5.0"
+    "@azure/core-client": "npm:^1.4.0"
+    "@azure/core-rest-pipeline": "npm:^1.1.0"
+    "@azure/core-tracing": "npm:^1.0.0"
+    "@azure/core-util": "npm:^1.3.0"
+    "@azure/logger": "npm:^1.0.0"
+    "@azure/msal-browser": "npm:^3.11.1"
+    "@azure/msal-node": "npm:^2.6.6"
+    events: "npm:^3.0.0"
+    jws: "npm:^4.0.0"
+    open: "npm:^8.0.0"
+    stoppable: "npm:^1.1.0"
+    tslib: "npm:^2.2.0"
+  checksum: 10c0/6b8349c334dc76324a1c64f69418ca8b3ef96e5c9f96ddf1ee08e56fdffcffd4828471e0f8620e287675fe210a7c08191f4dad87d62a21678525dcfb89c9e510
+  languageName: node
+  linkType: hard
+
 "@azure/logger@npm:*, @azure/logger@npm:^1.0.0":
   version: 1.1.1
   resolution: "@azure/logger@npm:1.1.1"
   dependencies:
     tslib: "npm:^2.6.2"
   checksum: 10c0/79014d78774b7a24c236a9c83550e9769c39cb6d4469c23ab35998dd1a67fed8fd43c947eb7382cdeab826747fa7fabc686a37e4aee67535cc6ce5e0302c9323
+  languageName: node
+  linkType: hard
+
+"@azure/msal-browser@npm:^3.11.1":
+  version: 3.13.0
+  resolution: "@azure/msal-browser@npm:3.13.0"
+  dependencies:
+    "@azure/msal-common": "npm:14.9.0"
+  checksum: 10c0/093c6f8f42cfdf8376cc6f42fa007c5ec926cf969ac75fb1f65836dbd1e531770ebeaf80e795496bef6ab2903f6c30b1593d7ddbad0320e609b49ad5d18b066e
+  languageName: node
+  linkType: hard
+
+"@azure/msal-common@npm:14.9.0":
+  version: 14.9.0
+  resolution: "@azure/msal-common@npm:14.9.0"
+  checksum: 10c0/534a7f15a3bb87cbdf12a0138465fb1de68fc10c1caee7fcd4a3582dd8fb29fad2d4f3d55e0e1647b9e0afd7eee6de81c6d53cb7f94f43c9ab41909d376f8d80
+  languageName: node
+  linkType: hard
+
+"@azure/msal-node@npm:^2.6.6":
+  version: 2.7.0
+  resolution: "@azure/msal-node@npm:2.7.0"
+  dependencies:
+    "@azure/msal-common": "npm:14.9.0"
+    jsonwebtoken: "npm:^9.0.0"
+    uuid: "npm:^8.3.0"
+  checksum: 10c0/8448b50dc4bf64aa9b42aa32d32cbbd6edc07bab2f470f5ebf69d5b9580718f1354c3e81ead9c315a37082e65f9b6cf297de1d7e3b11816e890c2848dcdc83a3
   languageName: node
   linkType: hard
 
@@ -5994,6 +6058,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"define-lazy-prop@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "define-lazy-prop@npm:2.0.0"
+  checksum: 10c0/db6c63864a9d3b7dc9def55d52764968a5af296de87c1b2cc71d8be8142e445208071953649e0386a8cc37cfcf9a2067a47207f1eb9ff250c2a269658fdae422
+  languageName: node
+  linkType: hard
+
 "define-properties@npm:^1.1.3, define-properties@npm:^1.2.0, define-properties@npm:^1.2.1":
   version: 1.2.1
   resolution: "define-properties@npm:1.2.1"
@@ -7414,6 +7485,13 @@ __metadata:
   version: 5.0.1
   resolution: "event-target-shim@npm:5.0.1"
   checksum: 10c0/0255d9f936215fd206156fd4caa9e8d35e62075d720dc7d847e89b417e5e62cf1ce6c9b4e0a1633a9256de0efefaf9f8d26924b1f3c8620cffb9db78e7d3076b
+  languageName: node
+  linkType: hard
+
+"events@npm:^3.0.0":
+  version: 3.3.0
+  resolution: "events@npm:3.3.0"
+  checksum: 10c0/d6b6f2adbccbcda74ddbab52ed07db727ef52e31a61ed26db9feb7dc62af7fc8e060defa65e5f8af9449b86b52cc1a1f6a79f2eafcf4e62add2b7a1fa4a432f6
   languageName: node
   linkType: hard
 
@@ -9624,6 +9702,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-docker@npm:^2.0.0, is-docker@npm:^2.1.1":
+  version: 2.2.1
+  resolution: "is-docker@npm:2.2.1"
+  bin:
+    is-docker: cli.js
+  checksum: 10c0/e828365958d155f90c409cdbe958f64051d99e8aedc2c8c4cd7c89dcf35329daed42f7b99346f7828df013e27deb8f721cf9408ba878c76eb9e8290235fbcdcc
+  languageName: node
+  linkType: hard
+
 "is-extendable@npm:^0.1.0, is-extendable@npm:^0.1.1":
   version: 0.1.1
   resolution: "is-extendable@npm:0.1.1"
@@ -9990,6 +10077,15 @@ __metadata:
   version: 1.0.4
   resolution: "is-word-character@npm:1.0.4"
   checksum: 10c0/2247844064532986dc70869d961dccd1366932a147b52d4ec7f567f87edf7f9855a27b75f66b781db3b3175bbe05a76acbc6392a1a5c64c4c99fe3459dae33bd
+  languageName: node
+  linkType: hard
+
+"is-wsl@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "is-wsl@npm:2.2.0"
+  dependencies:
+    is-docker: "npm:^2.0.0"
+  checksum: 10c0/a6fa2d370d21be487c0165c7a440d567274fbba1a817f2f0bfa41cc5e3af25041d84267baa22df66696956038a43973e72fca117918c91431920bdef490fa25e
   languageName: node
   linkType: hard
 
@@ -10994,7 +11090,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:^9.0.1":
+"jsonwebtoken@npm:^9.0.0, jsonwebtoken@npm:^9.0.1":
   version: 9.0.2
   resolution: "jsonwebtoken@npm:9.0.2"
   dependencies:
@@ -11080,6 +11176,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jwa@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "jwa@npm:2.0.0"
+  dependencies:
+    buffer-equal-constant-time: "npm:1.0.1"
+    ecdsa-sig-formatter: "npm:1.0.11"
+    safe-buffer: "npm:^5.0.1"
+  checksum: 10c0/6baab823b93c038ba1d2a9e531984dcadbc04e9eb98d171f4901b7a40d2be15961a359335de1671d78cb6d987f07cbe5d350d8143255977a889160c4d90fcc3c
+  languageName: node
+  linkType: hard
+
 "jws@npm:^3.2.2":
   version: 3.2.2
   resolution: "jws@npm:3.2.2"
@@ -11087,6 +11194,16 @@ __metadata:
     jwa: "npm:^1.4.1"
     safe-buffer: "npm:^5.0.1"
   checksum: 10c0/e770704533d92df358adad7d1261fdecad4d7b66fa153ba80d047e03ca0f1f73007ce5ed3fbc04d2eba09ba6e7e6e645f351e08e5ab51614df1b0aa4f384dfff
+  languageName: node
+  linkType: hard
+
+"jws@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "jws@npm:4.0.0"
+  dependencies:
+    jwa: "npm:^2.0.0"
+    safe-buffer: "npm:^5.0.1"
+  checksum: 10c0/f1ca77ea5451e8dc5ee219cb7053b8a4f1254a79cb22417a2e1043c1eb8a569ae118c68f24d72a589e8a3dd1824697f47d6bd4fb4bebb93a3bdf53545e721661
   languageName: node
   linkType: hard
 
@@ -13280,6 +13397,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"open@npm:^8.0.0":
+  version: 8.4.2
+  resolution: "open@npm:8.4.2"
+  dependencies:
+    define-lazy-prop: "npm:^2.0.0"
+    is-docker: "npm:^2.1.1"
+    is-wsl: "npm:^2.2.0"
+  checksum: 10c0/bb6b3a58401dacdb0aad14360626faf3fb7fba4b77816b373495988b724fb48941cad80c1b65d62bb31a17609b2cd91c41a181602caea597ca80dfbcc27e84c9
+  languageName: node
+  linkType: hard
+
 "openapi-schema-validation@npm:^0.4.2":
   version: 0.4.2
   resolution: "openapi-schema-validation@npm:0.4.2"
@@ -13368,6 +13496,7 @@ __metadata:
   dependencies:
     "@azure/cosmos": "npm:^4.0.0"
     "@azure/functions": "npm:^3.2.0"
+    "@azure/identity": "npm:^4.1.0"
     "@pagopa/io-functions-commons": "npm:^29.0.0"
     "@pagopa/openapi-codegen-ts": "npm:^10.0.6"
     "@pagopa/ts-commons": "npm:^10.2.1"
@@ -15172,6 +15301,7 @@ __metadata:
   dependencies:
     "@azure/cosmos": "npm:^4.0.0"
     "@azure/functions": "npm:^4.3.0"
+    "@azure/identity": "npm:^4.1.0"
     "@pagopa/handler-kit": "npm:^1.1.0"
     "@pagopa/handler-kit-azure-func": "npm:^2.0.3"
     "@pagopa/logger": "npm:^1.0.1"
@@ -15950,6 +16080,13 @@ __metadata:
   version: 3.7.0
   resolution: "std-env@npm:3.7.0"
   checksum: 10c0/60edf2d130a4feb7002974af3d5a5f3343558d1ccf8d9b9934d225c638606884db4a20d2fe6440a09605bca282af6b042ae8070a10490c0800d69e82e478f41e
+  languageName: node
+  linkType: hard
+
+"stoppable@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "stoppable@npm:1.1.0"
+  checksum: 10c0/ba91b65e6442bf6f01ce837a727ece597a977ed92a05cb9aea6bf446c5e0dcbccc28f31b793afa8aedd8f34baaf3335398d35f903938d5493f7fbe386a1e090e
   languageName: node
   linkType: hard
 
