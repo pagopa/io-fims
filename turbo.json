@@ -2,7 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "^typecheck"],
       "inputs": ["src/**/*.ts"],
       "outputs": ["dist/**"],
       "outputMode": "errors-only"
@@ -32,7 +32,7 @@
       "outputMode": "errors-only"
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"],
+      "dependsOn": ["^build"],
       "inputs": ["src/**/*.ts"],
       "outputMode": "errors-only"
     },
