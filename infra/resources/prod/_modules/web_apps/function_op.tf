@@ -1,3 +1,9 @@
+resource "azurerm_role_assignment" "op_func_cosmos_query" {
+  scope              = var.cosmos_account_id
+  role_definition_id = var.cosmos_query_role_definition_id
+  principal_id       = module.op_func.system_identity_principal
+}
+
 module "op_func" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.72.2"
 
