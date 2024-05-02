@@ -17,7 +17,6 @@ No providers.
 |------|--------|---------|
 | <a name="module_apim"></a> [apim](#module\_apim) | ../_modules/apim | n/a |
 | <a name="module_cosmos"></a> [cosmos](#module\_cosmos) | ../_modules/cosmos | n/a |
-| <a name="module_custom_roles"></a> [custom\_roles](#module\_custom\_roles) | ../_modules/custom_roles/ | n/a |
 | <a name="module_key_vaults"></a> [key\_vaults](#module\_key\_vaults) | ../_modules/key_vaults | n/a |
 | <a name="module_networking"></a> [networking](#module\_networking) | ../_modules/networking | n/a |
 | <a name="module_resource_groups"></a> [resource\_groups](#module\_resource\_groups) | ../_modules/resource_groups | n/a |
