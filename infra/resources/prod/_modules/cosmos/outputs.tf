@@ -28,5 +28,5 @@ output "cosmos_account_fims_id" {
 
 output "cosmos_query_role_definition_id" {
   value     = resource.azurerm_role_definition.cosmos_query.role_definition_id
-  sensitive = true
+  sensitive = false
 }
