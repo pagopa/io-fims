@@ -39,6 +39,12 @@ module "appservice_openid_provider" {
   tags = var.tags
 }
 
+resource "azurerm_role_assignment" "app_service_staging_op_cosmos_query" {
+  scope              = var.cosmos_account_id
+  role_definition_id = var.cosmos_query_role_definition_id
+  principal_id       = module.appservice_openid_provider_staging.id
+}
+
 module "appservice_openid_provider_staging" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v7.67.1"
 

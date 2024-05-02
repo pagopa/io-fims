@@ -45,6 +45,12 @@ resource "azurerm_key_vault_access_policy" "relying_party_func_key_vault_access_
   certificate_permissions = []
 }
 
+resource "azurerm_role_assignment" "rp_func_staging_cosmos_query" {
+  scope              = var.cosmos_account_id
+  role_definition_id = var.cosmos_query_role_definition_id
+  principal_id       = module.relying_party_func_staging_slot.id
+}
+
 module "relying_party_func_staging_slot" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.72.2"
 
