@@ -1,7 +1,7 @@
 resource "azurerm_role_assignment" "rp_func_cosmos_query" {
   scope              = var.cosmos_account_id
   role_definition_id = var.cosmos_query_role_definition_id
-  principal_id       = module.relying_party_func.id
+  principal_id       = module.relying_party_func.system_identity_principal
 }
 
 module "relying_party_func" {
@@ -48,7 +48,7 @@ resource "azurerm_key_vault_access_policy" "relying_party_func_key_vault_access_
 resource "azurerm_role_assignment" "rp_func_staging_cosmos_query" {
   scope              = var.cosmos_account_id
   role_definition_id = var.cosmos_query_role_definition_id
-  principal_id       = module.relying_party_func_staging_slot.id
+  principal_id       = module.relying_party_func_staging_slot.system_identity_principal
 }
 
 module "relying_party_func_staging_slot" {
