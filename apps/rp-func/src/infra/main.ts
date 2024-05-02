@@ -19,7 +19,10 @@ const config = configSchema.parse({
   },
 });
 
-const cosmosClient = new CosmosClient({ aadCredentials: new DefaultAzureCredential(), endpoint: config.cosmos.endpoint });
+const cosmosClient = new CosmosClient({
+  aadCredentials: new DefaultAzureCredential(),
+  endpoint: config.cosmos.endpoint,
+});
 
 const database = cosmosClient.database(config.cosmos.databaseName);
 

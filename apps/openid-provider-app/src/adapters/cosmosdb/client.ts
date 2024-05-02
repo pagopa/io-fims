@@ -17,7 +17,10 @@ export const makeCosmosDbClient = (
   config: CosmosDBConfig,
   logger: Logger,
 ): TE.TaskEither<string, Database> => {
-  const cosmosdbClient = new CosmosClient({ aadCredentials: new DefaultAzureCredential(), endpoint: config.endpoint });
+  const cosmosdbClient = new CosmosClient({
+    aadCredentials: new DefaultAzureCredential(),
+    endpoint: config.endpoint,
+  });
   const instance = cosmosdbClient.database(config.cosmosDbName);
   return pipe(
     E.tryCatch(() => {
