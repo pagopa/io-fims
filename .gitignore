@@ -19,12 +19,14 @@ override.tf.json
 !.yarn/sdks
 !.yarn/versions
 
-#azure
-**/local.settings.json
+# azure
+local.settings.json
 
 dist
 .env
 node_modules
 .turbo
 
+# vitest
 coverage
+vite.config.*.timestamp-*
