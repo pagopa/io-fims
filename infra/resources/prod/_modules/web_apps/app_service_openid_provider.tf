@@ -42,7 +42,7 @@ module "appservice_openid_provider" {
 resource "azurerm_role_assignment" "app_service_staging_op_cosmos_query" {
   scope              = var.cosmos_account_id
   role_definition_id = var.cosmos_query_role_definition_id
-  principal_id       = module.appservice_openid_provider_staging.id
+  principal_id       = module.appservice_openid_provider_staging.principal_id
 }
 
 module "appservice_openid_provider_staging" {
