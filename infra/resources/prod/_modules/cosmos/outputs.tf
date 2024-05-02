@@ -20,3 +20,13 @@ output "cosmos_account_fims_primary_key" {
   value     = module.cosmosdb_account_fims.primary_key
   sensitive = true
 }
+
+output "cosmos_account_fims_id" {
+  value     = module.cosmosdb_account_fims.id
+  sensitive = true
+}
+
+output "cosmos_query_role_definition_id" {
+  value     = resource.azurerm_role_definition.cosmos_query.role_definition_id
+  sensitive = true
+}

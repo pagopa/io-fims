@@ -1,6 +1,9 @@
 module "web_apps" {
   source = "../_modules/web_apps"
 
+  cosmos_account_id               = module.cosmos.cosmos_account_fims_id
+  cosmos_query_role_definition_id = module.cosmos.cosmos_query_role_definition_id
+
   rp_func = {
     autoscale_default = 1
     autoscale_minimum = 1
