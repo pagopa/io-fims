@@ -32,6 +32,14 @@ variable "cosmos_db" {
   sensitive = true
 }
 
+variable "cosmos_account_id" {
+  type = string
+}
+
+variable "cosmos_query_role_definition_id" {
+  type = string
+}
+
 variable "key_vault_id" {
   type = string
 }

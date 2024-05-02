@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const configSchema = z.object({
   cosmos: z.object({
-    connectionString: z.string().min(1),
+    endpoint: z.string().url(),
     databaseName: z.string().default("rp"),
   }),
 });

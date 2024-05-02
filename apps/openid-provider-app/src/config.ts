@@ -33,7 +33,7 @@ const EnvType = t.type({
   APPLICATION_NAME: NonEmptyString,
   AUTHENTICATION_COOKIE_KEY: NonEmptyString,
   COOKIES_KEY: t.string,
-  COSMOSDB_CONNECTION_STRING: NonEmptyString,
+  COSMOSDB_URI: NonEmptyString,
   COSMOSDB_NAME: NonEmptyString,
   ENABLE_FEATURE_REMEMBER_GRANT: tt.fromNullable(tt.BooleanFromString, false),
   ENABLE_PROXY: tt.fromNullable(tt.BooleanFromString, false),
@@ -63,7 +63,7 @@ const makeConfig = (envs: EnvType): Config => ({
     baseURL: new URL(envs.IO_BACKEND_BASE_URL.href),
   },
   cosmosdb: {
-    connectionString: envs.COSMOSDB_CONNECTION_STRING,
+    endpoint: envs.COSMOSDB_URI,
     cosmosDbName: envs.COSMOSDB_NAME,
   },
   features: {

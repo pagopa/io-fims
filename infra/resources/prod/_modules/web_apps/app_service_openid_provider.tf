@@ -1,3 +1,9 @@
+resource "azurerm_role_assignment" "app_service_op_cosmos_query" {
+  scope              = var.cosmos_account_id
+  role_definition_id = var.cosmos_query_role_definition_id
+  principal_id       = module.appservice_openid_provider.principal_id
+}
+
 module "appservice_openid_provider" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v7.67.1"
 
@@ -31,6 +37,12 @@ module "appservice_openid_provider" {
   vnet_integration = true
 
   tags = var.tags
+}
+
+resource "azurerm_role_assignment" "app_service_staging_op_cosmos_query" {
+  scope              = var.cosmos_account_id
+  role_definition_id = var.cosmos_query_role_definition_id
+  principal_id       = module.appservice_openid_provider_staging.principal_id
 }
 
 module "appservice_openid_provider_staging" {

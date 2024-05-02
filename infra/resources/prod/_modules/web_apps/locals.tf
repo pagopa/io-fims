@@ -38,7 +38,6 @@ locals {
       COSMOSDB_NAME                   = "fims"
       COSMOSDB_URI                    = var.cosmos_db.endpoint
       COSMOSDB_KEY                    = var.cosmos_db.primary_key
-      COSMOSDB_CONNECTION_STRING      = format("AccountEndpoint=%s;AccountKey=%s;", var.cosmos_db.endpoint, var.cosmos_db.primary_key)
       AUTHENTICATION_COOKIE_KEY       = "X-IO-FIMS-Token"
       GRANT_TTL_IN_SECONDS            = "86400"
       ISSUER                          = "https://io-p-fims-oidc-provider-app.azurewebsites.net"

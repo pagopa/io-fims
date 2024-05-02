@@ -9,7 +9,7 @@ const jwk = jose2.JWK.generateSync("EC", "P-256", { use: "sig" }).toJWK(true);
 export const envs = {
   IO_BACKEND_BASE_URL: "https://app-backend.io.italia.it",
   COSMOSDB_NAME: "fims",
-  COSMOSDB_CONNECTION_STRING:
+  COSMOSDB_URI:
     "AccountEndpoint=https://unit-test-account.documents.azure.com:443/;AccountKey=key;",
   ENABLE_FEATURE_REMEMBER_GRANT: "true",
   APPLICATION_NAME: "io-openid-provider.test",
@@ -30,14 +30,14 @@ export const config: Config = {
     baseURL: new URL(envs["IO_BACKEND_BASE_URL"] as string),
   },
   cosmosdb: {
-    cosmosDbName: envs["COSMOSDB_NAME"],
-    connectionString: envs["COSMOSDB_CONNECTION_STRING"],
+    cosmosDbName: envs["COSMOSDB_NAME"]!,
+    endpoint: envs["COSMOSDB_URI"]!,
   },
   features: {
     grant: {
       enableRememberGrantFeature:
         envs["ENABLE_FEATURE_REMEMBER_GRANT"] === "true",
-      grantTTL: parseInt(envs["GRANT_TTL_IN_SECONDS"]) as Seconds,
+      grantTTL: parseInt(envs["GRANT_TTL_IN_SECONDS"]!) as Seconds,
     },
   },
   info: {

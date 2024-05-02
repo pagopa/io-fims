@@ -1,4 +1,4 @@
 export interface CosmosDBConfig {
-  readonly connectionString: string;
+  readonly endpoint: string;
   readonly cosmosDbName: string;
 }
