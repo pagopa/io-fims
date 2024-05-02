@@ -6610,6 +6610,7 @@ __metadata:
   dependencies:
     "@azure/cosmos": "npm:^4.0.0"
     "@azure/functions": "npm:^3.2.0"
+    "@azure/identity": "npm:^4.1.0"
     "@pagopa/io-functions-commons": "npm:^29.0.0"
     "@pagopa/openapi-codegen-ts": "npm:^10.0.6"
     "@pagopa/ts-commons": "npm:^10.2.1"
@@ -7456,6 +7457,7 @@ __metadata:
   dependencies:
     "@azure/cosmos": "npm:^4.0.0"
     "@azure/functions": "npm:^4.3.0"
+    "@azure/identity": "npm:^4.1.0"
     "@pagopa/handler-kit": "npm:^1.1.0"
     "@pagopa/handler-kit-azure-func": "npm:^2.0.3"
     "@pagopa/logger": "npm:^1.0.1"
