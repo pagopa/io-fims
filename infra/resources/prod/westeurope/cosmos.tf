@@ -5,7 +5,6 @@ module "cosmos" {
   project             = local.project
   product             = local.product
   resource_group_name = module.resource_groups.resource_group_fims.name
-  resource_group_id   = module.resource_groups.resource_group_fims.id
 
   tags = local.tags
 }

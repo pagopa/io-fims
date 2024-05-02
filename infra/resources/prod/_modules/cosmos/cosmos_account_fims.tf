@@ -1,6 +1,6 @@
 resource "azurerm_role_definition" "cosmos_query" {
   name        = "CosmosDB Data Operator"
-  scope       = var.resource_group_id
+  scope       = module.cosmosdb_account_fims.id
   description = "Can query CosmosDB containers"
 
   permissions {
@@ -8,7 +8,7 @@ resource "azurerm_role_definition" "cosmos_query" {
   }
 
   assignable_scopes = [
-    var.resource_group_id
+    module.cosmosdb_account_fims.id
   ]
 }
 
