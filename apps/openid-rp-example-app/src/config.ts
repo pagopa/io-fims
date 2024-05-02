@@ -1,7 +1,7 @@
 import * as E from "fp-ts/Either";
 import * as D from "io-ts/Decoder";
 import { NonEmptyString } from "@pagopa/ts-commons/lib/strings.js";
-import * as packageJson from "../package.json";
+import * as packageJson from "../package.json" assert { type: "json" };
 import * as logger from "./logger/index.js";
 import { ClientConfig } from "./oidc/client-utils.js";
 import { booleanDecoder } from "./utils/decoders.js";

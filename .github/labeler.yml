@@ -1,3 +1,23 @@
 infra:
   - changed-files:
-    - any-glob-to-any-file: ['infra/**']
+      - any-glob-to-any-file: ["infra/**"]
+
+user:
+  - changed-files:
+      - any-glob-to-any-file: ["apps/user-func/**"]
+
+relying-party:
+  - changed-files:
+      - any-glob-to-any-file: ["apps/rp-func/**"]
+
+openid-provider:
+  - changed-files:
+      - any-glob-to-any-file: ["apps/op-func/**", "apps/openid-provider-app/**"]
+
+external-interface-changes:
+  - changed-files:
+      - any-glob-to-any-file: ["apps/**/openapi.yaml", "apps/**/asyncapi.yaml"]
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: ["docs/**", "README.md"]

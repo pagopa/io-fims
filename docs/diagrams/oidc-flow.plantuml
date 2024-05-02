@@ -1,4 +1,7 @@
 @startuml oidc-flow
+
+title Flusso OIDC
+
 autonumber
 
 actor Cittadino as cit
@@ -8,6 +11,7 @@ participant "In-App Browser" as inappbrowser
 participant "OpenID Provider (OP)" as op
 participant "io-backend" as be
 participant "Relying Party (RP)" as rp
+participant "Assertion Provider\n(Resource Server)" as rs
 
 cit->app: Clicca CTA su Messaggio
 
@@ -23,7 +27,7 @@ app->httpclient: Crea
 activate httpclient
 
 httpclient->rp: HTTP GET RP
-httpclient<--rp: HTTP 302\nHost: openid-provider.io.pagopa.it \nLocation: /oauth/authorize?...\nx-pagopa-lollipop-nonce: ...
+httpclient<--rp: HTTP 302\nHost: oidc.io.pagopa.it \nLocation: /oauth/authorize?response_type=**code**\n&client_id=**IO SERVICE_ID**&scope=**openid profile lollipop**\n&redirect_uri=**REDIRECTION_URI**&state=**STATE**&nonce=**NONCE**
 
 app<--httpclient: HTTP MESSAGE
 deactivate httpclient
@@ -40,13 +44,25 @@ activate httpclient
 httpclient->op: HTTP GET /oauth/authorize?...
 activate op
 
-op->be: Get User Identity
-op<--be: User Identity
+op->be: Richiede User Identity
+
+note left
+il flusso prevede due claim, **profile** e **lollipop**,
+con **profile** si intende anagrafica utente
+con **lollipop** PublicKey, AssertionRef
+
+contestualmente OP conserva anche JWT per scaricare
+assertion (da usare in un secondo momento)
+end note
+
+op<--be: Restituisce User Identity
+
+op->op: Crea sessione utente
 
 httpclient<--op: HTTP 303 Redirect /oauth/authorize/:id
 
 note left
-User Identity ottenuta,
+Dati utente ottenuti,
 ma è necessario chiedere
 il consenso al trasferimento
 dei dati
@@ -84,52 +100,83 @@ activate httpclient
 
 httpclient->op: HTTP GET /interactions/:id/confirm
 
-op->be: Get User Identity
-op<--be: User Identity
-
-op->op: Costruisce ID TOKEN\n con User Identity
+op->op: Costruisce **AUTHORIZATION_CODE**
 
 httpclient<--op: HTTP 303 Redirect /oauth/authorize/:id
 
 httpclient->op: HTTP GET /oauth/authorize/:id
-httpclient<--op: HTTP 200 /oauth/authorize/:id
+httpclient<--op: HTTP 303 /oauth/authorize/:id
 
 deactivate op
 
 note right
-OP restituisce una pagina HTML
-contenente ID TOKEN e un form
-con un autosubmit JavaScript verso
-redirection_uri di RP
+La risposta di OP contiene un redirect verso
+**REDIRECTION_URI** con **AUTHORIZATION_CODE**, **STATE**
+e **NONCE** come query parameters
 end note
 
 app<--httpclient: HTTP MESSAGE
 deactivate httpclient
 
 note left
-La pagina HTML con ID TOKEN
-ha un contenuto standard
-descritto nella specifica
-di OpenID Connect
+HTTP MESSAGE contiene una
+"Successful Authentication Response"
+con redirect verso RP
 end note
 
-app->app: Ottiene ID TOKEN da HTML
-
 == START LOLLIPOP ==
+
+app->app: Firma **CODE** e **NONCE** con PrivateKey
 
 app->httpclient: Crea
 activate httpclient
 
-httpclient->be: HTTP POST verso Redirection URI con ID TOKEN (Proxy BE)
-activate be
+httpclient->rp: Inoltra la "Successful Authentication Response" con **AUTHORIZATION_CODE**
 
-be->rp: HTTP POST\nCon LOLLIPOP
-rp->rp: Usa ID TOKEN\nper autenticare utente
+note right
+La richiesta HTTP inoltrata contiene
+gli header Signature-Input e Signature
+end note
 
-be<--rp: HTTP 302 Redirect
+rp->op: POST Token Request
+activate op
 
-httpclient<--be: HTTP 200
-deactivate be
+note left
+RP consuma il suo
+**AUTHORIZATION_CODE**
+end note
+
+rp<--op: Restituisce **ID_TOKEN** e **ACCESS_TOKEN**
+deactivate op
+
+rp->rp: Ottiene AssertionRef\nda **ID_TOKEN**
+
+rp->rs: GetAssertion
+activate rs
+
+note left
+**ACCESS_TOKEN** consente a RP di
+essere autorizzato a contattare AssertionProvider
+end note
+
+rs-->rp: Restituisce Assertion
+deactivate rs
+
+note left
+RP adesso ha tutto il necessario
+per effettuare verifica Lollipop
+end note
+
+rp->rp: Verifica firma dell'assertion\ntramite chiave IDP
+rp->rp: Verifica periodo di validità\n dell'assertion
+rp->rp: Verifica che Thumbprint di AssertionRef\ncorrisponda a quella di chiave pubblica
+rp->rp: Confronta AssertionRef con\n InResponseTo di Assertion
+rp->rp: Confronta sub di **ID_TOKEN**\n e fiscalNumber di Assertion
+rp->rp: Usa chiave pubblica per verificare firma di\n**AUTHORIZATION_CODE** e **NONCE**
+
+rp->rp: Autentica utente
+
+httpclient<--rp: HTTP 302 Redirect
 
 app<--httpclient: HTTP MESSAGE
 deactivate httpclient

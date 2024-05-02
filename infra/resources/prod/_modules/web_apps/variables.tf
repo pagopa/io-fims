@@ -63,3 +63,17 @@ variable "op_func" {
   })
   description = "Configuration of the op-func"
 }
+
+variable "user_func" {
+  type = object({
+    autoscale_default = number
+    autoscale_minimum = number
+    autoscale_maximum = number
+    app_settings = list(object({
+      name                  = string
+      value                 = optional(string, "")
+      key_vault_secret_name = optional(string)
+    }))
+  })
+  description = "Configuration of the user-func"
+}

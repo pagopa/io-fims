@@ -7,9 +7,11 @@
     "build": "tsup-node",
     "build:watch": "tsc -w",
     "start": "func start",
-    "format": "prettier --write .",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
     "typecheck": "tsc",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
+    "test:coverage": "vitest run --coverage --passWithNoTests",
     "generate:openapi-schema": "openapi-zod-client openapi.yaml -o src/infra/openapi.ts"
   },
   "dependencies": {
@@ -28,9 +30,10 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.2",
+    "@vitest/coverage-v8": "^1.5.0",
     "openapi-zod-client": "^1.16.4",
     "prettier": "^3.2.5",
     "typescript": "^5.4.3",
-    "vitest": "^1.4.0"
+    "vitest": "^1.5.0"
   }
 }

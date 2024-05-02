@@ -23,3 +23,5 @@ dist
 .env
 node_modules
 .turbo
+
+coverage
