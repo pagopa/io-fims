@@ -19,6 +19,9 @@ override.tf.json
 !.yarn/sdks
 !.yarn/versions
 
+#azure
+**/local.settings.json
+
 dist
 .env
 node_modules
