@@ -6,7 +6,7 @@ import { LogLevel } from "../adapters/winston/index.js";
 
 const jwk = jose2.JWK.generateSync("EC", "P-256", { use: "sig" }).toJWK(true);
 
-export const envs: NodeJS.ProcessEnv = {
+export const envs = {
   IO_BACKEND_BASE_URL: "https://app-backend.io.italia.it",
   COSMOSDB_NAME: "fims",
   COSMOSDB_URI:
