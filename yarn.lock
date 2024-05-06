@@ -1325,6 +1325,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pagopa/handler-kit-azure-func@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "@pagopa/handler-kit-azure-func@npm:2.0.4"
+  dependencies:
+    "@azure/functions": "npm:^4.0.1"
+    "@pagopa/handler-kit": "npm:^1.0.1"
+    "@pagopa/logger": "npm:^1.0.1"
+    fp-ts: "npm:^2.13.1"
+    io-ts: "npm:^2.2.20"
+  checksum: 10c0/440de4a81881c254be277a1d4e5ef109987ea0334b35bc809c16a44c4d6af3051ee4f67e66d427fc8acbe233d762a020165eeedf19a906bfb6446b8174c757f8
+  languageName: node
+  linkType: hard
+
 "@pagopa/handler-kit@npm:^1.0.1, @pagopa/handler-kit@npm:^1.1.0":
   version: 1.1.0
   resolution: "@pagopa/handler-kit@npm:1.1.0"
@@ -4873,7 +4886,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"io-ts@npm:^2.2.16, io-ts@npm:^2.2.20":
+"io-ts@npm:^2.2.16, io-ts@npm:^2.2.20, io-ts@npm:^2.2.21":
   version: 2.2.21
   resolution: "io-ts@npm:2.2.21"
   peerDependencies:
@@ -6488,16 +6501,22 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "op-func@workspace:apps/op-func"
   dependencies:
+    "@azure/cosmos": "npm:^4.0.0"
     "@azure/functions": "npm:^4.3.0"
+    "@azure/identity": "npm:^4.1.0"
     "@pagopa/handler-kit": "npm:^1.1.0"
-    "@pagopa/handler-kit-azure-func": "npm:^2.0.3"
+    "@pagopa/handler-kit-azure-func": "npm:^2.0.4"
+    "@pagopa/logger": "npm:^1.0.1"
     "@types/node": "npm:^20.12.2"
     "@vitest/coverage-v8": "npm:^1.5.0"
     fp-ts: "npm:^2.16.5"
+    io-fims-common: "workspace:^"
+    io-ts: "npm:^2.2.21"
     prettier: "npm:^3.2.5"
     tsup: "npm:^8.0.2"
     typescript: "npm:^5.4.3"
     vitest: "npm:^1.5.0"
+    zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
 
