@@ -33,6 +33,14 @@ resource "azurerm_key_vault_access_policy" "openid_provider_func_key_vault_acces
   certificate_permissions = []
 }
 
+resource "azurerm_cosmosdb_sql_role_assignment" "op_func_sql_role" {
+  resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.fims.name
+  role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
+  principal_id        = module.op_func.system_identity_principal
+  scope               = data.azurerm_cosmosdb_account.fims.id
+}
+
 module "op_func_staging_slot" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.72.2"
 

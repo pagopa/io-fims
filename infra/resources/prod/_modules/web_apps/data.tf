@@ -47,4 +47,9 @@ data "azurerm_key_vault_secret" "jwk_primary_key_fims" {
   key_vault_id = var.key_vault_id
 }
 
+data "azurerm_cosmosdb_account" "fims" {
+  name                = var.cosmosdb_account.name
+  resource_group_name = var.cosmosdb_account.resource_group_name
+}
+
 data "azurerm_client_config" "current" {}

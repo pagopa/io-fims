@@ -23,21 +23,11 @@ variable "subnet_id" {
   type = string
 }
 
-variable "cosmos_db" {
+variable "cosmosdb_account" {
   type = object({
-    endpoint    = string
-    primary_key = string
+    name                = string
+    resource_group_name = string
   })
-
-  sensitive = true
-}
-
-variable "cosmos_account_id" {
-  type = string
-}
-
-variable "cosmos_query_role_definition_id" {
-  type = string
 }
 
 variable "key_vault_id" {
