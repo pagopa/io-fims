@@ -13,9 +13,6 @@ module "op_func" {
   runtime_version = "~4"
   always_on       = true
 
-
-  app_service_plan_name = "${var.product}-openid-provider-plan"
-
   app_service_plan_info = {
     kind                         = "Linux"
     sku_size                     = "S1"
