@@ -13,13 +13,6 @@ module "op_func" {
   runtime_version = "~4"
   always_on       = true
 
-  app_service_plan_info = {
-    kind                         = "Linux"
-    sku_size                     = "S1"
-    maximum_elastic_worker_count = 0
-    worker_count                 = 1
-    zone_balancing_enabled       = false
-  }
   app_service_plan_id = module.appservice_openid_provider.plan_id
 
   subnet_id = var.subnet_id
