@@ -36,8 +36,7 @@ locals {
       IO_BACKEND_BASE_URL             = "https://api-app.io.pagopa.it"
       VERSION                         = "0.0.1"
       COSMOSDB_NAME                   = "fims"
-      COSMOSDB_URI                    = var.cosmos_db.endpoint
-      COSMOSDB_KEY                    = var.cosmos_db.primary_key
+      COSMOSDB_URI                    = data.azurerm_cosmosdb_account.fims.endpoint
       AUTHENTICATION_COOKIE_KEY       = "X-IO-FIMS-Token"
       GRANT_TTL_IN_SECONDS            = "86400"
       ISSUER                          = "https://io-p-fims-oidc-provider-app.azurewebsites.net"

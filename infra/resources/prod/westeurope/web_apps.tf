@@ -1,9 +1,6 @@
 module "web_apps" {
   source = "../_modules/web_apps"
 
-  cosmos_account_id               = module.cosmos.cosmos_account_fims_id
-  cosmos_query_role_definition_id = module.cosmos.cosmos_query_role_definition_id
-
   rp_func = {
     autoscale_default = 1
     autoscale_minimum = 1
@@ -46,9 +43,9 @@ module "web_apps" {
   resource_group_name = module.resource_groups.resource_group_fims.name
   subnet_id           = module.networking.subnet_fims.id
 
-  cosmos_db = {
-    endpoint    = module.cosmos.cosmos_account_fims_endpoint
-    primary_key = module.cosmos.cosmos_account_fims_primary_key
+  cosmosdb_account = {
+    name                = module.cosmos.account_name
+    resource_group_name = module.resource_groups.resource_group_fims.name
   }
 
   key_vault_id = module.key_vaults.key_vault_fims.id

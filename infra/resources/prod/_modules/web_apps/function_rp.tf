@@ -1,9 +1,3 @@
-resource "azurerm_role_assignment" "rp_func_cosmos_query" {
-  scope              = var.cosmos_account_id
-  role_definition_id = var.cosmos_query_role_definition_id
-  principal_id       = module.relying_party_func.system_identity_principal
-}
-
 module "relying_party_func" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.72.2"
 
@@ -43,6 +37,14 @@ resource "azurerm_key_vault_access_policy" "relying_party_func_key_vault_access_
   secret_permissions      = ["Get"]
   storage_permissions     = []
   certificate_permissions = []
+}
+
+resource "azurerm_cosmosdb_sql_role_assignment" "rp_func_sql_role" {
+  resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.fims.name
+  role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
+  principal_id        = module.relying_party_func.system_identity_principal
+  scope               = data.azurerm_cosmosdb_account.fims.id
 }
 
 module "relying_party_func_staging_slot" {
