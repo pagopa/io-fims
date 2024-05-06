@@ -1,9 +1,3 @@
-resource "azurerm_role_assignment" "app_service_op_cosmos_query" {
-  scope              = var.cosmos_account_id
-  role_definition_id = var.cosmos_query_role_definition_id
-  principal_id       = module.appservice_openid_provider.principal_id
-}
-
 module "appservice_openid_provider" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v7.67.1"
 
@@ -39,10 +33,12 @@ module "appservice_openid_provider" {
   tags = var.tags
 }
 
-resource "azurerm_role_assignment" "app_service_staging_op_cosmos_query" {
-  scope              = var.cosmos_account_id
-  role_definition_id = var.cosmos_query_role_definition_id
-  principal_id       = module.appservice_openid_provider_staging.principal_id
+resource "azurerm_cosmosdb_sql_role_assignment" "op_app_sql_role" {
+  resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.fims.name
+  role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
+  principal_id        = module.appservice_openid_provider.principal_id
+  scope               = data.azurerm_cosmosdb_account.fims.id
 }
 
 module "appservice_openid_provider_staging" {
@@ -76,4 +72,12 @@ module "appservice_openid_provider_staging" {
   vnet_integration = true
 
   tags = var.tags
+}
+
+resource "azurerm_cosmosdb_sql_role_assignment" "op_app_staging_sql_role" {
+  resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.fims.name
+  role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
+  principal_id        = module.appservice_openid_provider_staging.principal_id
+  scope               = data.azurerm_cosmosdb_account.fims.id
 }
