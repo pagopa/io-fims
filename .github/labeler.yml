@@ -10,6 +10,10 @@ relying-party:
   - changed-files:
       - any-glob-to-any-file: ["apps/rp-func/**"]
 
+relying-party-example:
+  - changed-files:
+      - any-glob-to-any-file: ["apps/openid-rp-example-app/**"]
+
 openid-provider:
   - changed-files:
       - any-glob-to-any-file: ["apps/op-func/**", "apps/openid-provider-app/**"]
