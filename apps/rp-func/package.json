@@ -34,7 +34,7 @@
     "@vitest/coverage-v8": "^1.5.0",
     "openapi-zod-client": "^1.16.4",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.3",
+    "typescript": "5.4.3",
     "vitest": "^1.5.0"
   }
 }
