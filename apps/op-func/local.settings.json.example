@@ -6,6 +6,7 @@
     "COSMOS_DB_URI": "https://fims/",
     "COSMOS_DB_NAME": "fims",
     "STORAGE_QUEUE_NAME": "fims",
+    "STORAGE_ACCOUNT_NAME": "fims",
     "CONFIG_QUEUE_queueServiceUri": ""
   }
 }

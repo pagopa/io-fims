@@ -15,6 +15,7 @@ import { DefaultAzureCredential } from "@azure/identity";
 
 const config = configSchema.parse({
   storage: {
+    accountName: process.env.STORAGE_ACCOUNT_NAME,
     queue: { name: process.env.STORAGE_QUEUE_NAME },
   },
   cosmos: {
@@ -23,7 +24,9 @@ const config = configSchema.parse({
   },
 });
 
-const cosmosClient = new CosmosClient({ aadCredentials: new DefaultAzureCredential(), endpoint: config.cosmos.uri });
+const defaultAzureCredential = new DefaultAzureCredential()
+
+const cosmosClient = new CosmosClient({ aadCredentials: defaultAzureCredential, endpoint: config.cosmos.uri });
 
 const database = cosmosClient.database(config.cosmos.name);
 const oidcClientRepository = new CosmosOIDCClientRepository(database);
