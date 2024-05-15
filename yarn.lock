@@ -116,6 +116,40 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/core-http@npm:^3.0.0":
+  version: 3.0.4
+  resolution: "@azure/core-http@npm:3.0.4"
+  dependencies:
+    "@azure/abort-controller": "npm:^1.0.0"
+    "@azure/core-auth": "npm:^1.3.0"
+    "@azure/core-tracing": "npm:1.0.0-preview.13"
+    "@azure/core-util": "npm:^1.1.1"
+    "@azure/logger": "npm:^1.0.0"
+    "@types/node-fetch": "npm:^2.5.0"
+    "@types/tunnel": "npm:^0.0.3"
+    form-data: "npm:^4.0.0"
+    node-fetch: "npm:^2.6.7"
+    process: "npm:^0.11.10"
+    tslib: "npm:^2.2.0"
+    tunnel: "npm:^0.0.6"
+    uuid: "npm:^8.3.0"
+    xml2js: "npm:^0.5.0"
+  checksum: 10c0/87c81a0fa47289f2f0fe4270000503e2a09faf0a4b93023df2bcf9fb77cb13bada994d1086b01284d2afdd7c3099f9d97e257f43e68f3a109366157ffb45c230
+  languageName: node
+  linkType: hard
+
+"@azure/core-lro@npm:^2.2.0":
+  version: 2.7.2
+  resolution: "@azure/core-lro@npm:2.7.2"
+  dependencies:
+    "@azure/abort-controller": "npm:^2.0.0"
+    "@azure/core-util": "npm:^1.2.0"
+    "@azure/logger": "npm:^1.0.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/bee809e47661b40021bbbedf88de54019715fdfcc95ac552b1d901719c29d78e293eeab51257b8f5155aac768eb4ea420715004d00d6e32109f5f97db5960d39
+  languageName: node
+  linkType: hard
+
 "@azure/core-paging@npm:^1.1.1":
   version: 1.6.1
   resolution: "@azure/core-paging@npm:1.6.1"
@@ -159,6 +193,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/core-tracing@npm:1.0.0-preview.13":
+  version: 1.0.0-preview.13
+  resolution: "@azure/core-tracing@npm:1.0.0-preview.13"
+  dependencies:
+    "@opentelemetry/api": "npm:^1.0.1"
+    tslib: "npm:^2.2.0"
+  checksum: 10c0/0977479165deefe1dcabbd68d18e44742ad18fa4bd0200b9d8b6647510c200800e8b47f8039a249086de9ff7eda37ea3f2beb85fa4878a08dd0251a71ea0cbe3
+  languageName: node
+  linkType: hard
+
 "@azure/core-tracing@npm:^1.0.0, @azure/core-tracing@npm:^1.0.1":
   version: 1.1.1
   resolution: "@azure/core-tracing@npm:1.1.1"
@@ -185,6 +229,16 @@ __metadata:
     "@azure/abort-controller": "npm:^2.0.0"
     tslib: "npm:^2.6.2"
   checksum: 10c0/a321e2dc06788a62cce7ec1fc2967a60818145c737694ea27c8cd60df52b076fbc338baa8a76b70706c6f3658f7f4e92cbf821f91efadefcc9286b14f1f45f98
+  languageName: node
+  linkType: hard
+
+"@azure/core-util@npm:^1.1.1, @azure/core-util@npm:^1.2.0":
+  version: 1.9.0
+  resolution: "@azure/core-util@npm:1.9.0"
+  dependencies:
+    "@azure/abort-controller": "npm:^2.0.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/6eb6efc8b8401fd6e3b56631e8e9a1dbc23a0048ae3bf498d10163624f805032a7730905465b2ebe95c840e5e939e66bf320448de8df50f66346e89b1295f9e7
   languageName: node
   linkType: hard
 
@@ -327,6 +381,22 @@ __metadata:
     "@opentelemetry/instrumentation": "npm:^0.41.2"
     tslib: "npm:^2.2.0"
   checksum: 10c0/f50e74da60a5bd0c1eac9452611650a27a3dfde7941fab156e9b067013f02811809d52387b8cdd666f3462c0982a5592fea50a4443a5c86cc152e2f52193fde0
+  languageName: node
+  linkType: hard
+
+"@azure/storage-blob@npm:^12.18.0":
+  version: 12.18.0
+  resolution: "@azure/storage-blob@npm:12.18.0"
+  dependencies:
+    "@azure/abort-controller": "npm:^1.0.0"
+    "@azure/core-http": "npm:^3.0.0"
+    "@azure/core-lro": "npm:^2.2.0"
+    "@azure/core-paging": "npm:^1.1.1"
+    "@azure/core-tracing": "npm:1.0.0-preview.13"
+    "@azure/logger": "npm:^1.0.0"
+    events: "npm:^3.0.0"
+    tslib: "npm:^2.2.0"
+  checksum: 10c0/0bd50e1516ac8a137c3737fbf32b73b188936ed80400526eca07c737d9c9ad790465a4462157e8cbb2dc2e459bcb328c4dd31f6a39631505ed85304d452ecf72
   languageName: node
   linkType: hard
 
@@ -1247,7 +1317,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/api@npm:^1.4.1, @opentelemetry/api@npm:^1.7.0":
+"@opentelemetry/api@npm:^1.0.1, @opentelemetry/api@npm:^1.4.1, @opentelemetry/api@npm:^1.7.0":
   version: 1.8.0
   resolution: "@opentelemetry/api@npm:1.8.0"
   checksum: 10c0/66d5504bfbf9c19a14ea549f5fca975a73a5e1e8a1e40a6dc2d662893c942b9ba66c009262816dee2b9ffd0267acd707ec692eba20db11a09d4ee114c00dc161
@@ -1877,7 +1947,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-fetch@npm:^2.5.12":
+"@types/node-fetch@npm:^2.5.0, @types/node-fetch@npm:^2.5.12":
   version: 2.6.11
   resolution: "@types/node-fetch@npm:2.6.11"
   dependencies:
@@ -2018,6 +2088,15 @@ __metadata:
   version: 1.3.5
   resolution: "@types/triple-beam@npm:1.3.5"
   checksum: 10c0/d5d7f25da612f6d79266f4f1bb9c1ef8f1684e9f60abab251e1261170631062b656ba26ff22631f2760caeafd372abc41e64867cde27fba54fafb73a35b9056a
+  languageName: node
+  linkType: hard
+
+"@types/tunnel@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "@types/tunnel@npm:0.0.3"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/6d479136e541bc080ae8c71ff794b97c513d2787116e0dffb6ffdfb69f2257422e928a585fe84b3ae3a997e99d712b65d0c3fabf43a0980a483e83a042644ace
   languageName: node
   linkType: hard
 
@@ -6236,7 +6315,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.1":
+"node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.7":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
   dependencies:
@@ -6504,6 +6583,7 @@ __metadata:
     "@azure/cosmos": "npm:^4.0.0"
     "@azure/functions": "npm:^4.3.0"
     "@azure/identity": "npm:^4.1.0"
+    "@azure/storage-blob": "npm:^12.18.0"
     "@pagopa/handler-kit": "npm:^1.1.0"
     "@pagopa/handler-kit-azure-func": "npm:^2.0.4"
     "@pagopa/logger": "npm:^1.0.1"
@@ -6998,6 +7078,13 @@ __metadata:
   version: 2.0.1
   resolution: "process-nextick-args@npm:2.0.1"
   checksum: 10c0/bec089239487833d46b59d80327a1605e1c5287eaad770a291add7f45fda1bb5e28b38e0e061add0a1d0ee0984788ce74fa394d345eed1c420cacf392c554367
+  languageName: node
+  linkType: hard
+
+"process@npm:^0.11.10":
+  version: 0.11.10
+  resolution: "process@npm:0.11.10"
+  checksum: 10c0/40c3ce4b7e6d4b8c3355479df77aeed46f81b279818ccdc500124e6a5ab882c0cc81ff7ea16384873a95a74c4570b01b120f287abbdd4c877931460eca6084b3
   languageName: node
   linkType: hard
 
@@ -7525,6 +7612,13 @@ __metadata:
   version: 0.5.8
   resolution: "sax@npm:0.5.8"
   checksum: 10c0/ef56d843498de543b715e02ea528416c99ffa5f1c4b8b234bc4574d714389a968a0cab05397182c5ccccbb7b123c1b00399e14a0456aadc9b4dde1e0f063698e
+  languageName: node
+  linkType: hard
+
+"sax@npm:>=0.6.0":
+  version: 1.3.0
+  resolution: "sax@npm:1.3.0"
+  checksum: 10c0/599dbe0ba9d8bd55e92d920239b21d101823a6cedff71e542589303fa0fa8f3ece6cf608baca0c51be846a2e88365fac94a9101a9c341d94b98e30c4deea5bea
   languageName: node
   linkType: hard
 
@@ -8349,6 +8443,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tunnel@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "tunnel@npm:0.0.6"
+  checksum: 10c0/e27e7e896f2426c1c747325b5f54efebc1a004647d853fad892b46d64e37591ccd0b97439470795e5262b5c0748d22beb4489a04a0a448029636670bfd801b75
+  languageName: node
+  linkType: hard
+
 "turbo-darwin-64@npm:1.13.2":
   version: 1.13.2
   resolution: "turbo-darwin-64@npm:1.13.2"
@@ -9134,6 +9235,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"xml2js@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "xml2js@npm:0.5.0"
+  dependencies:
+    sax: "npm:>=0.6.0"
+    xmlbuilder: "npm:~11.0.0"
+  checksum: 10c0/c9cd07cd19c5e41c740913bbbf16999a37a204488e11f86eddc2999707d43967197e257014d7ed72c8fc4348c192fa47eb352d1d9d05637cefd0d2e24e9aa4c8
+  languageName: node
+  linkType: hard
+
 "xml2js@npm:~0.2.8":
   version: 0.2.8
   resolution: "xml2js@npm:0.2.8"
@@ -9147,6 +9258,13 @@ __metadata:
   version: 9.0.7
   resolution: "xmlbuilder@npm:9.0.7"
   checksum: 10c0/aa3c644a13e561abd50e4971ab6963261de703cc0405994777db9129c40d76dba9c0a2c6fa04a7de474a8428f7b329e6f85fcf84990f9cb4ceb2c345a57a4eef
+  languageName: node
+  linkType: hard
+
+"xmlbuilder@npm:~11.0.0":
+  version: 11.0.1
+  resolution: "xmlbuilder@npm:11.0.1"
+  checksum: 10c0/74b979f89a0a129926bc786b913459bdbcefa809afaa551c5ab83f89b1915bdaea14c11c759284bb9b931e3b53004dbc2181e21d3ca9553eeb0b2a7b4e40c35b
   languageName: node
   linkType: hard
 
