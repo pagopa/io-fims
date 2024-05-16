@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "events_rg" {
 }
 
 resource "azurerm_storage_account" "events_sa" {
-  name                     = "fims-events-sa"
+  name                     = "fimseventssa"
   resource_group_name      = azurerm_resource_group.events_rg.name
   location                 = azurerm_resource_group.events_rg.location
   account_kind             = "StorageV2"
@@ -19,7 +19,7 @@ resource "azurerm_storage_account" "events_sa" {
 }
 
 resource "azurerm_storage_container" "events_sc" {
-  name                  = "fims-events-blob"
+  name                  = "fimseventsblob"
   storage_account_name  = azurerm_storage_account.events_sa.name
   container_access_type = "private"
 }
