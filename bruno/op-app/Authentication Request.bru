@@ -1,0 +1,17 @@
+meta {
+  name: Authentication Request
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{op_app_url}}/auth?client_id={{test_oidc_client_id}}&response_type=code&scope=openid
+  body: none
+  auth: none
+}
+
+query {
+  client_id: {{test_oidc_client_id}}
+  response_type: code
+  scope: openid
+}

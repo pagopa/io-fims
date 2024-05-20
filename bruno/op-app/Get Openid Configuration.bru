@@ -1,0 +1,11 @@
+meta {
+  name: Get Openid Configuration
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{op_app_url}}/.well-known/openid-configuration
+  body: none
+  auth: none
+}
