@@ -1,4 +1,4 @@
-module "op_func" {
+/*module "op_func" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.72.2"
 
   name                = "${var.product}-op-func"
@@ -75,4 +75,4 @@ module "op_func_staging_slot" {
   allowed_subnets = []
 
   tags = var.tags
-}
+}*/
