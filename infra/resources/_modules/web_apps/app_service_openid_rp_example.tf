@@ -1,5 +1,5 @@
 module "appservice_openid_rp_example" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v7.76.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.13.0"
 
   plan_type = "internal"
   plan_name = "${var.product}-rp-example-plan"
@@ -34,7 +34,7 @@ module "appservice_openid_rp_example" {
 }
 
 module "appservice_openid_rp_example_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v7.76.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.13.0"
 
   app_service_id   = module.appservice_openid_rp_example.id
   app_service_name = module.appservice_openid_rp_example.name
