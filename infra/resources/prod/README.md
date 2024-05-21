@@ -15,7 +15,6 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim"></a> [apim](#module\_apim) | ../_modules/apim | n/a |
 | <a name="module_cosmos"></a> [cosmos](#module\_cosmos) | ../_modules/cosmos | n/a |
 | <a name="module_key_vaults"></a> [key\_vaults](#module\_key\_vaults) | ../_modules/key_vaults | n/a |
 | <a name="module_networking"></a> [networking](#module\_networking) | ../_modules/networking | n/a |
@@ -33,10 +32,5 @@ No inputs.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_apim"></a> [apim](#output\_apim) | n/a |
-| <a name="output_app_service_openid_provider"></a> [app\_service\_openid\_provider](#output\_app\_service\_openid\_provider) | n/a |
-| <a name="output_cosmos_fims"></a> [cosmos\_fims](#output\_cosmos\_fims) | n/a |
-| <a name="output_resource_group_fims"></a> [resource\_group\_fims](#output\_resource\_group\_fims) | n/a |
+No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
