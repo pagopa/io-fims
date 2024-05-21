@@ -16,7 +16,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_managed_identities"></a> [managed\_identities](#module\_managed\_identities) | ../../_modules/managed_identities | n/a |
+| <a name="module_managed_identities"></a> [managed\_identities](#module\_managed\_identities) | ../_modules/managed_identities | n/a |
 
 ## Resources
 
