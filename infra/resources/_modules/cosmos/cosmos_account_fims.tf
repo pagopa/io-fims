@@ -1,5 +1,5 @@
 module "cosmosdb_account_fims" {
-  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v7.67.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v8.13.0"
 
   name                = "${var.product}-cosmos"
   domain              = "fims"

@@ -1,5 +1,5 @@
 module "relying_party_func" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.72.2"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.13.0"
 
   name                = "${var.product}-rp-func"
   location            = var.location
@@ -48,7 +48,7 @@ resource "azurerm_cosmosdb_sql_role_assignment" "rp_func_sql_role" {
 }
 
 module "relying_party_func_staging_slot" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.72.2"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.13.0"
 
   name                = "staging"
   location            = var.location
