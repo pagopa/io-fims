@@ -9,7 +9,7 @@ module "relying_party_func" {
 
   app_settings = local.relying_party_func.app_settings
 
-  node_version    = "18"
+  node_version    = "20"
   runtime_version = "~4"
   always_on       = true
 
@@ -62,7 +62,7 @@ module "relying_party_func_staging_slot" {
   storage_account_name       = module.relying_party_func.storage_account.name
   storage_account_access_key = module.relying_party_func.storage_account.primary_access_key
 
-  node_version                             = "18"
+  node_version                             = "20"
   runtime_version                          = "~4"
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
