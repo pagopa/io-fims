@@ -1,15 +1,14 @@
+/* eslint-disable */
 declare module "openid-client" {
   interface ClaimsParameterMember {
+    [key: string]: unknown;
     essential?: boolean;
     value?: string;
+
     values?: string[];
-
-    [key: string]: unknown;
   }
 
-  interface UnknownObject {
-    [key: string]: unknown;
-  }
+  type UnknownObject = Record<string, unknown>;
 
   type KnownKeys<T> = {
     [K in keyof T]: string extends K ? never : number extends K ? never : K;
@@ -22,33 +21,30 @@ declare module "openid-client" {
 
   type Address<ExtendedAddress extends {} = UnknownObject> = Override<
     {
-      formatted?: string;
-      street_address?: string;
-      locality?: string;
-      region?: string;
-      postal_code?: string;
       country?: string;
+      formatted?: string;
+      locality?: string;
+      postal_code?: string;
+      region?: string;
+      street_address?: string;
     },
     ExtendedAddress
   >;
 
-  export type AuthorizationParameters = {
+  export interface AuthorizationParameters {
+    [key: string]: unknown;
     acr_values?: string;
     audience?: string;
     claims?:
-      | string
       | {
-          id_token?: {
-            [key: string]: null | ClaimsParameterMember;
-          };
-          userinfo?: {
-            [key: string]: null | ClaimsParameterMember;
-          };
-        };
+          id_token?: Record<string, ClaimsParameterMember | null>;
+          userinfo?: Record<string, ClaimsParameterMember | null>;
+        }
+      | string;
     claims_locales?: string;
     client_id?: string;
-    code_challenge_method?: string;
     code_challenge?: string;
+    code_challenge_method?: string;
     display?: string;
     id_token_hint?: string;
     login_hint?: string;
@@ -57,19 +53,19 @@ declare module "openid-client" {
     prompt?: string;
     redirect_uri?: string;
     registration?: string;
-    request_uri?: string;
     request?: string;
+    request_uri?: string;
     resource?: string | string[];
     response_mode?: string;
     response_type?: string;
     scope?: string;
     state?: string;
-    ui_locales?: string;
 
-    [key: string]: unknown;
-  };
+    ui_locales?: string;
+  }
 
   export interface IdTokenClaims extends UserinfoResponse {
+    [key: string]: unknown;
     acr?: string;
     amr?: string[];
     at_hash?: string;
@@ -82,57 +78,56 @@ declare module "openid-client" {
     iss: string;
     nonce?: string;
     s_hash?: string;
-    sub: string;
 
-    [key: string]: unknown;
+    sub: string;
   }
 
   export type UserinfoResponse<
     UserInfo extends {} = UnknownObject,
-    ExtendedAddress extends {} = UnknownObject
+    ExtendedAddress extends {} = UnknownObject,
   > = Override<
     {
-      sub: string;
-      name?: string;
-      given_name?: string;
-      family_name?: string;
-      middle_name?: string;
-      nickname?: string;
-      preferred_username?: string;
-      profile?: string;
-      picture?: string;
-      website?: string;
+      address?: Address<ExtendedAddress>;
+      birthdate?: string;
       email?: string;
       email_verified?: boolean;
+      family_name?: string;
       gender?: string;
-      birthdate?: string;
-      zoneinfo?: string;
+      given_name?: string;
       locale?: string;
+      middle_name?: string;
+      name?: string;
+      nickname?: string;
       phone_number?: string;
+      picture?: string;
+      preferred_username?: string;
+      profile?: string;
+      sub: string;
       updated_at?: number;
-      address?: Address<ExtendedAddress>;
+      website?: string;
+      zoneinfo?: string;
     },
     UserInfo
   >;
 }
 declare module "jose" {
-  type use = "sig" | "enc";
+  type use = "enc" | "sig";
   type keyOperation =
-    | "sign"
-    | "verify"
-    | "encrypt"
     | "decrypt"
-    | "wrapKey"
+    | "deriveKey"
+    | "encrypt"
+    | "sign"
     | "unwrapKey"
-    | "deriveKey";
-  type ECCurve = "P-256" | "secp256k1" | "P-384" | "P-521";
-  type OKPCurve = "Ed25519" | "Ed448" | "X25519" | "X448";
+    | "verify"
+    | "wrapKey";
+  type ECCurve = "P-256" | "P-384" | "P-521" | "secp256k1";
+  type OKPCurve = "Ed448" | "Ed25519" | "X448" | "X25519";
 
   interface BasicParameters {
     alg?: string;
-    use?: use;
-    kid?: string;
     key_ops?: keyOperation[];
+    kid?: string;
+    use?: use;
   }
   interface KeyParameters extends BasicParameters {
     x5c?: string[];
@@ -141,38 +136,39 @@ declare module "jose" {
   }
 
   interface JWKOctKey extends BasicParameters {
+    k?: string;
     // no x5c
     kty: "oct";
-    k?: string;
   }
 
   interface JWKECKey extends KeyParameters {
-    kty: "EC";
     crv: ECCurve;
+    d?: string;
+    kty: "EC";
     x: string;
     y: string;
-    d?: string;
   }
 
   interface JWKOKPKey extends KeyParameters {
-    kty: "OKP";
     crv: OKPCurve;
-    x: string;
     d?: string;
+    kty: "OKP";
+    x: string;
   }
 
   interface JWKRSAKey extends KeyParameters {
-    kty: "RSA";
-    e: string;
-    n: string;
     d?: string;
-    p?: string;
-    q?: string;
     dp?: string;
     dq?: string;
+    e: string;
+    kty: "RSA";
+    n: string;
+    p?: string;
+    q?: string;
     qi?: string;
   }
 
-  export type JSONWebKey = JWKRSAKey | JWKOKPKey | JWKECKey | JWKOctKey;
-  export type KeyInput = {};
+  export type JSONWebKey = JWKECKey | JWKOKPKey | JWKOctKey | JWKRSAKey;
+  export interface KeyInput {}
 }
+/* eslint-enable */
