@@ -1,8 +1,9 @@
-import * as http from "http";
-import * as E from "fp-ts/Either";
-import * as D from "io-ts/Decoder";
 import { Application } from "express";
+import * as E from "fp-ts/Either";
 import { pipe } from "fp-ts/function";
+import * as http from "http";
+import * as D from "io-ts/Decoder";
+
 import { makeApplication } from "./application.js";
 import * as c from "./config.js";
 import { Logger, makeLogger, makeSubLogger } from "./logger/index.js";
@@ -29,9 +30,9 @@ const main = pipe(
   E.bind("conf", () => c.parseConfig(process.env)),
   E.bind("log", ({ conf }) => E.right(makeLogger(conf.logger))),
   E.bind("app", ({ conf, log }) =>
-    E.right(makeApplication(conf, makeSubLogger(log, "application")))
+    E.right(makeApplication(conf, makeSubLogger(log, "application"))),
   ),
-  E.map(({ app, log }) => start(app, log))
+  E.map(({ app, log }) => start(app, log)),
 );
 
 E.getOrElse(exit)(main);

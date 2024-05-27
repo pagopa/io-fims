@@ -4,13 +4,13 @@ type Logger = winston.Logger;
 // TODO: This levels are taken from winston.config.NpmConfigSetLevels,
 // so use something like keyof winston.config.NpmConfigSetLevels
 type LogLevel =
-  | "error"
-  | "warn"
-  | "info"
-  | "http"
-  | "verbose"
   | "debug"
-  | "silly";
+  | "error"
+  | "http"
+  | "info"
+  | "silly"
+  | "verbose"
+  | "warn";
 
 interface LogConfig {
   readonly logLevel: LogLevel;
@@ -31,8 +31,8 @@ const makeLogger = (logConfig: LogConfig): Logger =>
       winston.format.simple(),
       winston.format.printf(
         (info) =>
-          `${info.timestamp} [${info.level}] [${logConfig.logName}]: ${info.message}`
-      )
+          `${info.timestamp} [${info.level}] [${logConfig.logName}]: ${info.message}`,
+      ),
     ),
     transports: [new winston.transports.Console({ level: logConfig.logLevel })],
   });
@@ -47,4 +47,4 @@ const makeLogger = (logConfig: LogConfig): Logger =>
 const makeSubLogger = (logger: Logger, componentName: string): Logger =>
   logger.child({ component: componentName });
 
-export { makeLogger, makeSubLogger, Logger, LogLevel, LogConfig };
+export { LogConfig, LogLevel, Logger, makeLogger, makeSubLogger };
