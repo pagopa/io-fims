@@ -1,19 +1,14 @@
+import { DefaultAzureCredential } from "@azure/identity";
+import { pino } from "pino";
 import { z } from "zod";
 
-import { pino } from "pino";
-
-import { DefaultAzureCredential } from "@azure/identity";
-
-import { createProvider } from "./adapters/oidc/provider.js";
+import { configFromEnvironment } from "./adapters/config.js";
 import { getCosmosDatabase } from "./adapters/cosmos/index.js";
 import { createAdapterFactory } from "./adapters/cosmos/oidc/index.js";
-
 import { envSchema } from "./adapters/env.js";
 import { createApplication } from "./adapters/express/application.js";
-
 import { createFindAccount } from "./adapters/io/oidc.js";
-
-import { configFromEnvironment } from "./adapters/config.js";
+import { createProvider } from "./adapters/oidc/provider.js";
 
 const logger = pino({
   level: "error",

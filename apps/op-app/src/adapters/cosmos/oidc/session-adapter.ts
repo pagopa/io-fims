@@ -1,9 +1,9 @@
-import { Container } from "@azure/cosmos";
-
 import type * as oidc from "oidc-provider";
 
-import Adapter from "./adapter.js";
+import { Container } from "@azure/cosmos";
+
 import { getCosmosErrorCause } from "../error.js";
+import Adapter from "./adapter.js";
 
 export default class SessionAdapter extends Adapter {
   #sessionsByUid: Container;
@@ -11,21 +11,6 @@ export default class SessionAdapter extends Adapter {
   constructor(container: Container) {
     super(container);
     this.#sessionsByUid = container.database.container("sessions-by-uid");
-  }
-
-  async upsert(
-    id: string,
-    payload: oidc.AdapterPayload,
-    ttl: number,
-  ): Promise<void> {
-    await super.upsert(id, payload, ttl);
-    try {
-      await this.#sessionsByUid.items.upsert({ id: payload.uid, payload, ttl });
-    } catch (e) {
-      throw new Error(`Error upserting to ${this.#sessionsByUid.id}`, {
-        cause: getCosmosErrorCause(e),
-      });
-    }
   }
 
   async #withUid(
@@ -53,6 +38,18 @@ export default class SessionAdapter extends Adapter {
     }
   }
 
+  async destroy(id: string): Promise<void> {
+    try {
+      await this.#withUid(id, async (uid) => {
+        this.#sessionsByUid.item(uid, uid).delete();
+      });
+    } catch {
+      // these model have a ttl, so "destroy(id)" can fail silenty
+      // in case of cosmos error
+    }
+    await super.destroy(id);
+  }
+
   async findByUid(uid: string): Promise<oidc.AdapterPayload | undefined> {
     try {
       const response = await this.#sessionsByUid
@@ -66,15 +63,18 @@ export default class SessionAdapter extends Adapter {
     }
   }
 
-  async destroy(id: string): Promise<void> {
+  async upsert(
+    id: string,
+    payload: oidc.AdapterPayload,
+    ttl: number,
+  ): Promise<void> {
+    await super.upsert(id, payload, ttl);
     try {
-      await this.#withUid(id, async (uid) => {
-        this.#sessionsByUid.item(uid, uid).delete();
+      await this.#sessionsByUid.items.upsert({ id: payload.uid, payload, ttl });
+    } catch (e) {
+      throw new Error(`Error upserting to ${this.#sessionsByUid.id}`, {
+        cause: getCosmosErrorCause(e),
       });
-    } catch {
-      // these model have a ttl, so "destroy(id)" can fail silenty
-      // in case of cosmos error
     }
-    await super.destroy(id);
   }
 }

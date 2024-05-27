@@ -1,17 +1,15 @@
-import * as E from "fp-ts/lib/Either.js";
-
 import {
-  UserRepository,
-  User,
   FederationToken,
+  User,
+  UserRepository,
   userSchema,
 } from "@/domain/user.js";
-
+import * as E from "fp-ts/lib/Either.js";
 import * as assert from "node:assert/strict";
-
-import { Client } from "./generated/client.js";
 import { Logger } from "pino";
 import { ZodError } from "zod";
+
+import { Client } from "./generated/client.js";
 
 export class IOUserRepository implements UserRepository {
   #client: Client;
@@ -30,15 +28,15 @@ export class IOUserRepository implements UserRepository {
       assert.ok(E.isRight(result));
       assert.strictEqual(result.right.status, 200);
       const {
-        name: firstName,
         family_name: lastName,
         fiscal_code: fiscalCode,
+        name: firstName,
       } = result.right.value;
-      return userSchema.parse({ firstName, lastName, fiscalCode });
+      return userSchema.parse({ firstName, fiscalCode, lastName });
     } catch (e) {
       const err = {
-        msg: "Unable to fetch user data",
         cause: "Client error",
+        msg: "Unable to fetch user data",
       };
       if (e instanceof ZodError) {
         err.cause = "Invalid user data";

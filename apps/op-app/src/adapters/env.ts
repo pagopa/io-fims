@@ -1,16 +1,18 @@
 import { z } from "zod";
 
 export const envSchema = z.object({
-  NODE_ENVIRONMENT: z.enum(["production", "development"]),
-  COSMOS_ENDPOINT: z.string().url(),
   COSMOS_DBNAME: z.string().min(1).default("op"),
+  COSMOS_ENDPOINT: z.string().url(),
+  IO_BASE_URL: z.string().url(),
+  NODE_ENVIRONMENT: z.enum(["production", "development"]),
   OIDC_ISSUER: z.string().url(),
   PORT: z.string().default("3000"),
-  IO_BASE_URL: z.string().url(),
 });
 
+/* eslint-disable */
 declare global {
   namespace NodeJS {
     interface ProcessEnv extends z.TypeOf<typeof envSchema> {}
   }
 }
+/* eslint-enable */

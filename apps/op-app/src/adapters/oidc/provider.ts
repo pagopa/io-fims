@@ -6,24 +6,24 @@ export const createProvider = (
   adapter: oidc.AdapterConstructor | oidc.AdapterFactory,
 ): Provider =>
   new Provider(issuer, {
-    responseTypes: ["code"],
+    adapter,
     claims: {
-      openid: ["sub"],
-      fiscal_code: null,
-      name: null,
-      given_name: null,
       family_name: null,
+      fiscal_code: null,
+      given_name: null,
+      name: null,
+      openid: ["sub"],
       profile: ["name", "given_name", "family_name", "fiscal_code"],
     },
     clientAuthMethods: ["none"],
-    findAccount,
-    adapter,
     features: {
       devInteractions: {
         enabled: true,
       },
     },
+    findAccount,
     pkce: {
       required: () => false,
     },
+    responseTypes: ["code"],
   });

@@ -1,10 +1,10 @@
-import express from "express";
 import type Provider from "oidc-provider";
 
+import express from "express";
+import { Logger } from "pino";
 import { pinoHttp } from "pino-http";
 
 import { ExpressConfig } from "./config.js";
-import { Logger } from "pino";
 
 export const createApplication = (
   config: ExpressConfig,
