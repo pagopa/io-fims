@@ -1,12 +1,12 @@
-import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
+import { Zodios, type ZodiosOptions, makeApi } from "@zodios/core";
 import { z } from "zod";
 
 const Id = z.string();
 const OIDCClientConfig = z
   .object({
-    service_id: Id,
-    institution_id: z.string().uuid(),
     callbacks: z.array(z.any()).min(1),
+    institution_id: z.string().uuid(),
+    service_id: Id,
   })
   .passthrough();
 
@@ -17,18 +17,18 @@ export const schemas = {
 
 const endpoints = makeApi([
   {
-    method: "post",
-    path: "/oidc-client-configs",
     alias: "createOIDCClientConfig",
-    requestFormat: "json",
+    method: "post",
     parameters: [
       {
-        name: "body",
         description: `OIDC Client Configuration`,
-        type: "Body",
+        name: "body",
         schema: OIDCClientConfig,
+        type: "Body",
       },
     ],
+    path: "/oidc-client-configs",
+    requestFormat: "json",
     response: OIDCClientConfig,
   },
 ]);
