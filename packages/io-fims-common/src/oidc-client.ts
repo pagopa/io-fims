@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const oidcClientSchema = z.object({
-  id: z.string().ulid(),
   grantTypes: z.string(),
+  id: z.string().ulid(),
   issueadAt: z.date(),
   redirectUris: z.array(z.string().url()),
   responseTypes: z.string(),
