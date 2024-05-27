@@ -8,8 +8,8 @@ export function getCosmosDatabase(
   aadCredentials: TokenCredential,
 ) {
   const client = new CosmosClient({
-    endpoint: config.endpoint,
     aadCredentials,
+    endpoint: config.endpoint,
   });
   return client.database(config.databaseName);
 }

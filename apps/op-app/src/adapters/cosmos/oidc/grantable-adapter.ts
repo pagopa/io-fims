@@ -1,9 +1,9 @@
-import { Container } from "@azure/cosmos";
-
 import type * as oidc from "oidc-provider";
 
-import Adapter from "./adapter.js";
+import { Container } from "@azure/cosmos";
+
 import { getCosmosErrorCause } from "../error.js";
+import Adapter from "./adapter.js";
 
 export default class GrantableAdapter extends Adapter {
   #grantedsByGrantId: Container;
@@ -13,6 +13,21 @@ export default class GrantableAdapter extends Adapter {
     this.#grantedsByGrantId = container.database.container(
       "granteds-by-grant-id",
     );
+  }
+
+  async revokeByGrantId(grantId: string): Promise<void> {
+    try {
+      const { resource } = await this.#grantedsByGrantId
+        .item(grantId, grantId)
+        .read<{ payload: { id: string } }>();
+      if (resource) {
+        const id = resource.payload.id;
+        await this.destroy(id);
+      }
+    } catch {
+      // these model have a ttl, so "destroy(id)" can fail silenty
+      // in case of cosmos error
+    }
   }
 
   async upsert(
@@ -34,21 +49,6 @@ export default class GrantableAdapter extends Adapter {
       throw new Error(`Error upserting to ${this.#grantedsByGrantId.id}`, {
         cause: getCosmosErrorCause(e),
       });
-    }
-  }
-
-  async revokeByGrantId(grantId: string): Promise<void> {
-    try {
-      const { resource } = await this.#grantedsByGrantId
-        .item(grantId, grantId)
-        .read<{ payload: { id: string } }>();
-      if (resource) {
-        const id = resource.payload.id;
-        await this.destroy(id);
-      }
-    } catch {
-      // these model have a ttl, so "destroy(id)" can fail silenty
-      // in case of cosmos error
     }
   }
 }

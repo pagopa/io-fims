@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const cosmosConfigSchema = z.object({
-  endpoint: z.string().url(),
   databaseName: z.string().default("op"),
+  endpoint: z.string().url(),
 });
 
 export type CosmosConfig = z.TypeOf<typeof cosmosConfigSchema>;

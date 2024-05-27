@@ -1,11 +1,11 @@
-import { Database } from "@azure/cosmos";
 import type * as oidc from "oidc-provider";
 
-import Adapter from "./adapter.js";
-import SessionAdapter from "./session-adapter.js";
-import GrantableAdapter from "./grantable-adapter.js";
-
+import { Database } from "@azure/cosmos";
 import { z } from "zod";
+
+import Adapter from "./adapter.js";
+import GrantableAdapter from "./grantable-adapter.js";
+import SessionAdapter from "./session-adapter.js";
 
 const modelNameSchema = z.enum([
   "Client",
@@ -19,12 +19,12 @@ const modelNameSchema = z.enum([
 type ModelName = z.TypeOf<typeof modelNameSchema>;
 
 const containerNames: Record<ModelName, string> = {
-  Client: "clients",
-  Session: "sessions",
-  Interaction: "interactions",
-  Grant: "grants",
   AccessToken: "access-tokens",
   AuthorizationCode: "authorization-codes",
+  Client: "clients",
+  Grant: "grants",
+  Interaction: "interactions",
+  Session: "sessions",
 };
 
 export const createAdapterFactory =

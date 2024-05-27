@@ -1,12 +1,10 @@
-import * as oidc from "oidc-provider";
-
 import { User, federationTokenSchema } from "@/domain/user.js";
+import * as oidc from "oidc-provider";
+import { Logger } from "pino";
+import QuickLRU from "quick-lru";
 
 import { createClient } from "./generated/client.js";
 import { IOUserRepository } from "./user.js";
-
-import QuickLRU from "quick-lru";
-import { Logger } from "pino";
 
 // Map User domain entity to OIDC standard claims
 // See https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
@@ -14,11 +12,11 @@ const accountClaimsFromUser = (
   sub: string,
   user: User,
 ): oidc.AccountClaims => ({
-  sub,
-  name: `${user.firstName} ${user.lastName}`,
-  given_name: user.firstName,
   family_name: user.lastName,
   fiscal_code: user.fiscalCode,
+  given_name: user.firstName,
+  name: `${user.firstName} ${user.lastName}`,
+  sub,
 });
 
 // since we use "auth code flow" the id token generation is done by the RP user-agent
