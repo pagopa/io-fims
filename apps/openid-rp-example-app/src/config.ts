@@ -42,6 +42,7 @@ const envDecoder = D.struct({
   // OIDC Client Configurations
   BASE_URL: D.string,
   CLIENT_ID: D.string,
+  CLIENT_SECRET: D.string,
   ISSUER_BASE_URL: D.string,
   OIDC_SCOPES: D.string,
   SECRET: D.string,
@@ -65,6 +66,7 @@ const makeConfigFromStr = (str: EnvStruct): Config => ({
     authRequired: str.AUTH_REQUIRED_ON_ALL_ROUTES,
     baseURL: str.BASE_URL,
     clientId: str.CLIENT_ID,
+    clientSecret: str.CLIENT_SECRET,
     issuerBaseURL: str.ISSUER_BASE_URL,
     scopes: str.OIDC_SCOPES,
     secret: str.SECRET,
