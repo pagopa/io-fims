@@ -8,6 +8,8 @@
     "build:watch": "tsc -w",
     "start": "func start",
     "format": "prettier --write .",
+    "lint": "eslint --fix src",
+    "lint:check": "eslint src",
     "typecheck": "tsc",
     "test": "vitest run --passWithNoTests",
     "test:coverage": "vitest run --coverage --passWithNoTests",
@@ -20,8 +22,10 @@
     "fp-ts": "^2.16.5"
   },
   "devDependencies": {
+    "@pagopa/eslint-config": "^4.0.1",
     "@types/node": "^20.12.7",
     "@vitest/coverage-v8": "^1.5.0",
+    "eslint": "8.57.0",
     "prettier": "3.2.5",
     "tsup": "^8.0.2",
     "typescript": "5.4.3",

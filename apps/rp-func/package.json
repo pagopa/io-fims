@@ -9,6 +9,8 @@
     "start": "func start",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
+    "lint": "eslint --fix src",
+    "lint:check": "eslint src",
     "typecheck": "tsc",
     "test": "vitest run --passWithNoTests",
     "test:coverage": "vitest run --coverage --passWithNoTests",
@@ -30,8 +32,10 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@pagopa/eslint-config": "^4.0.1",
     "@types/node": "^20.12.2",
     "@vitest/coverage-v8": "^1.5.0",
+    "eslint": "8.57.0",
     "openapi-zod-client": "^1.16.4",
     "prettier": "^3.2.5",
     "typescript": "5.4.3",
