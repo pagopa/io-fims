@@ -6,10 +6,10 @@ data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
 data "azurerm_subnet" "private_endpoints_subnet" {
   name                 = "pendpoints"
   resource_group_name  = local.resource_group_name_common
-  virtual_network_name = "${var.project}-vnet-common"
+  virtual_network_name = "${var.common_project}-vnet-common"
 }
 
 data "azurerm_monitor_action_group" "error_action_group" {
-  name                = "${replace("${var.project}", "-", "")}error"
+  name                = "${replace("${var.common_project}", "-", "")}error"
   resource_group_name = local.resource_group_name_common
 }

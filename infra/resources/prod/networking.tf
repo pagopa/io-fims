@@ -1,8 +1,8 @@
 module "networking" {
   source = "../_modules/networking"
 
-  location = local.location
-  project  = local.project
+  location       = local.location
+  common_project = local.common_project
 
   # inferred from vnet-common with cidr 10.0.0.0/16
   # https://github.com/pagopa/io-infra/blob/2a74355cdf70bf965b0c8900983bfc923c83ebfb/src/core/network.tf#L8

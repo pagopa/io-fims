@@ -1,3 +1,3 @@
 locals {
-  resource_group_name_common = "${var.project}-rg-common"
+  resource_group_name_common = "${var.common_project}-rg-common"
 }

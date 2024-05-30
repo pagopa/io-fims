@@ -1,26 +1,62 @@
-variable "location" {
-  type        = string
-  description = "Azure region"
+# --- start legacy ---
+variable "product" {
+  type = string
+}
+
+variable "project_legacy" {
+  type = string
+}
+
+variable "resource_group_name_legacy" {
+  type = string
+}
+
+variable "subnet_id" {
+  type = string
+}
+# --- end legacy ---
+
+variable "resource_group_name" {
+  type = string
+}
+
+variable "environment" {
+  type = object({
+    prefix    = string
+    env_short = string
+    location  = string
+    domain    = string
+  })
+  description = "Values which are used to generate resource names and location short names."
 }
 
 variable "tags" {
   type = map(any)
 }
 
-variable "project" {
+variable "virtual_network" {
+  type = object({
+    name                = string
+    resource_group_name = string
+  })
+}
+
+variable "subnet_pep_id" {
   type = string
 }
 
-variable "product" {
-  type = string
+variable "subnet_cidrs" {
+  type = object({
+    op_app     = string
+    rp_example = string
+  })
 }
 
-variable "resource_group_name" {
-  type = string
-}
-
-variable "subnet_id" {
-  type = string
+variable "key_vault" {
+  type = object({
+    id   = string
+    name = string
+  })
 }
 
 variable "cosmosdb_account" {
@@ -30,48 +66,12 @@ variable "cosmosdb_account" {
   })
 }
 
-variable "key_vault_id" {
-  type = string
+variable "redis_cache" {
+  type = object({
+    id         = string
+    url        = string
+    access_key = string
+  })
 }
 
-variable "rp_func" {
-  type = object({
-    autoscale_default = number
-    autoscale_minimum = number
-    autoscale_maximum = number
-    app_settings = list(object({
-      name                  = string
-      value                 = optional(string, "")
-      key_vault_secret_name = optional(string)
-    }))
-  })
-  description = "Configuration of the rp-func"
-}
 
-variable "op_func" {
-  type = object({
-    autoscale_default = number
-    autoscale_minimum = number
-    autoscale_maximum = number
-    app_settings = list(object({
-      name                  = string
-      value                 = optional(string, "")
-      key_vault_secret_name = optional(string)
-    }))
-  })
-  description = "Configuration of the op-func"
-}
-
-variable "user_func" {
-  type = object({
-    autoscale_default = number
-    autoscale_minimum = number
-    autoscale_maximum = number
-    app_settings = list(object({
-      name                  = string
-      value                 = optional(string, "")
-      key_vault_secret_name = optional(string)
-    }))
-  })
-  description = "Configuration of the user-func"
-}

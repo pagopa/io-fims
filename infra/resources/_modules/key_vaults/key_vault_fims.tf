@@ -1,7 +1,7 @@
 module "key_vault" {
   source = "github.com/pagopa/terraform-azurerm-v3//key_vault?ref=v8.13.0"
 
-  name                       = "${var.product}-kv"
+  name                       = "${var.project}-kv"
   location                   = var.location
   resource_group_name        = var.resource_group_name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
