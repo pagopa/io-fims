@@ -7,6 +7,10 @@ variable "tags" {
   type = map(any)
 }
 
-variable "product" {
+variable "project" {
+  type = string
+}
+
+variable "project_legacy" {
   type = string
 }
