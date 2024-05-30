@@ -1,4 +1,4 @@
-output "key_vault_fims" {
+output "fims" {
   value = {
     id                  = module.key_vault.id
     name                = module.key_vault.name

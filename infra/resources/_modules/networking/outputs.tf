@@ -1,3 +1,11 @@
+output "virtual_network" {
+  value = {
+    id                  = data.azurerm_virtual_network.vnet_common.id
+    name                = data.azurerm_virtual_network.vnet_common.name
+    resource_group_name = data.azurerm_virtual_network.vnet_common.resource_group_name
+  }
+}
+
 output "subnet_fims" {
   value = {
     id   = module.fims_snet.id
@@ -5,15 +13,9 @@ output "subnet_fims" {
   }
 }
 
-output "subnet_private_endpoints" {
+output "subnet_pep" {
   value = {
-    id   = data.azurerm_subnet.private_endpoints_subnet.id
-    name = data.azurerm_subnet.private_endpoints_subnet.name
-  }
-}
-
-output "dns_zone_privatelink_queue_core_windows_net" {
-  value = {
-    id = data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id
+    id   = data.azurerm_subnet.pep.id
+    name = data.azurerm_subnet.pep.name
   }
 }
