@@ -1,8 +1,6 @@
 import * as H from "@pagopa/handler-kit";
 import { errorRTE } from "@pagopa/logger";
-
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
-
 import { flow } from "fp-ts/lib/function.js";
 
 import { ValidationError } from "./parse.js";
@@ -15,24 +13,24 @@ const isHttpError = (e: Error): e is H.HttpError => e.name === "HttpError";
 export const toProblemJson = (e: Error): H.ProblemJson => {
   if (isValidationError(e)) {
     return {
-      type: "http://io.pagopa.it/problems/validation-error",
-      title: "Validation Error",
       detail: e.message,
-      status: 422,
       issues: e.issues,
+      status: 422,
+      title: "Validation Error",
+      type: "http://io.pagopa.it/problems/validation-error",
     };
   }
   if (isHttpError(e)) {
     return {
-      title: e.title,
-      status: e.status,
       detail: e.message,
+      status: e.status,
+      title: e.title,
     };
   }
   return {
-    title: "Internal Server Error",
     detail: e.name,
     status: 500,
+    title: "Internal Server Error",
   };
 };
 

@@ -1,15 +1,14 @@
-import { OIDCClient } from "io-fims-common/oidc-client";
-
 import * as E from "fp-ts/lib/Either.js";
 import * as TE from "fp-ts/lib/TaskEither.js";
+import { OIDCClient } from "io-fims-common/oidc-client";
 
-export type OIDCClientRepository = {
+export interface OIDCClientRepository {
   upsert: (oidcClient: OIDCClient) => Promise<void>;
-};
+}
 
-type Environment = {
+interface Environment {
   oidcClientRepository: OIDCClientRepository;
-};
+}
 
 export const createOIDCClient =
   (payload: OIDCClient) =>

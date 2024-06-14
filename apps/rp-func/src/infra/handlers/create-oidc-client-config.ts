@@ -1,37 +1,32 @@
+import { schemas } from "@/infra/openapi.js";
+import { createOIDCClientConfig, payloadSchema } from "@/oidc-client-config.js";
 import * as H from "@pagopa/handler-kit";
-
 import * as E from "fp-ts/lib/Either.js";
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
-
-import { pipe, flow } from "fp-ts/lib/function.js";
-
-import { payloadSchema, createOIDCClientConfig } from "@/oidc-client-config.js";
+import { flow, pipe } from "fp-ts/lib/function.js";
 import { oidcClientConfigSchema } from "io-fims-common/oidc-client-config";
-
-import { schemas } from "@/infra/openapi.js";
-
 import { parse } from "io-fims-common/parse";
 import { logErrorAndReturnResponse } from "io-fims-common/response";
 
 const requestSchema = schemas.OIDCClientConfig.transform(
-  ({ service_id, institution_id, callbacks }) => ({
+  ({ callbacks, institution_id, service_id }) => ({
+    callbacks: callbacks.map(({ display_name: displayName, uri }) => ({
+      displayName,
+      uri,
+    })),
     id: service_id,
     institutionId: institution_id,
-    callbacks: callbacks.map(({ uri, display_name: displayName }) => ({
-      uri,
-      displayName,
-    })),
   }),
 ).pipe(payloadSchema);
 
 const responseSchema = oidcClientConfigSchema
-  .transform(({ id, institutionId, callbacks }) => ({
-    service_id: id,
-    institution_id: institutionId,
-    callbacks: callbacks.map(({ uri, displayName: display_name }) => ({
-      uri,
+  .transform(({ callbacks, id, institutionId }) => ({
+    callbacks: callbacks.map(({ displayName: display_name, uri }) => ({
       display_name,
+      uri,
     })),
+    institution_id: institutionId,
+    service_id: id,
   }))
   .pipe(schemas.OIDCClientConfig);
 
