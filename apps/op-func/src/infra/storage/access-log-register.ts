@@ -1,11 +1,15 @@
-import { BlobServiceClient, BlockBlobUploadResponse, ContainerClient } from "@azure/storage-blob";
+import {
+  BlobServiceClient,
+  BlockBlobUploadResponse,
+  ContainerClient,
+} from "@azure/storage-blob";
 
-type AccessLogRecord = {
+interface AccessLogRecord {
   fiscalCode: string;
+  idToken: string;
   ipAddress: string;
   rpAuthRequest: string;
   timestamp: string;
-  idToken: string;
 }
 
 export class AccessLogRegister {
@@ -15,16 +19,18 @@ export class AccessLogRegister {
     this.#container = blobServiceClient.getContainerClient(containerName);
   }
 
-  async upload(name: string, content: AccessLogRecord): Promise<BlockBlobUploadResponse> {
-    const blockBlobClient = this.#container.getBlockBlobClient(name);
-    try {
-      const parsedContent = JSON.stringify(content);
-      return await blockBlobClient.upload(parsedContent, parsedContent.length);
-    } catch (e) {
-      throw new Error("Error creating new blob", {
-        cause: e,
+  // A helper method used to read a Node.js readable stream into a String
+  async #streamToBuffer(readableStream: NodeJS.ReadableStream) {
+    return new Promise<AccessLogRecord>((resolve, reject) => {
+      const chunks: Buffer[] | Uint8Array[] = [];
+      readableStream.on("data", (data) => {
+        chunks.push(data instanceof Buffer ? data : Buffer.from(data));
       });
-    }
+      readableStream.on("end", () => {
+        resolve(JSON.parse(Buffer.concat(chunks).toString()));
+      });
+      readableStream.on("error", reject);
+    });
   }
 
   async get(name: string): Promise<AccessLogRecord> {
@@ -40,17 +46,18 @@ export class AccessLogRegister {
     return await this.#streamToBuffer(downloadedStream);
   }
 
-  // A helper method used to read a Node.js readable stream into a String
-  async #streamToBuffer(readableStream: NodeJS.ReadableStream) {
-    return new Promise<AccessLogRecord>((resolve, reject) => {
-      const chunks: Uint8Array[] | Buffer[] = [];
-      readableStream.on("data", (data) => {
-        chunks.push(data instanceof Buffer ? data : Buffer.from(data));
+  async upload(
+    name: string,
+    content: AccessLogRecord,
+  ): Promise<BlockBlobUploadResponse> {
+    const blockBlobClient = this.#container.getBlockBlobClient(name);
+    try {
+      const parsedContent = JSON.stringify(content);
+      return await blockBlobClient.upload(parsedContent, parsedContent.length);
+    } catch (e) {
+      throw new Error("Error creating new blob", {
+        cause: e,
       });
-      readableStream.on("end", () => {
-        resolve(JSON.parse(Buffer.concat(chunks).toString()));
-      });
-      readableStream.on("error", reject);
-    });
+    }
   }
 }
