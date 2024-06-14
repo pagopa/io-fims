@@ -26,4 +26,31 @@ export class AccessLogRegister {
       });
     }
   }
+
+  async get(name: string): Promise<AccessLogRecord> {
+    const blobClient = this.#container.getBlobClient(name);
+
+    // Get blob content from position 0 to the end
+    // get downloaded data by accessing downloadBlockBlobResponse.readableStreamBody
+    const downloadBlockBlobResponse = await blobClient.download();
+    const downloadedStream = downloadBlockBlobResponse.readableStreamBody;
+    if (!downloadedStream)
+      throw new Error("No Blob with name " + name + " found");
+
+    return await this.#streamToBuffer(downloadedStream);
+  }
+
+  // A helper method used to read a Node.js readable stream into a String
+  async #streamToBuffer(readableStream: NodeJS.ReadableStream) {
+    return new Promise<AccessLogRecord>((resolve, reject) => {
+      const chunks: Uint8Array[] | Buffer[] = [];
+      readableStream.on("data", (data) => {
+        chunks.push(data instanceof Buffer ? data : Buffer.from(data));
+      });
+      readableStream.on("end", () => {
+        resolve(JSON.parse(Buffer.concat(chunks).toString()));
+      });
+      readableStream.on("error", reject);
+    });
+  }
 }
