@@ -20,6 +20,7 @@ const config = configSchema.parse({
     uri: process.env.COSMOS_DB_URI,
   },
   storage: {
+    accountName: process.env.STORAGE_ACCOUNT_NAME,
     queue: { name: process.env.STORAGE_QUEUE_NAME },
   },
 });

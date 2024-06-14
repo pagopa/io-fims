@@ -11,7 +11,7 @@ type Application = express.Application;
 
 const makeErrorRequestHandler =
   (logger: Logger): express.ErrorRequestHandler =>
-  (err, req, res) => {
+  (err, _, res) => {
     logger.error(`Something went wrong. Error: ${err}`);
     logger.error(`Stack: \n${err.stack}`);
     res.status(500).render("error", {
