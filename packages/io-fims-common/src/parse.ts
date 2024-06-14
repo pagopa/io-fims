@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 export class ValidationError extends Error {
-  name = "ValidationError";
   static defaultMessage = "Your request didn't validate.";
+  name = "ValidationError";
   constructor(
-    public issues: Array<z.ZodIssue>,
+    public issues: z.ZodIssue[],
     message: string,
   ) {
     super(message);

@@ -1,14 +1,15 @@
-import { ConfigParams, Session } from "express-openid-connect";
 import { Request, Response } from "express";
+import { ConfigParams, Session } from "express-openid-connect";
+
 import { Logger } from "../logger/index.js";
 
 interface ClientConfig {
+  readonly authRequired: boolean;
+  readonly baseURL: string;
   readonly clientId: string;
   readonly issuerBaseURL: string;
-  readonly baseURL: string;
-  readonly secret: string;
-  readonly authRequired: boolean;
   readonly scopes: string;
+  readonly secret: string;
   readonly silentLoginEnabled: boolean;
 }
 

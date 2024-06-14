@@ -1,6 +1,7 @@
+import { NonEmptyString } from "@pagopa/ts-commons/lib/strings.js";
 import * as E from "fp-ts/Either";
 import * as D from "io-ts/Decoder";
-import { NonEmptyString } from "@pagopa/ts-commons/lib/strings.js";
+
 import * as packageJson from "../package.json" assert { type: "json" };
 import * as logger from "./logger/index.js";
 import { ClientConfig } from "./oidc/client-utils.js";
@@ -17,10 +18,10 @@ interface Info {
 }
 
 interface Config {
-  readonly server: ServerConfig;
-  readonly logger: logger.LogConfig;
   readonly info: Info;
+  readonly logger: logger.LogConfig;
   readonly oidcClient: ClientConfig;
+  readonly server: ServerConfig;
 }
 
 type ConfEnv = NodeJS.ProcessEnv;

@@ -1,19 +1,20 @@
 import express from "express";
 import { auth } from "express-openid-connect";
+import { rateLimit } from "express-rate-limit";
+
 import { Config } from "./config.js";
 import { Logger } from "./logger/index.js";
-import { makeRouter } from "./routes/index.js";
 import { makeAuthConfig } from "./oidc/client-utils.js";
-import { rateLimit } from "express-rate-limit";
+import { makeRouter } from "./routes/index.js";
 
 type Application = express.Application;
 
 const makeErrorRequestHandler =
   (logger: Logger): express.ErrorRequestHandler =>
-  (err, _req, resp, _next) => {
+  (err, _, res) => {
     logger.error(`Something went wrong. Error: ${err}`);
     logger.error(`Stack: \n${err.stack}`);
-    resp.status(500).render("error", {
+    res.status(500).render("error", {
       error: err,
       message: err.message,
     });
@@ -30,9 +31,9 @@ const propagateUserInfoToViews =
 const makeApplication = (config: Config, logger: Logger): Application => {
   const application = express();
 
-  var limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
+  const limiter = rateLimit({
     max: 1000, // max 1000 requests per windowMs
+    windowMs: 15 * 60 * 1000, // 15 minutes
   });
 
   // apply rate limiter to all requests
@@ -50,7 +51,7 @@ const makeApplication = (config: Config, logger: Logger): Application => {
   application.use(auth(makeAuthConfig(logger)(config.oidcClient)));
 
   // Register routers
-  application.use(makeRouter(logger)(config));
+  application.use(makeRouter(logger)());
 
   // Register error handler
   application.use(makeErrorRequestHandler(logger));
