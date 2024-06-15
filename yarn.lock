@@ -5107,7 +5107,6 @@ __metadata:
     eslint: "npm:8.57.0"
     fp-ts: "npm:^2.16.5"
     prettier: "npm:^3.2.5"
-    type-fest: "npm:^4.19.0"
     typescript: "npm:5.4.3"
     vitest: "npm:^1.5.0"
     zod: "npm:^3.23.8"
@@ -8487,13 +8486,6 @@ __metadata:
   version: 3.13.1
   resolution: "type-fest@npm:3.13.1"
   checksum: 10c0/547d22186f73a8c04590b70dcf63baff390078c75ea8acd366bbd510fd0646e348bd1970e47ecf795b7cff0b41d26e9c475c1fedd6ef5c45c82075fbf916b629
-  languageName: node
-  linkType: hard
-
-"type-fest@npm:^4.19.0":
-  version: 4.19.0
-  resolution: "type-fest@npm:4.19.0"
-  checksum: 10c0/bd5f96142ea6cc436b75bc2ac0b672d70dfd55ed6986ef76f25165517984bda475bb5d2ee674470a7c5ce0348837627f5e87d9aef1158ba4fb9b36dd10fa2225
   languageName: node
   linkType: hard
 
