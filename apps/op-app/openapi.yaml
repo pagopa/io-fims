@@ -71,6 +71,28 @@ paths:
               schema:
                 type: string
                 format: url
+
+  /health:
+    get:
+      summary: Health
+      tags:
+        - Health
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Health"
+                  - maxItems: 0
+        503:
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+
 components:
   securitySchemes:
     fimsToken:
@@ -149,3 +171,8 @@ components:
         - redirect
         - type
         - user_metadata
+
+    Health:
+      type: array
+      items:
+        type: string

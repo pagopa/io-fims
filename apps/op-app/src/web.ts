@@ -4,12 +4,16 @@ import { createClient } from "redis";
 import { ZodError, z } from "zod";
 
 import { Config, configFromEnvironment } from "./adapters/config.js";
+import { CosmosDBHealthChecker } from "./adapters/cosmos/health.js";
 import { getCosmosDatabase } from "./adapters/cosmos/index.js";
 import { createAdapterFactory } from "./adapters/cosmos/oidc/index.js";
 import { envSchema } from "./adapters/env.js";
 import { createApplication } from "./adapters/express/application.js";
 import { IO } from "./adapters/io/user-metadata.js";
 import { createProvider } from "./adapters/oidc/provider.js";
+import RedisHealthChecker from "./adapters/redis/health.js";
+import RedisSessionRepository from "./adapters/redis/session.js";
+import { HealthUseCase } from "./use-cases/health.js";
 import { LoginUseCase } from "./use-cases/login.js";
 
 const webConfig = z.object({
@@ -62,8 +66,12 @@ async function main(config: Config & WebConfig) {
     sessionRepository,
   });
 
+  const health = new HealthUseCase([
+    new CosmosDBHealthChecker(database.client),
+    new RedisHealthChecker(redis),
+  ]);
 
-  const app = createApplication(oidc, login, logger);
+  const app = createApplication(oidc, login, health, logger);
 
   const server = app.listen(config.web.port, () => {
     logger.info(`http server listening on ${config.web.port}`);
