@@ -1,18 +1,23 @@
 import { EmailString } from "@pagopa/ts-commons/lib/strings.js";
 import * as E from "fp-ts/lib/Either.js";
-import { pino } from "pino";
 import { describe, expect, it, vi } from "vitest";
 
 import { FiscalCode } from "../generated/FiscalCode.js";
 import { SpidLevelEnum } from "../generated/SpidLevel.js";
-import { IOUserRepository } from "../user.js";
+import { IO } from "../user-metadata.js";
 
-const logger = pino({
-  level: "silent",
-});
+const repo = new IO("http://localhost");
 
-describe("getUser", () => {
-  it("correctly retrieves an user", async () => {
+const { getUserForFIMS } = vi.hoisted(() => ({
+  getUserForFIMS: vi.fn(),
+}));
+
+vi.mock("../generated/client", () => ({
+  createClient: vi.fn().mockReturnValue({ getUserForFIMS }),
+}));
+
+describe("getUserMetadata", () => {
+  it("Retrieves correctly the user metadata using the federation token", async () => {
     const value = {
       acr: SpidLevelEnum["https://www.spid.gov.it/SpidL2"],
       auth_time: 1648474413,
@@ -22,15 +27,16 @@ describe("getUser", () => {
       fiscal_code: "AAABBB01C02D123Z" as FiscalCode,
       name: "Name",
     };
-    const getUserForFIMS = vi.fn().mockResolvedValueOnce(
+
+    getUserForFIMS.mockResolvedValueOnce(
       E.right({
         headers: {},
         status: 200,
         value,
       }),
     );
-    const repo = new IOUserRepository({ getUserForFIMS }, logger);
-    await expect(repo.getUser("my-fed-token")).resolves.toEqual(
+
+    await expect(repo.getUserMetadata("my-fed-token")).resolves.toEqual(
       expect.objectContaining({
         firstName: value.name,
         fiscalCode: value.fiscal_code,
@@ -38,50 +44,46 @@ describe("getUser", () => {
       }),
     );
   });
-  it("throws on invalid user schema", async () => {
+  it("Throws on invalid user schema", async () => {
     const value = {
       acr: SpidLevelEnum["https://www.spid.gov.it/SpidL2"],
       auth_time: 1648474413,
       date_of_birth: new Date(),
       name: "Name",
     };
-    const getUserForFIMS = vi.fn().mockResolvedValueOnce(
+    getUserForFIMS.mockResolvedValueOnce(
       E.right({
         headers: {},
         status: 200,
         value,
       }),
     );
-    const repo = new IOUserRepository({ getUserForFIMS }, logger);
-    await expect(repo.getUser("my-fed-token")).rejects.toThrowError(
+    await expect(repo.getUserMetadata("my-fed-token")).rejects.toThrowError(
       "Invalid user data",
     );
   });
-  it("throws on invalid request", async () => {
-    const getUserForFIMS = vi.fn().mockResolvedValueOnce(E.left({}));
-    const repo = new IOUserRepository({ getUserForFIMS }, logger);
-    await expect(repo.getUser("my-fed-token")).rejects.toThrowError(
+  it("Throws on invalid request", async () => {
+    getUserForFIMS.mockResolvedValueOnce(E.left({}));
+    await expect(repo.getUserMetadata("my-fed-token")).rejects.toThrowError(
       "Request failed",
     );
   });
-  it("throws on request failed", async () => {
-    const getUserForFIMS = vi.fn().mockResolvedValueOnce(
+  it("Throws on request failed", async () => {
+    getUserForFIMS.mockResolvedValueOnce(
       E.right({
         headers: {},
         status: 401,
         value: "Token null or expired",
       }),
     );
-    const repo = new IOUserRepository({ getUserForFIMS }, logger);
-    await expect(repo.getUser("my-fed-token")).rejects.toThrowError(
+    await expect(repo.getUserMetadata("my-fed-token")).rejects.toThrowError(
       "Request failed",
     );
   });
-  it("throws on client error", async () => {
-    const getUserForFIMS = vi.fn().mockRejectedValueOnce(new Error("!!"));
-    const repo = new IOUserRepository({ getUserForFIMS }, logger);
-    await expect(repo.getUser("my-fed-token")).rejects.toThrowError(
-      "Client error",
+  it("Throws on client error", async () => {
+    getUserForFIMS.mockResolvedValueOnce(new Error("!!"));
+    await expect(repo.getUserMetadata("my-fed-token")).rejects.toThrowError(
+      "Unable to fetch user data. Request failed",
     );
   });
 });

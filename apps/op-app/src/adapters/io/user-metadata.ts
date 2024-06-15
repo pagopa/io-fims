@@ -1,26 +1,25 @@
 import {
-  FederationToken,
-  User,
-  UserRepository,
-  userSchema,
-} from "@/domain/user.js";
+  IdentityProvider,
+  UserMetadata,
+  userMetadataSchema,
+} from "@/domain/user-metadata.js";
 import * as E from "fp-ts/lib/Either.js";
 import * as assert from "node:assert/strict";
-import { Logger } from "pino";
 import { ZodError } from "zod";
 
-import { Client } from "./generated/client.js";
+import { Client, createClient } from "./generated/client.js";
 
-export class IOUserRepository implements UserRepository {
+export class IO implements IdentityProvider {
   #client: Client;
-  #logger: Logger;
 
-  constructor(client: Client, logger: Logger) {
-    this.#client = client;
-    this.#logger = logger;
+  constructor(baseUrl: string) {
+    this.#client = createClient({
+      baseUrl,
+      fetchApi: globalThis.fetch,
+    });
   }
 
-  async getUser(token: FederationToken): Promise<User> {
+  async getUserMetadata(token: string): Promise<UserMetadata> {
     try {
       const result = await this.#client.getUserForFIMS({
         Bearer: `Bearer ${token}`,
@@ -32,7 +31,7 @@ export class IOUserRepository implements UserRepository {
         fiscal_code: fiscalCode,
         name: firstName,
       } = result.right.value;
-      return userSchema.parse({ firstName, fiscalCode, lastName });
+      return userMetadataSchema.parse({ firstName, fiscalCode, lastName });
     } catch (e) {
       const err = {
         cause: "Client error",
@@ -44,7 +43,6 @@ export class IOUserRepository implements UserRepository {
         err.cause = "Request failed";
       }
       const msg = `${err.msg}. ${err.cause}.`;
-      this.#logger.error(err, msg);
       throw new Error(msg, {
         cause: err.cause,
       });

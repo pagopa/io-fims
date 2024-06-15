@@ -1,34 +1,43 @@
+import type { LoginUseCase } from "@/use-cases/login.js";
 import type Provider from "oidc-provider";
 
+import cookieParser from "cookie-parser";
 import express from "express";
+import helmet from "helmet";
 import { Logger } from "pino";
 import { pinoHttp } from "pino-http";
 
-import { ExpressConfig } from "./config.js";
+import errorHandler from "./error.js";
+import i18n from "./i18n.js";
+import healthRouter from "./routes/health.js";
+import interactionRouter from "./routes/interaction.js";
 
 export const createApplication = (
-  config: ExpressConfig,
-  provider: Provider,
+  oidc: Provider,
+  login: LoginUseCase,
   logger: Logger,
 ): express.Application => {
   const app = express();
-  app.disable("x-powered-by");
 
+  app.disable("x-powered-by");
+  app.enable("trust proxy");
+
+  app.use(helmet());
+  app.use(cookieParser());
+  app.use(i18n.init);
   app.use(
     pinoHttp({
       logger,
+      quietReqLogger: true,
+      useLevel: "debug",
     }),
   );
 
-  if (config.environment === "development") {
-    app.get("/echo", (req, res) => {
-      res.json({
-        query: req.query,
-      });
-    });
-  }
+  app.use(interactionRouter(oidc, login));
 
-  app.use(provider.callback());
+  app.use(oidc.callback());
+
+  app.use(errorHandler);
 
   return app;
 };
