@@ -7,12 +7,7 @@ export const envSchema = z.object({
   NODE_ENVIRONMENT: z.enum(["production", "development"]),
   OIDC_ISSUER: z.string().url(),
   PORT: z.string().default("3000"),
+  REDIS_PASSWORD: z.string().min(1),
+  REDIS_PING_INTERVAL: z.coerce.number(),
+  REDIS_URL: z.string().url(),
 });
-
-/* eslint-disable */
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv extends z.TypeOf<typeof envSchema> {}
-  }
-}
-/* eslint-enable */
