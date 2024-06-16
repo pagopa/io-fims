@@ -1,13 +1,14 @@
 import { z } from "zod";
 
-export const envSchema = z.object({
-  COSMOS_DBNAME: z.string().min(1).default("op"),
-  COSMOS_ENDPOINT: z.string().url(),
-  IO_BASE_URL: z.string().url(),
-  NODE_ENVIRONMENT: z.enum(["production", "development"]),
-  OIDC_ISSUER: z.string().url(),
-  PORT: z.string().default("3000"),
-  REDIS_PASSWORD: z.string().min(1),
-  REDIS_PING_INTERVAL: z.coerce.number(),
-  REDIS_URL: z.string().url(),
-});
+import { nodeEnvSchema, cosmosEnvSchema } from "io-fims-common/adapters/env";
+
+export const envSchema = nodeEnvSchema.and(cosmosEnvSchema).and(
+  z.object({
+    IO_BASE_URL: z.string().url(),
+    OIDC_ISSUER: z.string().url(),
+    PORT: z.string().default("3000"),
+    REDIS_PASSWORD: z.string().min(1),
+    REDIS_PING_INTERVAL: z.coerce.number(),
+    REDIS_URL: z.string().url(),
+  }),
+);
