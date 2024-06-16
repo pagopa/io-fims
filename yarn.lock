@@ -6605,6 +6605,7 @@ __metadata:
     fp-ts: "npm:^2.16.6"
     helmet: "npm:^7.1.0"
     i18n: "npm:^0.15.1"
+    io-fims-common: "workspace:^"
     io-ts: "npm:^2.2.21"
     jose: "npm:^5.4.0"
     oidc-provider: "npm:^8.4.6"

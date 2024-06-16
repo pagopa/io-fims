@@ -34,6 +34,7 @@
     "format:check": "prettier --check .",
     "lint": "eslint --fix src",
     "lint:check": "eslint src",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "generate:schemas": "node generate-schemas.js"
   }
