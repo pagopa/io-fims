@@ -1,7 +1,7 @@
 {
   "name": "user-func",
   "private": true,
-  "main": "dist/main.js",
+  "main": "dist/func.js",
   "type": "module",
   "scripts": {
     "build": "tsup-node",
@@ -19,7 +19,8 @@
     "@azure/functions": "^4.4.0",
     "@pagopa/handler-kit": "^1.1.0",
     "@pagopa/handler-kit-azure-func": "^2.0.3",
-    "fp-ts": "^2.16.5"
+    "fp-ts": "^2.16.5",
+    "io-fims-common": "workspace:^"
   },
   "devDependencies": {
     "@pagopa/eslint-config": "^4.0.1",
