@@ -15,6 +15,7 @@ import RedisSessionRepository from "./adapters/redis/session.js";
 import { HealthUseCase } from "./use-cases/health.js";
 import { LoginUseCase } from "./use-cases/login.js";
 import { initCosmos } from "io-fims-common/adapters/cosmos/index";
+import { loadConfigFromEnvironment } from "io-fims-common/adapters/config";
 
 const webConfig = z.object({
   web: z.object({
@@ -24,7 +25,7 @@ const webConfig = z.object({
 
 type WebConfig = z.TypeOf<typeof webConfig>;
 
-const webConfigFromEnvrionment = envSchema
+const webConfigFromEnvironment = envSchema
   .transform(({ PORT }) => ({ web: { port: PORT } }))
   .pipe(webConfig);
 
@@ -87,29 +88,7 @@ async function main(config: Config & WebConfig) {
   process.on("SIGTERM", cleanup);
 }
 
-try {
-  const config = configFromEnvironment
-    .and(webConfigFromEnvrionment)
-    .parse(process.env);
-  await main(config);
-} catch (err) {
-  if (err instanceof ZodError) {
-    err.issues.forEach((issue) => {
-      logger.error({ issue }, "Error parsing environment variable");
-    });
-  } else if (err instanceof Error) {
-    logger.error(
-      {
-        err,
-      },
-      err.message,
-    );
-  } else {
-    logger.error(
-      {
-        err,
-      },
-      "Unable to start the application due to an unexpected error",
-    );
-  }
-}
+await loadConfigFromEnvironment(
+  configFromEnvironment.and(webConfigFromEnvironment),
+  main,
+);

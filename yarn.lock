@@ -5108,6 +5108,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:^1.5.0"
     eslint: "npm:8.57.0"
     fp-ts: "npm:^2.16.5"
+    pino: "npm:^9.1.0"
     prettier: "npm:^3.2.5"
     tsc-alias: "npm:^1.8.10"
     typescript: "npm:5.4.3"
