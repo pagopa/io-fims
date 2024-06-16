@@ -1,7 +1,6 @@
 import { HealthUseCase } from "@/use-cases/health.js";
-import { describe, expect, test } from "vitest";
-
 import * as H from "@pagopa/handler-kit";
+import { describe, expect, test } from "vitest";
 
 import Health from "../health.js";
 
@@ -46,18 +45,18 @@ describe("Health", () => {
     "Respond with the right status code ($probes.length probes, $status)",
     async ({ failures, input, status }) => {
       const run = Health({
-        logger,
         health: new HealthUseCase(input),
         input: H.request("http://my-unit-test.local/health"),
         inputDecoder: H.HttpRequest,
+        logger,
       });
       await expect(run()).resolves.toEqual(
         expect.objectContaining({
           right: expect.objectContaining({
+            body: failures,
             headers: expect.objectContaining({
               "Content-Type": "application/json",
             }),
-            body: failures,
             statusCode: status,
           }),
         }),

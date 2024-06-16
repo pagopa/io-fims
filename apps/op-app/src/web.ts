@@ -4,8 +4,7 @@ import { createClient } from "redis";
 import { ZodError, z } from "zod";
 
 import { Config, configFromEnvironment } from "./adapters/config.js";
-import { CosmosDBHealthChecker } from "./adapters/cosmos/health.js";
-import { getCosmosDatabase } from "./adapters/cosmos/index.js";
+
 import { createAdapterFactory } from "./adapters/cosmos/oidc/index.js";
 import { envSchema } from "./adapters/env.js";
 import { createApplication } from "./adapters/express/application.js";
@@ -15,6 +14,7 @@ import RedisHealthChecker from "./adapters/redis/health.js";
 import RedisSessionRepository from "./adapters/redis/session.js";
 import { HealthUseCase } from "./use-cases/health.js";
 import { LoginUseCase } from "./use-cases/login.js";
+import { initCosmos } from "io-fims-common/adapters/cosmos/index";
 
 const webConfig = z.object({
   web: z.object({
@@ -44,15 +44,12 @@ async function main(config: Config & WebConfig) {
 
   const sessionRepository = new RedisSessionRepository(redis);
 
-  const database = getCosmosDatabase(
-    config.cosmos,
-    new DefaultAzureCredential(),
-  );
+  const cosmos = initCosmos(config.cosmos, new DefaultAzureCredential());
 
   const oidc = createProvider(
     config.oidc.issuer,
     sessionRepository,
-    createAdapterFactory(database),
+    createAdapterFactory(cosmos.database),
   );
 
   oidc.on("server_error", (ctx, err) => {
@@ -67,7 +64,7 @@ async function main(config: Config & WebConfig) {
   });
 
   const health = new HealthUseCase([
-    new CosmosDBHealthChecker(database.client),
+    cosmos.healthChecker,
     new RedisHealthChecker(redis),
   ]);
 
@@ -94,7 +91,6 @@ try {
   const config = configFromEnvironment
     .and(webConfigFromEnvrionment)
     .parse(process.env);
-
   await main(config);
 } catch (err) {
   if (err instanceof ZodError) {
