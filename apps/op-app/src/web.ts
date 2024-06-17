@@ -1,10 +1,11 @@
 import { DefaultAzureCredential } from "@azure/identity";
+import { loadConfigFromEnvironment } from "io-fims-common/adapters/config";
+import { initCosmos } from "io-fims-common/adapters/cosmos/index";
 import { pino } from "pino";
 import { createClient } from "redis";
-import { ZodError, z } from "zod";
+import { z } from "zod";
 
 import { Config, configFromEnvironment } from "./adapters/config.js";
-
 import { createAdapterFactory } from "./adapters/cosmos/oidc/index.js";
 import { envSchema } from "./adapters/env.js";
 import { createApplication } from "./adapters/express/application.js";
@@ -14,8 +15,6 @@ import RedisHealthChecker from "./adapters/redis/health.js";
 import RedisSessionRepository from "./adapters/redis/session.js";
 import { HealthUseCase } from "./use-cases/health.js";
 import { LoginUseCase } from "./use-cases/login.js";
-import { initCosmos } from "io-fims-common/adapters/cosmos/index";
-import { loadConfigFromEnvironment } from "io-fims-common/adapters/config";
 
 const webConfig = z.object({
   web: z.object({
