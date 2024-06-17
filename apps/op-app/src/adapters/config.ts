@@ -1,6 +1,6 @@
+import { cosmosConfigSchema } from "io-fims-common/adapters/cosmos/config";
 import { z } from "zod";
 
-import { cosmosConfigSchema } from "io-fims-common/adapters/cosmos/config";
 import { envSchema } from "./env.js";
 import { ioConfigSchema } from "./io/config.js";
 import { oidcConfigSchema } from "./oidc/config.js";

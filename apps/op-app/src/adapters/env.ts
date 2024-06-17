@@ -1,6 +1,5 @@
+import { cosmosEnvSchema, nodeEnvSchema } from "io-fims-common/adapters/env";
 import { z } from "zod";
-
-import { nodeEnvSchema, cosmosEnvSchema } from "io-fims-common/adapters/env";
 
 export const envSchema = nodeEnvSchema.and(cosmosEnvSchema).and(
   z.object({

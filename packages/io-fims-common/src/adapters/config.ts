@@ -1,5 +1,5 @@
-import { z, ZodError } from "zod";
 import { pino } from "pino";
+import { ZodError, z } from "zod";
 
 const logger = pino({
   level: "error",
