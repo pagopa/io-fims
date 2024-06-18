@@ -7,7 +7,7 @@ variable "tags" {
   type = map(any)
 }
 
-variable "project" {
+variable "common_project" {
   type = string
 }
 

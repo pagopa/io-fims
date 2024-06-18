@@ -9,6 +9,9 @@
     "moduleResolution": "NodeNext",
     "sourceMap": true,
     "strict": true,
-    "declaration": true
+    "declaration": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }

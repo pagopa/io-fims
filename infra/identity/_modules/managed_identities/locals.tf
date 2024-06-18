@@ -38,6 +38,9 @@ locals {
     resource_groups = {
       terraform-state-rg = [
         "Storage Blob Data Contributor"
+      ],
+      io-p-fims-rg = [
+        "Role Based Access Control Administrator"
       ]
     }
   }

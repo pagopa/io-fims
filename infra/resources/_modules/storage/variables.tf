@@ -1,4 +1,4 @@
-variable "product" {
+variable "project" {
   type = string
 }
 
@@ -15,14 +15,13 @@ variable "tags" {
   type = map(any)
 }
 
-variable "private_endpoints_subnet_id" {
-  type = string
+variable "virtual_network" {
+  type = object({
+    name                = string
+    resource_group_name = string
+  })
 }
 
-variable "private_dns_zones" {
-  type = object({
-    privatelink_queue_core_windows_net = object({
-      id = string
-    })
-  })
+variable "subnet_pep_id" {
+  type = string
 }
