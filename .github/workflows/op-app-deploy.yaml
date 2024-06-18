@@ -1,0 +1,17 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  op_app_deploy:
+    uses: pagopa/dx/.github/workflows/web_app_deploy.yaml@add-web-app-deploy-workflow
+    name: Deploy
+    secrets: inherit
+    with:
+      workspace_name: op-app
+      entry_point_name: web
+      environment: app-prod
+      resource_group_name: io-p-weu-fims-rg-01
+      web_app_name: io-p-weu-fims-op-app-01
+      health_check_path: /health
+      use_staging_slot: false
+      use_private_agent: true
