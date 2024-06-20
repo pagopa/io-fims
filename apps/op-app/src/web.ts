@@ -87,7 +87,7 @@ async function main(config: Config & WebConfig) {
   process.on("SIGTERM", cleanup);
 }
 
-loadConfigFromEnvironment(
+await loadConfigFromEnvironment(
   configFromEnvironment.and(webConfigFromEnvironment),
   main,
 );

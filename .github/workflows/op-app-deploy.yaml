@@ -8,7 +8,7 @@ jobs:
     secrets: inherit
     with:
       workspace_name: op-app
-      entry_point_name: web
+      target_name: web
       environment: app-prod
       resource_group_name: io-p-weu-fims-rg-01
       web_app_name: io-p-weu-fims-op-app-01

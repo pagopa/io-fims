@@ -5,8 +5,10 @@ locals {
       COSMOS_DBNAME   = data.azurerm_cosmosdb_sql_database.fims_op.name
       REDIS_URL       = var.redis_cache.url
       REDIS_PASSWORD  = var.redis_cache.access_key
-      OIDC_ISSUER     = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-oidc-issuer)"
-      IO_BASE_URL     = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=io-be-base-url)"
+      # https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-best-practices-connection#idle-timeout
+      REDIS_PING_INTERVAL = 1000 * 60 * 9
+      OIDC_ISSUER         = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-oidc-issuer)"
+      IO_BASE_URL         = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=io-be-base-url)"
     }
   }
 }
@@ -43,9 +45,9 @@ module "op_app" {
   tags = var.tags
 }
 
-resource "azurerm_role_assignment" "key_vault_fims_op_app" {
+resource "azurerm_role_assignment" "key_vault_fims_op_app_secrets_user" {
   scope                = var.key_vault.id
-  role_definition_name = "Key Vault Reader"
+  role_definition_name = "Key Vault Secrets User"
   principal_id         = module.op_app.app_service.app_service.principal_id
 }
 

@@ -21,10 +21,12 @@ module "federated_identities" {
           "Storage Blob Data Contributor"
         ]
         io-p-fims-rg = [
-          "DocumentDB Account Contributor"
+          "DocumentDB Account Contributor",
+          "Key Vault Certificate User"
         ],
         io-p-weu-fims-rg-01 = [
-          "DocumentDB Account Contributor"
+          "DocumentDB Account Contributor",
+          "Key Vault Certificate User"
         ]
       }
     }

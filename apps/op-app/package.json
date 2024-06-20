@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "exports": {
+    "web": "./dist/web.js"
+  },
   "dependencies": {
     "@azure/cosmos": "^4.0.0",
     "@azure/identity": "^4.1.0",
@@ -29,7 +32,7 @@
     "format:check": "prettier --check .",
     "lint": "eslint --fix src",
     "lint:check": "eslint src",
-    "build": "esbuild ./src/web.ts --platform=node --target=node20 --outdir=dist",
+    "build": "esbuild --bundle ./src/web.ts --format=esm --platform=node --target=node20 --outdir=dist --packages=external",
     "build:watch": "yarn build --watch",
     "start": "node .",
     "start:dev": "node --env-file=.env . | pino-pretty",
