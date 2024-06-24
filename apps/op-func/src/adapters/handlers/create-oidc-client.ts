@@ -1,15 +1,12 @@
+import { createOIDCClient } from "@/domain/oidc-client.js";
 import * as H from "@pagopa/handler-kit";
 import { pipe } from "fp-ts/lib/function.js";
+import { iotsCodecFromZod } from "io-fims-common/io-ts-from-zod";
 import { OIDCClient } from "io-fims-common/oidc-client";
 import {
   OIDCClientConfig,
   oidcClientConfigSchema,
 } from "io-fims-common/oidc-client-config";
-
-import { createOIDCClient } from "../../oidc-client.js";
-import { IoTsType } from "./validation.js";
-
-export const createOIDCClientInputDecoder = IoTsType(oidcClientConfigSchema);
 
 export const clientConfigToClient = (
   clientConfig: OIDCClientConfig,
@@ -22,6 +19,8 @@ export const clientConfigToClient = (
   scope: clientConfig.scopes.join(" "),
 });
 
-export const createOIDCClientHandler = H.of((clientConfigs: OIDCClientConfig) =>
-  pipe(clientConfigs, clientConfigToClient, createOIDCClient),
+export const inputDecoder = iotsCodecFromZod(oidcClientConfigSchema);
+
+export const createOIDCClientHandler = H.of((clientConfig: OIDCClientConfig) =>
+  pipe(clientConfig, clientConfigToClient, createOIDCClient),
 );
