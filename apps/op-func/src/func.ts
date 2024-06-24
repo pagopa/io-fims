@@ -23,11 +23,11 @@ async function main(config: Config) {
   const oidcClientRepository = new CosmosOIDCClientRepository(cosmos.database);
 
   app.http("Health", {
-    route: "health",
     handler: httpAzureFunction(healthHandler)({
       health,
     }),
     methods: ["GET", "POST"],
+    route: "health",
   });
 
   app.storageQueue("CreateOIDCClient", {

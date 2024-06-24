@@ -1,9 +1,9 @@
 import * as E from "fp-ts/lib/Either.js";
 import * as TE from "fp-ts/lib/TaskEither.js";
-import { OIDCClient } from "io-fims-common/oidc-client";
+import { ClientMetadata } from "io-fims-common/domain/client-metadata";
 
 export interface OIDCClientRepository {
-  upsert: (oidcClient: OIDCClient) => Promise<void>;
+  upsert: (clientMetadata: ClientMetadata) => Promise<void>;
 }
 
 interface Environment {
@@ -11,6 +11,6 @@ interface Environment {
 }
 
 export const createOIDCClient =
-  (payload: OIDCClient) =>
+  (payload: ClientMetadata) =>
   ({ oidcClientRepository: repo }: Environment) =>
     TE.tryCatch(() => repo.upsert(payload), E.toError);

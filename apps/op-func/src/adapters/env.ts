@@ -3,10 +3,9 @@ import { z } from "zod";
 
 export const envSchema = nodeEnvSchema.and(cosmosEnvSchema).and(
   z.object({
-    CONFIG_QUEUE_queueServiceUri: z
+    CONFIG_QUEUE__name: z.string().min(1),
+    CONFIG_QUEUE__queueServiceUri: z
       .string()
-      .regex(
-        /https:\/\/([a-z]+).queue.core.windows.net\/([a-z][a-z|-]*[a-z]+)/,
-      ),
+      .regex(/^https:\/\/([a-z]+)\.queue\.core\.windows\.net$/),
   }),
 );
