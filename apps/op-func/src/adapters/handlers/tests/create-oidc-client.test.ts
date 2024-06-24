@@ -1,11 +1,11 @@
-import { OIDCClientRepository } from "@/oidc-client.js";
+import { OIDCClientRepository } from "@/domain/oidc-client.js";
 import * as L from "@pagopa/logger";
-import { OIDCClientConfig } from "io-fims-common/oidc-client-config";
+import { OIDCClientConfig } from "io-fims-common/domain/oidc-client-config";
 import { describe, expect, it, vi } from "vitest";
 
 import {
   createOIDCClientHandler,
-  createOIDCClientInputDecoder,
+  inputDecoder,
 } from "../create-oidc-client.js";
 
 const oidcClientRepository: OIDCClientRepository = {
@@ -19,20 +19,20 @@ const logger: L.Logger = {
 const aValidOidcClientConfig: OIDCClientConfig = {
   callbacks: [
     {
-      displayName: "Gestione prenotazioni",
+      displayName: {
+        it: "Gestione prenotazioni",
+      },
       uri: "https://example-rp.io.pagopa.it",
     },
   ],
   id: "01ARZ3NDEKTSV4RRFFQ69G5FAV",
-  institutionId: "328b5e41-b386-47c6-8142-c5209fa00a5b",
-  scopes: ["openid", "profile"],
 };
 
 describe("createOIDCClientConfigHandler", () => {
   it("should return a left if the input is not valid", async () => {
     const run = createOIDCClientHandler({
       input: { foo: "foo" },
-      inputDecoder: createOIDCClientInputDecoder,
+      inputDecoder,
       logger,
       oidcClientRepository,
     });
@@ -47,7 +47,7 @@ describe("createOIDCClientConfigHandler", () => {
     vi.spyOn(oidcClientRepository, "upsert").mockRejectedValue(undefined);
     const run = createOIDCClientHandler({
       input: aValidOidcClientConfig,
-      inputDecoder: createOIDCClientInputDecoder,
+      inputDecoder,
       logger,
       oidcClientRepository,
     });
@@ -64,7 +64,7 @@ describe("createOIDCClientConfigHandler", () => {
     vi.spyOn(oidcClientRepository, "upsert").mockResolvedValue();
     const run = createOIDCClientHandler({
       input: aValidOidcClientConfig,
-      inputDecoder: createOIDCClientInputDecoder,
+      inputDecoder,
       logger,
       oidcClientRepository,
     });

@@ -48,6 +48,7 @@ variable "subnet_pep_id" {
 variable "subnet_cidrs" {
   type = object({
     op_app     = string
+    op_func    = string
     rp_example = string
   })
 }
@@ -63,6 +64,18 @@ variable "cosmosdb_account" {
   type = object({
     name                = string
     resource_group_name = string
+  })
+}
+
+variable "storage_account" {
+  type = object({
+    id   = string
+    name = string
+    queues = object({
+      config = object({
+        name = string
+      })
+    })
   })
 }
 

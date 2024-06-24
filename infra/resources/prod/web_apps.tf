@@ -27,6 +27,7 @@ module "web_apps" {
 
   subnet_cidrs = {
     op_app     = "10.0.20.0/26"
+    op_func    = "10.0.20.64/26"
     rp_example = "10.0.19.0/28"
   }
 
@@ -34,5 +35,6 @@ module "web_apps" {
 
   key_vault        = module.key_vaults.fims
   cosmosdb_account = module.cosmos.fims
+  storage_account  = module.storage.fims
   redis_cache      = module.redis_cache.fims
 }

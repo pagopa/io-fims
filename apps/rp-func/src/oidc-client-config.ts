@@ -4,21 +4,17 @@ import { pipe } from "fp-ts/lib/function.js";
 import {
   OIDCClientConfig,
   oidcClientConfigSchema,
-} from "io-fims-common/oidc-client-config";
+} from "io-fims-common/domain/oidc-client-config";
 import { z } from "zod";
 
 export const payloadSchema = oidcClientConfigSchema.pick({
   callbacks: true,
   id: true,
-  institutionId: true,
 });
 
 type Payload = z.TypeOf<typeof payloadSchema>;
 
-const OIDCClientConfig = (payload: Payload): OIDCClientConfig => ({
-  ...payload,
-  scopes: ["openid", "profile"],
-});
+const OIDCClientConfig = (payload: Payload): OIDCClientConfig => payload;
 
 export interface OIDCClientConfigRepository {
   upsert: (oidcClientConfig: OIDCClientConfig) => Promise<void>;
