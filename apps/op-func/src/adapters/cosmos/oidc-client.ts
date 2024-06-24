@@ -1,4 +1,4 @@
-import type { OIDCClientRepository } from "@/oidc-client.js";
+import type { OIDCClientRepository } from "@/domain/oidc-client.js";
 
 import { Container, Database } from "@azure/cosmos";
 import { OIDCClient } from "io-fims-common/oidc-client";
