@@ -1,6 +1,6 @@
 import { OIDCClientRepository } from "@/domain/oidc-client.js";
 import * as L from "@pagopa/logger";
-import { OIDCClientConfig } from "io-fims-common/oidc-client-config";
+import { OIDCClientConfig } from "io-fims-common/domain/oidc-client-config";
 import { describe, expect, it, vi } from "vitest";
 
 import {
@@ -19,13 +19,13 @@ const logger: L.Logger = {
 const aValidOidcClientConfig: OIDCClientConfig = {
   callbacks: [
     {
-      displayName: "Gestione prenotazioni",
+      displayName: {
+        it: "Gestione prenotazioni",
+      },
       uri: "https://example-rp.io.pagopa.it",
     },
   ],
   id: "01ARZ3NDEKTSV4RRFFQ69G5FAV",
-  institutionId: "328b5e41-b386-47c6-8142-c5209fa00a5b",
-  scopes: ["openid", "profile"],
 };
 
 describe("createOIDCClientConfigHandler", () => {

@@ -16,11 +16,12 @@ const logger: L.Logger = {
 const requestBody = {
   callbacks: [
     {
-      display_name: "Gestione prenotazioni",
+      display_name: {
+        it: "Gestione prenotazioni",
+      },
       uri: "https://example-rp.io.pagopa.it",
     },
   ],
-  institution_id: "328b5e41-b386-47c6-8142-c5209fa00a5b",
   service_id: "01ARZ3NDEKTSV4RRFFQ69G5FAV",
 };
 

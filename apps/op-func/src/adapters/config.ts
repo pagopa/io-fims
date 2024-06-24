@@ -14,18 +14,20 @@ export const configSchema = z.object({
 export type Config = z.TypeOf<typeof configSchema>;
 
 export const configFromEnvironment = envSchema
-  .transform((env) => ({
-    cosmos: {
-      databaseName: env.COSMOS_DBNAME,
-      endpoint: env.COSMOS_ENDPOINT,
-    },
-    storage: {
-      queue: {
-        config: {
-          connectionPrefix: "CONFIG_QUEUE_",
-          name: env.CONFIG_QUEUE_queueServiceUri.split("/").at(-1),
+  .transform(
+    (env): Config => ({
+      cosmos: {
+        databaseName: env.COSMOS_DBNAME,
+        endpoint: env.COSMOS_ENDPOINT,
+      },
+      storage: {
+        queue: {
+          config: {
+            connectionPrefix: "CONFIG_QUEUE",
+            name: env.CONFIG_QUEUE__name,
+          },
         },
       },
-    },
-  }))
+    }),
+  )
   .pipe(configSchema);
