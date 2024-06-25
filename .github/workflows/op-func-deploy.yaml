@@ -1,8 +1,10 @@
+name: Deploy (op-func)
+
 on:
   workflow_dispatch:
 
 jobs:
-  op_app_deploy:
+  op_func_deploy:
     uses: pagopa/dx/.github/workflows/web_app_deploy.yaml@add-web-app-deploy-workflow
     name: Deploy
     secrets: inherit

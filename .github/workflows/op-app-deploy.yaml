@@ -1,3 +1,5 @@
+name: Deploy (op-app)
+
 on:
   workflow_dispatch:
 
