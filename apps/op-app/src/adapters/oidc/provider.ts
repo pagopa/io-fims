@@ -29,6 +29,10 @@ export function createProvider(
         enabled: false,
       },
     },
+    routes: {
+      authorization: "/authorize",
+      userinfo: "/userinfo",
+    },
     findAccount: findAccount({ sessionRepository }),
     pkce: {
       required: () => false,
