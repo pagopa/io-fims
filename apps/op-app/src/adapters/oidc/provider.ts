@@ -4,21 +4,23 @@ import Provider, * as oidc from "oidc-provider";
 
 import { findAccount } from "./account.js";
 
-export const createProvider = (
+const oidcClaims: oidc.Configuration["claims"] = Object.entries(claims).reduce(
+  (acc, [scope, claims]) => ({
+    ...acc,
+    [scope]: [...claims],
+  }),
+  {},
+);
+
+export function createProvider(
   issuer: string,
   sessionRepository: SessionRepository,
   adapter: oidc.AdapterConstructor | oidc.AdapterFactory,
-): Provider =>
-  new Provider(issuer, {
+) {
+  const provider = new Provider(issuer, {
     adapter,
-    claims: Object.entries(claims).reduce(
-      (acc, [scope, claims]) => ({
-        ...acc,
-        [scope]: [...claims],
-      }),
-      {},
-    ),
-    clientAuthMethods: ["none"],
+    claims: oidcClaims,
+    clientAuthMethods: ["client_secret_basic"],
     extraClientMetadata: {
       properties: ["redirect_display_names"],
     },
@@ -36,6 +38,10 @@ export const createProvider = (
       ctx.body = out;
     },
     responseTypes: ["code", "id_token"],
+    routes: {
+      authorization: "/authorize",
+      userinfo: "/userinfo",
+    },
     ttl: {
       AccessToken: 60,
       AuthorizationCode: 60,
@@ -45,3 +51,8 @@ export const createProvider = (
       Session: 5 * 60,
     },
   });
+  // Configure the OIDC provider to trust the X-Forwarded-* headers.
+  // https://github.com/panva/node-oidc-provider/blob/main/docs/README.md#trusting-tls-offloading-proxies
+  provider.proxy = true;
+  return provider;
+}
