@@ -11,6 +11,7 @@ import {
 import { HealthUseCase } from "@/use-cases/health.js";
 import { LoginUseCase } from "@/use-cases/login.js";
 import { faker } from "@faker-js/faker/locale/it";
+import { ClientMetadata } from "io-fims-common/domain/client-metadata";
 import * as jose from "jose";
 import * as crypto from "node:crypto";
 import { pino } from "pino";
@@ -27,14 +28,10 @@ const logger = pino();
 
 const health = new HealthUseCase([]);
 
-type RedirectDisplayNames = Record<string, Record<string, string>>;
-
-const createClient = (): {
-  redirect_display_names: RedirectDisplayNames;
-  redirect_uris: string[];
-} & oidc.ClientMetadata => ({
+const createClient = (): ClientMetadata => ({
   client_id: ulid(),
   client_id_issued_at: 1715695157510,
+  client_secret: "my-secret",
   grant_types: ["authorization_code", "implicit"],
   redirect_display_names: {
     "https://rp.localhost": {
@@ -44,7 +41,7 @@ const createClient = (): {
   },
   redirect_uris: ["https://rp.localhost"],
   response_types: ["code", "id_token"],
-  token_endpoint_auth_method: "none",
+  token_endpoint_auth_method: "client_secret_basic",
 });
 
 const createUserMetadata = (): {
@@ -145,7 +142,7 @@ async function authenticationRequest(
 
   // call the authentication endpoint and follow the redirects until the consent screen
   let response = await agent.get(
-    `/auth?client_id=${client.client_id}&response_type=${responseType}&scope=${scope}&state=${state}&nonce=${state}&redirect_uri=${redirectUri}`,
+    `/authorize?client_id=${client.client_id}&response_type=${responseType}&scope=${scope}&state=${state}&nonce=${state}&redirect_uri=${redirectUri}`,
   );
 
   response = await followLocalRedirect(agent, response);
@@ -190,17 +187,32 @@ async function tokenRequest(
   code: string,
   redirectUri: string,
   clientId: string,
+  clientSecret: string,
 ) {
-  return agent.post("/token").type("form").send({
-    client_id: clientId,
-    code,
-    grant_type: "authorization_code",
-    redirect_uri: redirectUri,
-  });
+  const Authorization =
+    "Basic " +
+    Buffer.from(
+      `${encodeURIComponent(clientId)}:${encodeURIComponent(clientSecret)}`,
+    ).toString("base64");
+
+  return agent
+    .post("/token")
+    .type("form")
+    .set({
+      Authorization,
+    })
+    .send({
+      client_id: clientId,
+      code,
+      grant_type: "authorization_code",
+      redirect_uri: redirectUri,
+    });
 }
 
 async function userInfoRequest(agent: Agent, accessToken: string) {
-  return agent.post("/me").set({ Authorization: `Bearer ${accessToken}` });
+  return agent
+    .post("/userinfo")
+    .set({ Authorization: `Bearer ${accessToken}` });
 }
 
 async function parseAuthenticationResponse(
@@ -567,6 +579,7 @@ test.each<OIDCFlow>(["implicit", "authorization_code"])(
         params.code,
         redirectUri,
         client.client_id,
+        client.client_secret,
       );
 
       expect(tokenResponse.statusCode).toBe(200);
@@ -623,7 +636,7 @@ describe("Authentication Error Response", () => {
       const agent = request.agent(app);
 
       const response = await agent.get(
-        "/auth?client_id=NOT_EXISTING&scope=openid&redirect_uri=https://rp.localhost&response_type=code",
+        "/authorize?client_id=NOT_EXISTING&scope=openid&redirect_uri=https://rp.localhost&response_type=code",
       );
 
       expect(response.statusCode).toBe(400);
@@ -654,7 +667,7 @@ describe("Authentication Error Response", () => {
       store.set(`Client:${client.client_id}`, client);
 
       const response = await agent.get(
-        `/auth?client_id=${client.client_id}&scope=openid&redirect_uri=https://unregistered-url.rp.localhost&response_type=code`,
+        `/authorize?client_id=${client.client_id}&scope=openid&redirect_uri=https://unregistered-url.rp.localhost&response_type=code`,
       );
 
       expect(response.statusCode).toBe(400);
@@ -688,7 +701,7 @@ describe("Authentication Error Response", () => {
       });
 
       const response = await agent.get(
-        `/auth?client_id=${client.client_id}&scope=openid&response_type=code`,
+        `/authorize?client_id=${client.client_id}&scope=openid&response_type=code`,
       );
 
       expect(response.statusCode).toBe(400);

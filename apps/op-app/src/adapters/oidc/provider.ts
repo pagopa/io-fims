@@ -29,10 +29,6 @@ export function createProvider(
         enabled: false,
       },
     },
-    routes: {
-      authorization: "/authorize",
-      userinfo: "/userinfo",
-    },
     findAccount: findAccount({ sessionRepository }),
     pkce: {
       required: () => false,
@@ -42,6 +38,10 @@ export function createProvider(
       ctx.body = out;
     },
     responseTypes: ["code", "id_token"],
+    routes: {
+      authorization: "/authorize",
+      userinfo: "/userinfo",
+    },
     ttl: {
       AccessToken: 60,
       AuthorizationCode: 60,

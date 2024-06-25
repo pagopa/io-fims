@@ -14,7 +14,7 @@ export const inputDecoder = iotsCodecFromZod(oidcClientConfigSchema);
 export const createOIDCClientHandler = H.of((clientConfig: OIDCClientConfig) =>
   pipe(
     parseClientMetadataFromConfig(clientConfig),
-    RTE.fromEither,
+    RTE.fromIOEither,
     RTE.flatMap(createOIDCClient),
   ),
 );
