@@ -27,6 +27,8 @@ module "op_app" {
 
   health_check_path = "/health"
 
+  application_insights_connection_string = var.application_insights.connection_string
+
   app_settings = merge(local.op_app.common_app_settings, {
     NODE_ENVIRONMENT = "production"
   })

@@ -24,7 +24,9 @@ module "op_func" {
 
   resource_group_name = var.resource_group_name
 
-  health_check_path = "/health"
+  health_check_path = "/api/health"
+
+  application_insights_connection_string = var.application_insights.connection_string
 
   app_settings = merge(local.op_func.common_app_settings, {
     NODE_ENVIRONMENT = "production"
