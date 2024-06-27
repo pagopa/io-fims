@@ -47,8 +47,9 @@ module "op_func" {
 }
 
 resource "azurerm_role_assignment" "config_queue_op_func" {
+  for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Reader"])
   scope                = var.storage_account.id
-  role_definition_name = "Storage Queue Data Message Processor"
+  role_definition_name = each.key
   principal_id         = module.op_func.function_app.function_app.principal_id
 }
 
