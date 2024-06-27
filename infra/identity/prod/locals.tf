@@ -1,10 +1,12 @@
 locals {
-  env_short = "p"
   prefix    = "io"
+  env_short = "p"
+  env       = "prod"
+  location  = "westeurope"
+  project   = "${local.prefix}-${local.env_short}"
   domain    = "fims"
-  project   = "${local.prefix}-${local.env_short}-${local.domain}"
 
-  location = "westeurope"
+  repo_name = "io-fims"
 
   tags = {
     CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
