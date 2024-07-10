@@ -55,8 +55,9 @@ variable "subnet_cidrs" {
 
 variable "key_vault" {
   type = object({
-    id   = string
-    name = string
+    id                  = string
+    name                = string
+    resource_group_name = string
   })
 }
 
@@ -69,8 +70,9 @@ variable "cosmosdb_account" {
 
 variable "storage_account" {
   type = object({
-    id   = string
-    name = string
+    id                  = string
+    name                = string
+    resource_group_name = string
     queues = object({
       config = object({
         name = string
@@ -82,6 +84,7 @@ variable "storage_account" {
 variable "redis_cache" {
   type = object({
     id         = string
+    name       = string
     url        = string
     access_key = string
   })

@@ -12,7 +12,7 @@ locals {
 }
 
 module "op_app" {
-  source = "git::https://github.com/pagopa/dx.git//infra/modules/azure_app_service?ref=main"
+  source = "github.com/pagopa/dx//infra/modules/azure_app_service?ref=main"
 
   environment = merge(var.environment, {
     app_name        = "op",
@@ -43,24 +43,36 @@ module "op_app" {
   tags = var.tags
 }
 
-resource "azurerm_role_assignment" "key_vault_fims_op_app" {
-  scope                = var.key_vault.id
-  role_definition_name = "Key Vault Reader"
-  principal_id         = module.op_app.app_service.app_service.principal_id
-}
+module "op_app_roles" {
+  source       = "github.com/pagopa/dx//infra/modules/azure_role_assignments?ref=main"
+  principal_id = module.op_app.app_service.app_service.principal_id
 
-resource "azurerm_redis_cache_access_policy_assignment" "op_app" {
-  name               = "op_app"
-  redis_cache_id     = var.redis_cache.id
-  access_policy_name = "Data Contributor"
-  object_id          = module.op_app.app_service.app_service.principal_id
-  object_id_alias    = "ServicePrincipal"
-}
+  cosmos = [
+    {
+      account_name        = data.azurerm_cosmosdb_account.fims.name
+      resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
+      role                = "writer"
+    }
+  ]
 
-resource "azurerm_cosmosdb_sql_role_assignment" "op_app" {
-  resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
-  account_name        = data.azurerm_cosmosdb_account.fims.name
-  role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
-  principal_id        = module.op_app.app_service.app_service.principal_id
-  scope               = data.azurerm_cosmosdb_account.fims.id
+  redis = [
+    {
+      cache_name          = var.redis_cache.name
+      resource_group_name = var.resource_group_name
+      role                = "writer"
+      username            = "ServicePrincipal"
+    }
+  ]
+
+  key_vault = [
+    {
+      name                = var.key_vault.name
+      resource_group_name = var.key_vault.resource_group_name
+      roles = {
+        secrets      = "reader"
+        certificates = "reader"
+        keys         = "reader"
+      }
+    }
+  ]
 }
