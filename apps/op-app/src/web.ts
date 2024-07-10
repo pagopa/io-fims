@@ -11,13 +11,13 @@ import { envSchema } from "./adapters/env.js";
 import { createApplication } from "./adapters/express/application.js";
 import { IO } from "./adapters/io/user-metadata.js";
 import { createProvider } from "./adapters/oidc/provider.js";
+import RedisEventRepository from "./adapters/redis/event.js";
 import RedisHealthChecker from "./adapters/redis/health.js";
 import RedisSessionRepository from "./adapters/redis/session.js";
+import EventQueueClient from "./adapters/storage/event-client.js";
+import { AuditUseCase } from "./use-cases/audit.js";
 import { HealthUseCase } from "./use-cases/health.js";
 import { LoginUseCase } from "./use-cases/login.js";
-import { AuditUseCase } from "./use-cases/audit.js";
-import RedisEventRepository from "./adapters/redis/event.js";
-import EventQueueClient from "./adapters/storage/event-client.js";
 
 const webConfig = z.object({
   web: z.object({
@@ -70,8 +70,8 @@ async function main(config: Config & WebConfig) {
   });
 
   const audit = new AuditUseCase({
-    queueClient,
     eventRepository,
+    queueClient,
     sessionRepository,
   });
 

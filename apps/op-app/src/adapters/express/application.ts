@@ -1,6 +1,7 @@
 import type { LoginUseCase } from "@/use-cases/login.js";
 import type Provider from "oidc-provider";
 
+import { AuditUseCase } from "@/use-cases/audit.js";
 import { HealthUseCase } from "@/use-cases/health.js";
 import cookieParser from "cookie-parser";
 import express from "express";
@@ -12,7 +13,6 @@ import errorHandler from "./error.js";
 import i18n from "./i18n.js";
 import healthRouter from "./routes/health.js";
 import interactionRouter from "./routes/interaction.js";
-import { AuditUseCase } from "@/use-cases/audit.js";
 
 export const createApplication = (
   oidc: Provider,

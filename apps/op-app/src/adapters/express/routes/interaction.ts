@@ -5,28 +5,28 @@ import {
   metadataForConsentFromScopes,
   userMetadataSchema,
 } from "@/domain/user-metadata.js";
+import { AuditUseCase } from "@/use-cases/audit.js";
 import * as express from "express";
 import * as assert from "node:assert/strict";
 import { z } from "zod";
 
 import { schemas } from "../api-models.js";
 import { HttpBadRequestError, HttpError } from "../error.js";
-import { AuditUseCase } from "@/use-cases/audit.js";
 
 const rpParamsSchema = z.object({
   client_id: z.string().min(1),
+  redirect_uri: z.string().min(1).optional(),
   response_type: z.string().min(1).optional(),
   scope: z.string().min(1).optional(),
-  redirect_uri: z.string().min(1).optional(),
 });
 
 export type RPParams = z.TypeOf<typeof rpParamsSchema>;
 
 const auditEventSchema = z.object({
+  idToken: z.string().optional(),
+  ipAddress: z.string().optional(),
   rpParams: rpParamsSchema,
   userData: userMetadataSchema.optional(),
-  ipAddress: z.string().optional(),
-  idToken: z.string().optional(),
 });
 
 export type AuditEvent = z.TypeOf<typeof auditEventSchema>;

@@ -1,8 +1,9 @@
+import { StorageQueueClient } from "@/domain/session.js";
 import { DefaultAzureCredential } from "@azure/identity";
 import { QueueClient } from "@azure/storage-queue";
+
 import { Config } from "../config.js";
 import { AuditEvent } from "../express/routes/interaction.js";
-import { StorageQueueClient } from "@/domain/session.js";
 
 export default class EventQueueClient implements StorageQueueClient {
   #client: QueueClient;

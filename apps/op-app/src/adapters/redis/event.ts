@@ -24,7 +24,7 @@ export default class RedisEventRepository implements EventRepository {
     const blobName = await this.#client.hGetAll(
       this.#key(clientId, fiscalCode),
     );
-    const event = eventsSchema.parse({ clientId, fiscalCode, blobName });
+    const event = eventsSchema.parse({ blobName, clientId, fiscalCode });
     return event;
   }
 

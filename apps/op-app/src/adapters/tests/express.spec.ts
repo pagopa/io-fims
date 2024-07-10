@@ -12,6 +12,7 @@ import {
   metadataForConsentFromScopes,
   userMetadataSchema,
 } from "@/domain/user-metadata.js";
+import { AuditUseCase } from "@/use-cases/audit.js";
 import { HealthUseCase } from "@/use-cases/health.js";
 import { LoginUseCase } from "@/use-cases/login.js";
 import { faker } from "@faker-js/faker/locale/it";
@@ -27,10 +28,6 @@ import { z } from "zod";
 import { schemas } from "../express/api-models.js";
 import { createApplication } from "../express/application.js";
 import { createProvider } from "../oidc/provider.js";
-import { AuditUseCase } from "@/use-cases/audit.js";
-import RedisEventRepository from "../redis/event.js";
-import { QueueClient } from "@azure/storage-queue";
-import EventQueueClient from "../storage/event-client.js";
 
 const logger = pino();
 
@@ -301,8 +298,8 @@ describe("Consent screen", () => {
       });
 
       const audit = new AuditUseCase({
-        queueClient,
         eventRepository,
+        queueClient,
         sessionRepository,
       });
 
@@ -353,8 +350,8 @@ describe("Consent screen", () => {
     });
 
     const audit = new AuditUseCase({
-      queueClient,
       eventRepository,
+      queueClient,
       sessionRepository,
     });
 
@@ -417,8 +414,8 @@ describe("Login", () => {
       });
 
       const audit = new AuditUseCase({
-        queueClient,
         eventRepository,
+        queueClient,
         sessionRepository,
       });
 
@@ -449,8 +446,8 @@ describe("Login", () => {
       });
 
       const audit = new AuditUseCase({
-        queueClient,
         eventRepository,
+        queueClient,
         sessionRepository,
       });
 
@@ -489,8 +486,8 @@ describe("Consent", () => {
     });
 
     const audit = new AuditUseCase({
-      queueClient,
       eventRepository,
+      queueClient,
       sessionRepository,
     });
 
@@ -534,8 +531,8 @@ describe("Abort", () => {
     });
 
     const audit = new AuditUseCase({
-      queueClient,
       eventRepository,
+      queueClient,
       sessionRepository,
     });
 
@@ -602,8 +599,8 @@ test.each<OIDCFlow>(["implicit", "authorization_code"])(
     });
 
     const audit = new AuditUseCase({
-      queueClient,
       eventRepository,
+      queueClient,
       sessionRepository,
     });
 
@@ -701,8 +698,8 @@ describe("Authentication Error Response", () => {
       });
 
       const audit = new AuditUseCase({
-        queueClient,
         eventRepository,
+        queueClient,
         sessionRepository,
       });
 
@@ -735,8 +732,8 @@ describe("Authentication Error Response", () => {
       });
 
       const audit = new AuditUseCase({
-        queueClient,
         eventRepository,
+        queueClient,
         sessionRepository,
       });
 
@@ -772,8 +769,8 @@ describe("Authentication Error Response", () => {
       });
 
       const audit = new AuditUseCase({
-        queueClient,
         eventRepository,
+        queueClient,
         sessionRepository,
       });
 
@@ -814,8 +811,8 @@ describe("Authentication Error Response", () => {
       });
 
       const audit = new AuditUseCase({
-        queueClient,
         eventRepository,
+        queueClient,
         sessionRepository,
       });
 

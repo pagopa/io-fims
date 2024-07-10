@@ -1,16 +1,16 @@
 import { AuditEvent, RPParams } from "@/adapters/express/routes/interaction.js";
 import {
+  Event,
   Session,
   SessionEnvironment,
   getSession,
   writeEventBlobName,
-  Event,
 } from "@/domain/session.js";
 import { StorageEnvironment, sendEventsMessage } from "@/domain/storage.js";
 import { UserMetadata } from "@/domain/user-metadata.js";
+import * as O from "fp-ts/lib/Option.js";
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
 import { flow } from "fp-ts/lib/function.js";
-import * as O from "fp-ts/lib/Option.js";
 import * as assert from "node:assert/strict";
 
 export class AuditError extends Error {
@@ -20,7 +20,7 @@ export class AuditError extends Error {
   }
 }
 
-type Context = StorageEnvironment & SessionEnvironment;
+type Context = SessionEnvironment & StorageEnvironment;
 
 const userDataFromSession = ({ userMetadata }: Session): UserMetadata =>
   userMetadata;
@@ -49,11 +49,11 @@ export class AuditUseCase {
     const userData = findUserData.right;
     const blobName = `${userData?.fiscalCode}_${rpParams.client_id}_${sessionId}.json`;
     const redisEvent = {
-      fiscalCode: userData?.fiscalCode,
-      clientId: rpParams.client_id,
       blobName,
+      clientId: rpParams.client_id,
+      fiscalCode: userData?.fiscalCode,
     } as Event;
-    const auditEvent = { rpParams, userData, ipAddress } as AuditEvent;
+    const auditEvent = { ipAddress, rpParams, userData } as AuditEvent;
     await writeEventBlobName(redisEvent);
     await sendEventsMessage(auditEvent);
   }

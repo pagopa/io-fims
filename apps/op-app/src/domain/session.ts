@@ -1,3 +1,5 @@
+import { AuditEvent } from "@/adapters/express/routes/interaction.js";
+import { QueueSendMessageResponse } from "@azure/storage-queue";
 import * as E from "fp-ts/lib/Either.js";
 import * as IO from "fp-ts/lib/IO.js";
 import * as O from "fp-ts/lib/Option.js";
@@ -6,10 +8,8 @@ import { pipe } from "fp-ts/lib/function.js";
 import { ulid } from "ulid";
 import { z } from "zod";
 
-import { UserMetadata, userMetadataSchema } from "./user-metadata.js";
 import { StorageEnvironment } from "./storage.js";
-import { AuditEvent } from "@/adapters/express/routes/interaction.js";
-import { QueueSendMessageResponse } from "@azure/storage-queue";
+import { UserMetadata, userMetadataSchema } from "./user-metadata.js";
 
 export const sessionSchema = z.object({
   id: z.string().ulid(),
@@ -19,9 +19,9 @@ export const sessionSchema = z.object({
 export type Session = z.TypeOf<typeof sessionSchema>;
 
 export const eventsSchema = z.object({
+  blobName: z.string().min(1),
   clientId: z.string().min(1),
   fiscalCode: z.string().min(1),
-  blobName: z.string().min(1),
 });
 
 export type Event = z.TypeOf<typeof eventsSchema>;
