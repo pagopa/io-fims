@@ -5,12 +5,14 @@ import { envSchema } from "./env.js";
 import { ioConfigSchema } from "./io/config.js";
 import { oidcConfigSchema } from "./oidc/config.js";
 import { redisConfigSchema } from "./redis/config.js";
+import { storageConfigSchema } from "./storage/config.js";
 
 export const configSchema = z.object({
   cosmos: cosmosConfigSchema,
   io: ioConfigSchema,
   oidc: oidcConfigSchema,
   redis: redisConfigSchema,
+  storage: storageConfigSchema
 });
 
 export type Config = z.TypeOf<typeof configSchema>;
@@ -32,5 +34,9 @@ export const configFromEnvironment = envSchema.transform(
       pingInterval: env.REDIS_PING_INTERVAL,
       url: env.REDIS_URL,
     },
+    storage: {
+      eventsQueueName: env.EVENTS_QUEUE_NAME,
+      storageAccountName: env.STORAGE_ACCOUNT_NAME
+    }
   }),
 );

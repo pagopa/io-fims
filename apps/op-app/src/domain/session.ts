@@ -7,6 +7,9 @@ import { ulid } from "ulid";
 import { z } from "zod";
 
 import { UserMetadata, userMetadataSchema } from "./user-metadata.js";
+import { StorageEnvironment } from "./storage.js";
+import { AuditEvent } from "@/adapters/express/routes/interaction.js";
+import { QueueSendMessageResponse } from "@azure/storage-queue";
 
 export const sessionSchema = z.object({
   id: z.string().ulid(),
@@ -14,6 +17,14 @@ export const sessionSchema = z.object({
 });
 
 export type Session = z.TypeOf<typeof sessionSchema>;
+
+export const eventsSchema = z.object({
+  clientId: z.string().min(1),
+  fiscalCode: z.string().min(1),
+  blobName: z.string().min(1)
+});
+
+export type Event = z.TypeOf<typeof eventsSchema>;
 
 export const createSession = (userMetadata: UserMetadata) =>
   pipe(
@@ -24,6 +35,15 @@ export const createSession = (userMetadata: UserMetadata) =>
 export interface SessionRepository {
   get(id: Session["id"]): Promise<Session>;
   upsert(session: Session): Promise<void>;
+}
+
+export interface EventRepository {
+  get(clientId: string, fiscalCode: UserMetadata["fiscalCode"]): Promise<Event>;
+  upsert(event: Event): Promise<void>;
+}
+
+export interface StorageQueueClient {
+  sendMessage(auditEvent: AuditEvent): Promise<QueueSendMessageResponse>;
 }
 
 export interface SessionEnvironment {
@@ -42,9 +62,15 @@ export const getSession =
 
 export const startSession =
   (userMetadata: UserMetadata) =>
-  ({ sessionRepository: repo }: SessionEnvironment) =>
+  ({ sessionRepository: sessionRepo }: SessionEnvironment) =>
     pipe(
       TE.fromIO(createSession(userMetadata)),
-      TE.tap((session) => TE.tryCatch(() => repo.upsert(session), E.toError)),
+      TE.tap((session) => TE.tryCatch(() => sessionRepo.upsert(session), E.toError)),
       TE.map((session) => session.id),
     );
+
+export const writeEventBlobName =
+  (event: Event) =>
+  ({ eventRepository: eventRepository }: StorageEnvironment) =>
+    TE.tryCatch(() => eventRepository.upsert(event), E.toError)
+    

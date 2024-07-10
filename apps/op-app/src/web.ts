@@ -15,6 +15,9 @@ import RedisHealthChecker from "./adapters/redis/health.js";
 import RedisSessionRepository from "./adapters/redis/session.js";
 import { HealthUseCase } from "./use-cases/health.js";
 import { LoginUseCase } from "./use-cases/login.js";
+import { AuditUseCase } from "./use-cases/audit.js";
+import RedisEventRepository from "./adapters/redis/event.js";
+import EventQueueClient from "./adapters/storage/event-client.js";
 
 const webConfig = z.object({
   web: z.object({
@@ -42,7 +45,10 @@ async function main(config: Config & WebConfig) {
   await redis.connect();
   logger.debug("redis connected");
 
+  const queueClient = new EventQueueClient(config);
+  
   const sessionRepository = new RedisSessionRepository(redis);
+  const eventRepository = new RedisEventRepository(redis);
 
   const cosmos = initCosmos(config.cosmos, new DefaultAzureCredential());
 
@@ -62,13 +68,19 @@ async function main(config: Config & WebConfig) {
     identityProvider,
     sessionRepository,
   });
+    
+  const audit = new AuditUseCase({
+    queueClient,
+    eventRepository,
+    sessionRepository,
+  });
 
   const health = new HealthUseCase([
     cosmos.healthChecker,
     new RedisHealthChecker(redis),
   ]);
 
-  const app = createApplication(oidc, login, health, logger);
+  const app = createApplication(oidc, login, audit, health, logger);
 
   const server = app.listen(config.web.port, () => {
     logger.info(`http server listening on ${config.web.port}`);

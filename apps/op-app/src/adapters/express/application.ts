@@ -12,10 +12,12 @@ import errorHandler from "./error.js";
 import i18n from "./i18n.js";
 import healthRouter from "./routes/health.js";
 import interactionRouter from "./routes/interaction.js";
+import { AuditUseCase } from "@/use-cases/audit.js";
 
 export const createApplication = (
   oidc: Provider,
   login: LoginUseCase,
+  audit: AuditUseCase,
   health: HealthUseCase,
   logger: Logger,
 ): express.Application => {
@@ -35,7 +37,7 @@ export const createApplication = (
     }),
   );
 
-  app.use(interactionRouter(oidc, login));
+  app.use(interactionRouter(oidc, login, audit));
 
   app.use(healthRouter(health));
 

@@ -1,4 +1,4 @@
-import type { SessionRepository } from "@/domain/session.js";
+import type { EventRepository, SessionRepository, StorageQueueClient } from "@/domain/session.js";
 import type * as oidc from "oidc-provider";
 
 import {
@@ -23,6 +23,10 @@ import { z } from "zod";
 import { schemas } from "../express/api-models.js";
 import { createApplication } from "../express/application.js";
 import { createProvider } from "../oidc/provider.js";
+import { AuditUseCase } from "@/use-cases/audit.js";
+import RedisEventRepository from "../redis/event.js";
+import { QueueClient } from "@azure/storage-queue";
+import EventQueueClient from "../storage/event-client.js";
 
 const logger = pino();
 
@@ -57,6 +61,8 @@ const createUserMetadata = (): {
 });
 
 const store = new Map<string, unknown>();
+const eventStore = new Map<string, unknown>();
+const eventQueue = [];
 
 const sessionRepository: Mocked<SessionRepository> = {
   get: vi
@@ -67,6 +73,21 @@ const sessionRepository: Mocked<SessionRepository> = {
   }),
 };
 
+const eventRepository: Mocked<EventRepository> = {
+  get: vi
+    .fn()
+    .mockImplementation(async (clientId, fiscalCode) => eventStore.get(`audit:${clientId}:${fiscalCode}`)),
+  upsert: vi.fn().mockImplementation(async (event) => {
+    eventStore.set(`audit:${event.clientId}:${event.fiscalCode}`, event);
+  }),
+};
+
+const queueClient: Mocked<StorageQueueClient> = {
+  sendMessage: vi
+    .fn()
+    .mockImplementation(async (auditEvent) => eventQueue.push(auditEvent)),
+};
+  
 const adapter = (name: string): Mocked<oidc.Adapter> => ({
   consume: vi.fn().mockImplementation(async (id) => {
     const value = store.get(`${name}:${id}`);
@@ -273,7 +294,13 @@ describe("Consent screen", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const audit = new AuditUseCase({
+        queueClient,
+        eventRepository,
+        sessionRepository,
+      });
+
+      const app = createApplication(provider, login, audit, health, logger);
 
       const expected = metadataForConsentFromScopes(scopes);
 
@@ -319,7 +346,13 @@ describe("Consent screen", () => {
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, health, logger);
+    const audit = new AuditUseCase({
+      queueClient,
+      eventRepository,
+      sessionRepository,
+    });
+
+    const app = createApplication(provider, login, audit, health, logger);
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -377,7 +410,13 @@ describe("Login", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const audit = new AuditUseCase({
+        queueClient,
+        eventRepository,
+        sessionRepository,
+      });
+
+      const app = createApplication(provider, login, audit, health, logger);
 
       // setup agent with _io_fims_token
       const agent = request.agent(app).set({
@@ -403,7 +442,13 @@ describe("Login", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const audit = new AuditUseCase({
+        queueClient,
+        eventRepository,
+        sessionRepository,
+      });
+
+      const app = createApplication(provider, login, audit, health, logger);
 
       // setup agent WITHOUT _io_fims_token
       const agent = request.agent(app);
@@ -437,7 +482,13 @@ describe("Consent", () => {
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, health, logger);
+    const audit = new AuditUseCase({
+      queueClient,
+      eventRepository,
+      sessionRepository,
+    });
+
+    const app = createApplication(provider, login, audit, health, logger);
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -476,7 +527,13 @@ describe("Abort", () => {
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, health, logger);
+    const audit = new AuditUseCase({
+      queueClient,
+      eventRepository,
+      sessionRepository,
+    });
+
+    const app = createApplication(provider, login, audit, health, logger);
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -538,7 +595,13 @@ test.each<OIDCFlow>(["implicit", "authorization_code"])(
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, health, logger);
+    const audit = new AuditUseCase({
+      queueClient,
+      eventRepository,
+      sessionRepository,
+    });
+
+    const app = createApplication(provider, login, audit, health, logger);
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -631,7 +694,13 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const audit = new AuditUseCase({
+        queueClient,
+        eventRepository,
+        sessionRepository,
+      });
+
+      const app = createApplication(provider, login, audit, health, logger);
 
       const agent = request.agent(app);
 
@@ -659,7 +728,13 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const audit = new AuditUseCase({
+        queueClient,
+        eventRepository,
+        sessionRepository,
+      });
+
+      const app = createApplication(provider, login, audit, health, logger);
 
       const agent = request.agent(app);
 
@@ -690,7 +765,13 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const audit = new AuditUseCase({
+        queueClient,
+        eventRepository,
+        sessionRepository,
+      });
+
+      const app = createApplication(provider, login, audit, health, logger);
 
       const agent = request.agent(app);
 
@@ -726,7 +807,13 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const audit = new AuditUseCase({
+        queueClient,
+        eventRepository,
+        sessionRepository,
+      });
+
+      const app = createApplication(provider, login, audit, health, logger);
 
       const agent = request.agent(app);
 

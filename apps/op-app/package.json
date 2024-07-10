@@ -8,6 +8,7 @@
     "@azure/cosmos": "^4.0.0",
     "@azure/identity": "^4.1.0",
     "@azure/logger": "^1.1.2",
+    "@azure/storage-queue": "^12.22.0",
     "@pagopa/openapi-codegen-ts": "^13.2.0",
     "@pagopa/ts-commons": "^13.1.0",
     "cookie-parser": "^1.4.6",

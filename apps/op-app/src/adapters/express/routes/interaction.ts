@@ -1,13 +1,32 @@
 import type { LoginUseCase } from "@/use-cases/login.js";
 import type Provider from "oidc-provider";
-
-import { metadataForConsentFromScopes } from "@/domain/user-metadata.js";
+ 
+import { metadataForConsentFromScopes, userMetadataSchema } from "@/domain/user-metadata.js";
 import * as express from "express";
 import * as assert from "node:assert/strict";
 import { z } from "zod";
 
 import { schemas } from "../api-models.js";
 import { HttpBadRequestError, HttpError } from "../error.js";
+import { AuditUseCase } from "@/use-cases/audit.js";
+
+const rpParamsSchema = z.object({
+  client_id: z.string().min(1),
+  response_type: z.string().min(1).optional(),
+  scope: z.string().min(1).optional(),
+  redirect_uri: z.string().min(1).optional(),
+});
+
+export type RPParams = z.TypeOf<typeof rpParamsSchema>;
+
+const auditEventSchema = z.object({
+  rpParams: rpParamsSchema,
+  userData: userMetadataSchema.optional(),
+  ipAddress: z.string().optional(),
+  idToken: z.string().optional(),
+});
+
+export type AuditEvent = z.TypeOf<typeof auditEventSchema>;
 
 const consentSchema = z.object({
   params: z.object({
@@ -53,6 +72,7 @@ export const parseRedirectDisplayName = (
 export default function createInteractionRouter(
   oidcProvider: Provider,
   loginUseCase: LoginUseCase,
+  auditUseCase: AuditUseCase
 ) {
   const router = express.Router();
 
@@ -113,6 +133,7 @@ export default function createInteractionRouter(
 
       req.log.debug("using %s as baseUrl for links", baseUrl);
 
+      const userMetadata = metadataForConsentFromScopes(consent.prompt.details.missingOIDCScope);
       const apiModel = schemas.Consent.safeParse({
         _links: {
           abort: {
@@ -127,9 +148,7 @@ export default function createInteractionRouter(
         },
         service_id: consent.params.client_id,
         type: interactionType,
-        user_metadata: metadataForConsentFromScopes(
-          consent.prompt.details.missingOIDCScope,
-        ).map((name) => ({
+        user_metadata: userMetadata.map((name) => ({
           // name can be "firstName", "lastName", ..
           display_name: req.__(name),
           // localize each metadata name using i18n-node
@@ -160,6 +179,7 @@ export default function createInteractionRouter(
         "login",
         new Error("Interaction type mismatch, login expected"),
       );
+    
       const cookiesSchema = z.object({
         _io_fims_token: z.string().min(1),
       });
@@ -169,7 +189,14 @@ export default function createInteractionRouter(
         new HttpBadRequestError(`Unable to parse the "_io_fims_token" cookie.`),
       );
       req.log.debug("_io_fims_token parsed from cookies");
+      const rpParams = rpParamsSchema.safeParse(req.query);
+      assert.ok(
+        rpParams.success,
+        new HttpBadRequestError(`Unable to parse the query params.`),
+      );
+      const ipAddress = req.ip || '';
       const accountId = await loginUseCase.execute(cookies.data._io_fims_token);
+      await auditUseCase.execute(accountId, rpParams.data, ipAddress);
       return oidcProvider.interactionFinished(req, res, {
         login: {
           accountId,

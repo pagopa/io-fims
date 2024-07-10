@@ -18,3 +18,8 @@ resource "azurerm_storage_queue" "config_queue" {
   name                 = "config-queue"
   storage_account_name = module.storage_account_fims.name
 }
+
+resource "azurerm_events_queue" "events_queue" {
+  name                 = "events-queue"
+  storage_account_name = module.storage_account_fims.name
+}
