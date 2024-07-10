@@ -21,7 +21,7 @@ export type Session = z.TypeOf<typeof sessionSchema>;
 export const eventsSchema = z.object({
   clientId: z.string().min(1),
   fiscalCode: z.string().min(1),
-  blobName: z.string().min(1)
+  blobName: z.string().min(1),
 });
 
 export type Event = z.TypeOf<typeof eventsSchema>;
@@ -65,12 +65,13 @@ export const startSession =
   ({ sessionRepository: sessionRepo }: SessionEnvironment) =>
     pipe(
       TE.fromIO(createSession(userMetadata)),
-      TE.tap((session) => TE.tryCatch(() => sessionRepo.upsert(session), E.toError)),
+      TE.tap((session) =>
+        TE.tryCatch(() => sessionRepo.upsert(session), E.toError),
+      ),
       TE.map((session) => session.id),
     );
 
 export const writeEventBlobName =
   (event: Event) =>
   ({ eventRepository: eventRepository }: StorageEnvironment) =>
-    TE.tryCatch(() => eventRepository.upsert(event), E.toError)
-    
+    TE.tryCatch(() => eventRepository.upsert(event), E.toError);

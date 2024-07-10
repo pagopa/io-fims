@@ -7,18 +7,16 @@ import { StorageQueueClient } from "@/domain/session.js";
 export default class EventQueueClient implements StorageQueueClient {
   #client: QueueClient;
 
-  constructor(
-    config: Config,
-  ) {
+  constructor(config: Config) {
     this.#client = new QueueClient(
-    `https://${config.storage.storageAccountName}.queue.core.windows.net/${config.storage.eventsQueueName}`, 
-    new DefaultAzureCredential()
-  );;
+      `https://${config.storage.storageAccountName}.queue.core.windows.net/${config.storage.eventsQueueName}`,
+      new DefaultAzureCredential(),
+    );
   }
 
   #jsonToBase64(jsonObj: AuditEvent) {
-    const jsonString = JSON.stringify(jsonObj)
-    return  Buffer.from(jsonString).toString('base64')
+    const jsonString = JSON.stringify(jsonObj);
+    return Buffer.from(jsonString).toString("base64");
   }
 
   async sendMessage(auditEvent: AuditEvent) {

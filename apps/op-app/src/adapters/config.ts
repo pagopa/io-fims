@@ -12,7 +12,7 @@ export const configSchema = z.object({
   io: ioConfigSchema,
   oidc: oidcConfigSchema,
   redis: redisConfigSchema,
-  storage: storageConfigSchema
+  storage: storageConfigSchema,
 });
 
 export type Config = z.TypeOf<typeof configSchema>;
@@ -36,7 +36,7 @@ export const configFromEnvironment = envSchema.transform(
     },
     storage: {
       eventsQueueName: env.EVENTS_QUEUE_NAME,
-      storageAccountName: env.STORAGE_ACCOUNT_NAME
-    }
+      storageAccountName: env.STORAGE_ACCOUNT_NAME,
+    },
   }),
 );

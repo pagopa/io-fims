@@ -46,7 +46,7 @@ async function main(config: Config & WebConfig) {
   logger.debug("redis connected");
 
   const queueClient = new EventQueueClient(config);
-  
+
   const sessionRepository = new RedisSessionRepository(redis);
   const eventRepository = new RedisEventRepository(redis);
 
@@ -68,7 +68,7 @@ async function main(config: Config & WebConfig) {
     identityProvider,
     sessionRepository,
   });
-    
+
   const audit = new AuditUseCase({
     queueClient,
     eventRepository,

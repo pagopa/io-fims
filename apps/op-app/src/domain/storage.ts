@@ -6,7 +6,7 @@ import { EventRepository, StorageQueueClient } from "./session.js";
 
 export interface StorageEnvironment {
   queueClient: StorageQueueClient;
-  eventRepository: EventRepository
+  eventRepository: EventRepository;
 }
 
 export const sendEventsMessage =
