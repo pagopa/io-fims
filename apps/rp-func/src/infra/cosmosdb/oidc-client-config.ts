@@ -1,7 +1,7 @@
 import type { OIDCClientConfigRepository } from "@/oidc-client-config.js";
 
 import { Container, Database } from "@azure/cosmos";
-import { OIDCClientConfig } from "io-fims-common/oidc-client-config";
+import { OIDCClientConfig } from "io-fims-common/domain/oidc-client-config";
 
 export class CosmosOIDCClientConfigRepository
   implements OIDCClientConfigRepository

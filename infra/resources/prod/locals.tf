@@ -1,11 +1,16 @@
 locals {
-  env_short = "p"
-  prefix    = "io"
-  domain    = "fims"
-  project   = "${local.prefix}-${local.env_short}"
-  product   = "${local.prefix}-${local.env_short}-${local.domain}"
+  prefix = "io"
+  domain = "fims"
 
-  location = "westeurope"
+  env_short = "p"
+
+  location       = "westeurope"
+  location_short = "weu"
+
+  common_project = "${local.prefix}-${local.env_short}"
+
+  project        = "${local.prefix}-${local.env_short}-${local.location_short}-${local.domain}"
+  project_legacy = "${local.prefix}-${local.env_short}-${local.domain}"
 
   tags = {
     CostCenter  = "TS310 - PAGAMENTI & SERVIZI"

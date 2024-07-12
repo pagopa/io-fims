@@ -3,9 +3,8 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "node",
-    "COSMOS_DB_URI": "https://fims/",
-    "COSMOS_DB_NAME": "fims",
-    "STORAGE_QUEUE_NAME": "fims",
+    "COSMOS_ENDPOINT": "https://io-d-itn-common-cosno-01.documents.azure.com:443/",
+    "COSMOS_DBNAME": "fims",
     "STORAGE_ACCOUNT_NAME": "fims",
     "CONFIG_QUEUE_queueServiceUri": ""
   }

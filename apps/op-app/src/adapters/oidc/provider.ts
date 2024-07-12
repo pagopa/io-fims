@@ -1,29 +1,58 @@
+import { SessionRepository } from "@/domain/session.js";
+import { claims } from "@/domain/user-metadata.js";
 import Provider, * as oidc from "oidc-provider";
 
-export const createProvider = (
+import { findAccount } from "./account.js";
+
+const oidcClaims: oidc.Configuration["claims"] = Object.entries(claims).reduce(
+  (acc, [scope, claims]) => ({
+    ...acc,
+    [scope]: [...claims],
+  }),
+  {},
+);
+
+export function createProvider(
   issuer: string,
-  findAccount: oidc.FindAccount,
+  sessionRepository: SessionRepository,
   adapter: oidc.AdapterConstructor | oidc.AdapterFactory,
-): Provider =>
-  new Provider(issuer, {
+) {
+  const provider = new Provider(issuer, {
     adapter,
-    claims: {
-      family_name: null,
-      fiscal_code: null,
-      given_name: null,
-      name: null,
-      openid: ["sub"],
-      profile: ["name", "given_name", "family_name", "fiscal_code"],
+    claims: oidcClaims,
+    clientAuthMethods: ["client_secret_basic"],
+    extraClientMetadata: {
+      properties: ["redirect_display_names"],
     },
-    clientAuthMethods: ["none"],
     features: {
       devInteractions: {
-        enabled: true,
+        enabled: false,
       },
     },
-    findAccount,
+    findAccount: findAccount({ sessionRepository }),
     pkce: {
       required: () => false,
     },
-    responseTypes: ["code"],
+    renderError(ctx, out) {
+      ctx.type = "application/json";
+      ctx.body = out;
+    },
+    responseTypes: ["code", "id_token"],
+    routes: {
+      authorization: "/authorize",
+      userinfo: "/userinfo",
+    },
+    ttl: {
+      AccessToken: 60,
+      AuthorizationCode: 60,
+      Grant: 60,
+      IdToken: 60,
+      Interaction: 5 * 60,
+      Session: 5 * 60,
+    },
   });
+  // Configure the OIDC provider to trust the X-Forwarded-* headers.
+  // https://github.com/panva/node-oidc-provider/blob/main/docs/README.md#trusting-tls-offloading-proxies
+  provider.proxy = true;
+  return provider;
+}

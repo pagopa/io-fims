@@ -1,0 +1,178 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: IO OpenID Provider
+
+servers:
+  - url: https://auth.io.pagopa.it
+    description: Production server
+  - url: http://localhost:{port}
+    description: Local development
+    variables:
+      port:
+        default: "3000"
+
+paths:
+  /interaction/{id}:
+    get:
+      tags:
+        - Interaction
+      security:
+        - fimsToken: []
+      parameters:
+        - $ref: "#/components/parameters/interactionId"
+        - $ref: "#/components/parameters/interactionCookie"
+        - in: header
+          name: Accept-Language
+          schema:
+            type: string
+      responses:
+        200:
+          description: Interaction detail
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/Consent"
+
+  /interaction/{id}/abort:
+    post:
+      summary: Abort interaction
+      tags:
+        - Interaction
+      security:
+        - fimsToken: []
+      parameters:
+        - $ref: "#/components/parameters/interactionId"
+        - $ref: "#/components/parameters/interactionCookie"
+      responses:
+        303:
+          description: See other
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+
+  /interaction/{id}/consent:
+    post:
+      summary: Give consent
+      tags:
+        - Interaction
+      security:
+        - fimsToken: []
+      parameters:
+        - $ref: "#/components/parameters/interactionId"
+        - $ref: "#/components/parameters/interactionCookie"
+      responses:
+        303:
+          description: See other
+          headers:
+            Location:
+              schema:
+                type: string
+                format: url
+
+  /health:
+    get:
+      summary: Health
+      tags:
+        - Health
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Health"
+                  - maxItems: 0
+        503:
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+
+components:
+  securitySchemes:
+    fimsToken:
+      type: apiKey
+      in: cookie
+      name: _io_fims_token
+
+  parameters:
+    interactionId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+
+    interactionCookie:
+      name: interaction
+      in: cookie
+      required: true
+      schema:
+        type: string
+
+  schemas:
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+      required:
+        - href
+
+    Consent:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            abort:
+              $ref: "#/components/schemas/Link"
+            consent:
+              $ref: "#/components/schemas/Link"
+          required:
+            - consent
+            - abort
+        service_id:
+          type: string
+          format: ulid
+
+        redirect:
+          type: object
+          properties:
+            display_name:
+              type: string
+          required:
+            - display_name
+
+        type:
+          type: string
+          enum: ["consent"]
+
+        user_metadata:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              display_name:
+                type: string
+            required:
+              - name
+              - display_name
+      required:
+        - _links
+        - service_id
+        - redirect
+        - type
+        - user_metadata
+
+    Health:
+      type: array
+      items:
+        type: string

@@ -11,7 +11,7 @@ variable "project" {
   type = string
 }
 
-variable "product" {
+variable "common_project" {
   type = string
 }
 
