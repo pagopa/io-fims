@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { userMetadataSchema } from "./user-metadata.js";
 
 export const rpParamsSchema = z.object({

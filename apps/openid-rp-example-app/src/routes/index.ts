@@ -41,7 +41,7 @@ const makeRouter = (logger: Logger) => (): Router => {
   router.get(
     "/book_appointment",
     requiresAuth(),
-    handleBookAppointment(logger),
+    handleBookAppointment(logger)
   );
 
   router.get("/info", (_req, res) => {

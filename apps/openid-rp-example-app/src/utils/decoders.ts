@@ -8,7 +8,7 @@ const booleanDecoder: D.Decoder<unknown, boolean> = {
     f.pipe(
       str,
       D.literal("true", "false").decode,
-      E.map((x) => b.fold(f.constant(false), f.constant(true))(x === "true")),
+      E.map((x) => b.fold(f.constant(false), f.constant(true))(x === "true"))
     ),
 };
 
