@@ -12,8 +12,9 @@ export const rpParamsSchema = z.object({
 export type RPParams = z.TypeOf<typeof rpParamsSchema>;
 
 const auditEventSchema = z.object({
-  idToken: z.string().optional(),
-  ipAddress: z.string().optional(),
+  blobName: z.string().min(1).optional(),
+  idToken: z.string().min(1).optional(),
+  ipAddress: z.string().min(1).optional(),
   rpParams: rpParamsSchema.optional(),
   userData: userMetadataSchema.optional(),
 });

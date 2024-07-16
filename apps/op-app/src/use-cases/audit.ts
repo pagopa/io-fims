@@ -79,10 +79,10 @@ export class AuditUseCase {
       fiscalCode: userData?.fiscalCode,
     } as Event;
     const auditEvent = {
-      blobName,
-      ipAddress,
-      rpParams,
-      userData,
+      blobName: blobName,
+      ipAddress: ipAddress,
+      rpParams: rpParams,
+      userData: userData,
     } as AuditEvent;
     await writeEvent(redisEvent);
     await sendEventsMessage(auditEvent);

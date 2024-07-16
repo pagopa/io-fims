@@ -12,7 +12,6 @@ import { schemas } from "../api-models.js";
 import { HttpBadRequestError, HttpError } from "../error.js";
 
 const consentSchema = z.object({
-  blobName: z.string().min(1),
   params: z.object({
     client_id: z.string().min(1),
     redirect_uri: z.string().url(),
