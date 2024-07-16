@@ -72,6 +72,9 @@ variable "storage_account" {
     id   = string
     name = string
     queues = object({
+      event = object({
+        name = string
+      })
       config = object({
         name = string
       })
