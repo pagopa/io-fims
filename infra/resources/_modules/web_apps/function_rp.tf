@@ -5,7 +5,7 @@ locals {
 }
 
 module "relying_party_func" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.15.0"
 
   name                = "${var.project_legacy}-rp-func"
   location            = var.environment.location
@@ -35,26 +35,31 @@ module "relying_party_func" {
   tags = var.tags
 }
 
-resource "azurerm_key_vault_access_policy" "relying_party_func_key_vault_access_policy" {
-  key_vault_id = var.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = module.relying_party_func.system_identity_principal
+module "rp_func_roles" {
+  source       = "github.com/pagopa/dx//infra/modules/azure_role_assignments?ref=main"
+  principal_id = module.relying_party_func.system_identity_principal
 
-  secret_permissions      = ["Get"]
-  storage_permissions     = []
-  certificate_permissions = []
-}
+  cosmos = [
+    {
+      account_name        = data.azurerm_cosmosdb_account.fims.name
+      resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
+      role                = "writer"
+    }
+  ]
 
-resource "azurerm_cosmosdb_sql_role_assignment" "rp_func_sql_role" {
-  resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
-  account_name        = data.azurerm_cosmosdb_account.fims.name
-  role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
-  principal_id        = module.relying_party_func.system_identity_principal
-  scope               = data.azurerm_cosmosdb_account.fims.id
+  key_vault = [
+    {
+      name                = var.key_vault.name
+      resource_group_name = var.key_vault.resource_group_name
+      roles = {
+        secrets = "reader"
+      }
+    }
+  ]
 }
 
 module "relying_party_func_staging_slot" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.15.0"
 
   name                = "staging"
   location            = var.environment.location

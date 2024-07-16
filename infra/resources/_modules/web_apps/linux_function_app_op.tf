@@ -44,16 +44,24 @@ module "op_func" {
   tags = var.tags
 }
 
-resource "azurerm_role_assignment" "config_queue_op_func" {
-  scope                = var.storage_account.id
-  role_definition_name = "Storage Queue Data Message Processor"
-  principal_id         = module.op_func.function_app.function_app.principal_id
-}
+module "op_func_roles" {
+  source       = "github.com/pagopa/dx//infra/modules/azure_role_assignments?ref=main"
+  principal_id = module.op_func.function_app.function_app.principal_id
 
-resource "azurerm_cosmosdb_sql_role_assignment" "op_func" {
-  resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
-  account_name        = data.azurerm_cosmosdb_account.fims.name
-  role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
-  principal_id        = module.op_func.function_app.function_app.principal_id
-  scope               = data.azurerm_cosmosdb_account.fims.id
+  cosmos = [
+    {
+      account_name        = data.azurerm_cosmosdb_account.fims.name
+      resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
+      role                = "writer"
+    }
+  ]
+
+  storage_queue = [
+    {
+      storage_account_name = var.storage_account.name
+      resource_group_name  = var.storage_account.resource_group_name
+      queue_name           = var.storage_account.queues.config.name
+      role                 = "reader"
+    }
+  ]
 }
