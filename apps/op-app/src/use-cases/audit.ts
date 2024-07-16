@@ -1,16 +1,18 @@
-import { AuditEvent, RPParams } from "@/adapters/express/routes/interaction.js";
 import {
   Event,
   Session,
   SessionEnvironment,
+  getEvent,
   getSession,
-  writeEventBlobName,
+  writeEvent,
 } from "@/domain/session.js";
 import { StorageEnvironment, sendEventsMessage } from "@/domain/storage.js";
-import { UserMetadata } from "@/domain/user-metadata.js";
 import * as O from "fp-ts/lib/Option.js";
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
 import { flow } from "fp-ts/lib/function.js";
+import { AuditEvent, RPParams } from "io-fims-common/domain/audit-event";
+import { UserMetadata } from "io-fims-common/domain/user-metadata";
+import * as jose from "jose";
 import * as assert from "node:assert/strict";
 
 export class AuditError extends Error {
@@ -30,6 +32,13 @@ const safeFindSession = flow(
   RTE.map(flow(O.map(userDataFromSession), O.toUndefined)),
 );
 
+const eventFromEvent = (event: Event): Event => event;
+
+const safeGetEvent = flow(
+  getEvent,
+  RTE.map(flow(O.map(eventFromEvent), O.toUndefined)),
+);
+
 export class AuditUseCase {
   #ctx: Context;
 
@@ -37,7 +46,23 @@ export class AuditUseCase {
     this.#ctx = ctx;
   }
 
-  async execute(
+  async manageIdToken(idTokenString: string): Promise<void> {
+    const idToken = jose.decodeJwt(idTokenString);
+    const clientId = Array.isArray(idToken.aud) ? idToken.aud[0] : idToken.aud;
+    const findEvent = await safeGetEvent(
+      clientId || "",
+      idToken.sub || "",
+    )(this.#ctx.eventRepository)();
+    assert.equal(findEvent._tag, "Right", new AuditError());
+    const event = findEvent.right;
+    const auditEvent = {
+      blobName: event?.blobName,
+      idTokenString,
+    } as AuditEvent;
+    await sendEventsMessage(auditEvent);
+  }
+
+  async manageUserAndRpParams(
     sessionId: string,
     rpParams: RPParams,
     ipAddress: string,
@@ -53,8 +78,13 @@ export class AuditUseCase {
       clientId: rpParams.client_id,
       fiscalCode: userData?.fiscalCode,
     } as Event;
-    const auditEvent = { ipAddress, rpParams, userData } as AuditEvent;
-    await writeEventBlobName(redisEvent);
+    const auditEvent = {
+      blobName,
+      ipAddress,
+      rpParams,
+      userData,
+    } as AuditEvent;
+    await writeEvent(redisEvent);
     await sendEventsMessage(auditEvent);
   }
 }

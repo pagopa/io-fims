@@ -1,21 +1,21 @@
 {
   "type": "object",
   "properties": {
-    "id": { "type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$" },
-    "institutionId": { "type": "string", "format": "uuid" },
     "callbacks": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "uri": { "type": "string", "format": "uri" },
-          "displayName": { "type": "string", "minLength": 3, "maxLength": 30 }
+          "displayName": { "type": "string", "minLength": 3, "maxLength": 30 },
+          "uri": { "type": "string", "format": "uri" }
         },
-        "required": ["uri", "displayName"],
+        "required": ["displayName", "uri"],
         "additionalProperties": false
       },
       "minItems": 1
     },
+    "id": { "type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$" },
+    "institutionId": { "type": "string", "format": "uuid" },
     "scopes": {
       "type": "array",
       "minItems": 2,
@@ -26,7 +26,7 @@
       ]
     }
   },
-  "required": ["id", "institutionId", "callbacks", "scopes"],
+  "required": ["callbacks", "id", "institutionId", "scopes"],
   "additionalProperties": false,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }

@@ -8,15 +8,17 @@ import type * as oidc from "oidc-provider";
 import {
   type IdentityProvider,
   type Scope,
-  UserMetadata,
   metadataForConsentFromScopes,
-  userMetadataSchema,
 } from "@/domain/user-metadata.js";
 import { AuditUseCase } from "@/use-cases/audit.js";
 import { HealthUseCase } from "@/use-cases/health.js";
 import { LoginUseCase } from "@/use-cases/login.js";
 import { faker } from "@faker-js/faker/locale/it";
 import { ClientMetadata } from "io-fims-common/domain/client-metadata";
+import {
+  UserMetadata,
+  userMetadataSchema,
+} from "io-fims-common/domain/user-metadata";
 import * as jose from "jose";
 import * as crypto from "node:crypto";
 import { pino } from "pino";

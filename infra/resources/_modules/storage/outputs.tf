@@ -6,6 +6,9 @@ output "fims" {
       config = {
         name = azurerm_storage_queue.config_queue.name
       }
+      event = {
+        name = azurerm_storage_queue.events_queue.name
+      }
     }
   }
 }

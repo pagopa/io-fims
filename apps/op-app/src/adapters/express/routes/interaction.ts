@@ -1,37 +1,18 @@
 import type { LoginUseCase } from "@/use-cases/login.js";
 import type Provider from "oidc-provider";
 
-import {
-  metadataForConsentFromScopes,
-  userMetadataSchema,
-} from "@/domain/user-metadata.js";
+import { metadataForConsentFromScopes } from "@/domain/user-metadata.js";
 import { AuditUseCase } from "@/use-cases/audit.js";
 import * as express from "express";
+import { rpParamsSchema } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
 import { z } from "zod";
 
 import { schemas } from "../api-models.js";
 import { HttpBadRequestError, HttpError } from "../error.js";
 
-const rpParamsSchema = z.object({
-  client_id: z.string().min(1),
-  redirect_uri: z.string().min(1).optional(),
-  response_type: z.string().min(1).optional(),
-  scope: z.string().min(1).optional(),
-});
-
-export type RPParams = z.TypeOf<typeof rpParamsSchema>;
-
-const auditEventSchema = z.object({
-  idToken: z.string().optional(),
-  ipAddress: z.string().optional(),
-  rpParams: rpParamsSchema,
-  userData: userMetadataSchema.optional(),
-});
-
-export type AuditEvent = z.TypeOf<typeof auditEventSchema>;
-
 const consentSchema = z.object({
+  blobName: z.string().min(1),
   params: z.object({
     client_id: z.string().min(1),
     redirect_uri: z.string().url(),
@@ -194,14 +175,18 @@ export default function createInteractionRouter(
         new HttpBadRequestError(`Unable to parse the "_io_fims_token" cookie.`),
       );
       req.log.debug("_io_fims_token parsed from cookies");
-      const rpParams = rpParamsSchema.safeParse(req.query);
+      const rpParams = rpParamsSchema.safeParse(interaction.params);
       assert.ok(
         rpParams.success,
         new HttpBadRequestError(`Unable to parse the query params.`),
       );
       const ipAddress = req.ip || "";
       const accountId = await loginUseCase.execute(cookies.data._io_fims_token);
-      await auditUseCase.execute(accountId, rpParams.data, ipAddress);
+      await auditUseCase.manageUserAndRpParams(
+        accountId,
+        rpParams.data,
+        ipAddress,
+      );
       return oidcProvider.interactionFinished(req, res, {
         login: {
           accountId,

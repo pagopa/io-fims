@@ -1,15 +1,18 @@
-import { AuditEvent } from "@/adapters/express/routes/interaction.js";
 import { QueueSendMessageResponse } from "@azure/storage-queue";
 import * as E from "fp-ts/lib/Either.js";
 import * as IO from "fp-ts/lib/IO.js";
 import * as O from "fp-ts/lib/Option.js";
 import * as TE from "fp-ts/lib/TaskEither.js";
 import { pipe } from "fp-ts/lib/function.js";
+import { AuditEvent } from "io-fims-common/domain/audit-event";
+import {
+  UserMetadata,
+  userMetadataSchema,
+} from "io-fims-common/domain/user-metadata";
 import { ulid } from "ulid";
 import { z } from "zod";
 
 import { StorageEnvironment } from "./storage.js";
-import { UserMetadata, userMetadataSchema } from "./user-metadata.js";
 
 export const sessionSchema = z.object({
   id: z.string().ulid(),
@@ -71,7 +74,15 @@ export const startSession =
       TE.map((session) => session.id),
     );
 
-export const writeEventBlobName =
+export const writeEvent =
   (event: Event) =>
   ({ eventRepository: eventRepository }: StorageEnvironment) =>
     TE.tryCatch(() => eventRepository.upsert(event), E.toError);
+
+export const getEvent =
+  (clientId: string, fiscalCode: string) =>
+  (eventRepository: EventRepository): TE.TaskEither<Error, O.Option<Event>> =>
+    pipe(
+      TE.tryCatch(() => eventRepository.get(clientId, fiscalCode), E.toError),
+      TE.map(O.fromNullable),
+    );

@@ -1,14 +1,7 @@
 import * as E from "fp-ts/lib/Either.js";
 import * as TE from "fp-ts/lib/TaskEither.js";
+import { UserMetadata } from "io-fims-common/domain/user-metadata";
 import { z } from "zod";
-
-export const userMetadataSchema = z.object({
-  firstName: z.string().min(1),
-  fiscalCode: z.string().min(1),
-  lastName: z.string().min(1),
-});
-
-export type UserMetadata = z.TypeOf<typeof userMetadataSchema>;
 
 export const claims = {
   openid: ["sub"],

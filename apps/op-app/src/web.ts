@@ -10,6 +10,7 @@ import { createAdapterFactory } from "./adapters/cosmos/oidc/index.js";
 import { envSchema } from "./adapters/env.js";
 import { createApplication } from "./adapters/express/application.js";
 import { IO } from "./adapters/io/user-metadata.js";
+import { createTokenMiddleware } from "./adapters/oidc/middleware.js";
 import { createProvider } from "./adapters/oidc/provider.js";
 import RedisEventRepository from "./adapters/redis/event.js";
 import RedisHealthChecker from "./adapters/redis/health.js";
@@ -79,6 +80,8 @@ async function main(config: Config & WebConfig) {
     cosmos.healthChecker,
     new RedisHealthChecker(redis),
   ]);
+
+  createTokenMiddleware(oidc, audit, logger);
 
   const app = createApplication(oidc, login, audit, health, logger);
 
