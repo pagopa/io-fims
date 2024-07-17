@@ -3,7 +3,10 @@ import {
   BlockBlobUploadResponse,
   ContainerClient,
 } from "@azure/storage-blob";
-import { AuditEvent, auditEventSchema } from "io-fims-common/domain/audit-event";
+import {
+  AuditEvent,
+  auditEventSchema,
+} from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
 
 export class AccessLogRegister {
@@ -15,19 +18,19 @@ export class AccessLogRegister {
 
   // A helper method used to read a Node.js readable stream into a String
   async #streamToAuditEvent(readableStream: NodeJS.ReadableStream) {
-    return new Promise<AuditEvent>(async (resolve, reject) => {
-      let result = '';
-      for await (const chunk of readableStream) {
-        result += chunk;
-      }
+    let result = "";
+    for await (const chunk of readableStream) {
+      result += chunk;
+    }
 
-      try {
-        const parsedResult = JSON.parse(result);
-        resolve(auditEventSchema.parse(parsedResult));
-      } catch(e) {
-        reject(e);
-      }
-    });
+    try {
+      const parsedResult = JSON.parse(result);
+      return auditEventSchema.parse(parsedResult);
+    } catch (e) {
+      throw new Error(`Error during conversion of the downloaded stream`, {
+        cause: e,
+      });
+    }
   }
 
   async get(name: string): Promise<AuditEvent> {
@@ -37,24 +40,20 @@ export class AccessLogRegister {
     // get downloaded data by accessing downloadBlockBlobResponse.readableStreamBody
     const downloadBlockBlobResponse = await blobClient.download();
     const downloadedStream = downloadBlockBlobResponse.readableStreamBody;
-    assert.ok(
-      downloadedStream,
-      "No Blob with name " + name + " found",
-    );
+    assert.ok(downloadedStream, "No Blob with name " + name + " found");
     try {
-      return await this.#streamToAuditEvent(downloadedStream)
+      return await this.#streamToAuditEvent(downloadedStream);
     } catch (error) {
       throw new Error(`Error retrieving blob with name ${name}`, {
         cause: error,
       });
     }
-    ;
   }
 
-  async upload(
-    content: AuditEvent,
-  ): Promise<BlockBlobUploadResponse> {
-    const blockBlobClient = this.#container.getBlockBlobClient(content.blobName);
+  async upload(content: AuditEvent): Promise<BlockBlobUploadResponse> {
+    const blockBlobClient = this.#container.getBlockBlobClient(
+      content.blobName,
+    );
     try {
       const parsedContent = JSON.stringify(content);
       return blockBlobClient.upload(parsedContent, parsedContent.length);
