@@ -30,9 +30,9 @@ const main = pipe(
   E.bind("conf", () => c.parseConfig(process.env)),
   E.bind("log", ({ conf }) => E.right(makeLogger(conf.logger))),
   E.bind("app", ({ conf, log }) =>
-    E.right(makeApplication(conf, makeSubLogger(log, "application")))
+    E.right(makeApplication(conf, makeSubLogger(log, "application"))),
   ),
-  E.map(({ app, log }) => start(app, log))
+  E.map(({ app, log }) => start(app, log)),
 );
 
 E.getOrElse(exit)(main);
