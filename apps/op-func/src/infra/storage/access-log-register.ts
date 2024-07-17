@@ -14,7 +14,7 @@ export class AccessLogRegister {
   }
 
   // A helper method used to read a Node.js readable stream into a String
-  async #streamToBuffer(readableStream: NodeJS.ReadableStream) {
+  async #streamToAuditEvent(readableStream: NodeJS.ReadableStream) {
     return new Promise<AuditEvent>(async (resolve, reject) => {
       let result = '';
       for await (const chunk of readableStream) {
@@ -41,7 +41,14 @@ export class AccessLogRegister {
       downloadedStream,
       "No Blob with name " + name + " found",
     );
-    return this.#streamToBuffer(downloadedStream);
+    try {
+      return await this.#streamToAuditEvent(downloadedStream)
+    } catch (error) {
+      throw new Error(`Error retrieving blob with name ${name}`, {
+        cause: error,
+      });
+    }
+    ;
   }
 
   async upload(
