@@ -17,7 +17,7 @@ export const auditEventSchema = z.object({
   ipAddress: z.string().min(1).optional(),
   rpParams: rpParamsSchema.optional(),
   userData: userMetadataSchema.optional(),
-  timestamp: z.number().optional()
+  timestamp: z.number().optional(),
 });
 
 export type AuditEvent = z.TypeOf<typeof auditEventSchema>;
