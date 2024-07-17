@@ -1,10 +1,12 @@
 locals {
   op_func = {
     common_app_settings = {
-      COSMOS_ENDPOINT               = data.azurerm_cosmosdb_account.fims.endpoint
-      COSMOS_DBNAME                 = data.azurerm_cosmosdb_sql_database.fims_op.name,
-      CONFIG_QUEUE__queueServiceUri = "https://${var.storage_account.name}.queue.core.windows.net"
-      CONFIG_QUEUE__name            = var.storage_account.queues.config.name
+      WEBSITE_WARMUP_PATH               = "/api/health"
+      WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
+      COSMOS_ENDPOINT                   = data.azurerm_cosmosdb_account.fims.endpoint
+      COSMOS_DBNAME                     = data.azurerm_cosmosdb_sql_database.fims_op.name,
+      CONFIG_QUEUE__queueServiceUri     = "https://${var.storage_account.name}.queue.core.windows.net"
+      CONFIG_QUEUE__name                = var.storage_account.queues.config.name
     }
   }
 }
