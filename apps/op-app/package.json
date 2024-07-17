@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "exports": {
-    "web": "./dist/web.js"
-  },
+  "main": "./src/web.ts",
   "dependencies": {
     "@azure/cosmos": "^4.0.0",
     "@azure/identity": "^4.1.0",
