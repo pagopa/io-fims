@@ -3,11 +3,7 @@ import { z } from "zod";
 
 const Id = z.string();
 const OIDCClientConfig = z
-  .object({
-    callbacks: z.array(z.any()).min(1),
-    institution_id: z.string().uuid(),
-    service_id: Id,
-  })
+  .object({ callbacks: z.array(z.any()).min(1), service_id: Id })
   .passthrough();
 
 export const schemas = {
@@ -18,7 +14,7 @@ export const schemas = {
 const endpoints = makeApi([
   {
     alias: "createOIDCClientConfig",
-    method: "post",
+    method: "put",
     parameters: [
       {
         description: `OIDC Client Configuration`,

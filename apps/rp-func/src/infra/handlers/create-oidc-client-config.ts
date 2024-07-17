@@ -4,28 +4,26 @@ import * as H from "@pagopa/handler-kit";
 import * as E from "fp-ts/lib/Either.js";
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
 import { flow, pipe } from "fp-ts/lib/function.js";
-import { oidcClientConfigSchema } from "io-fims-common/oidc-client-config";
+import { oidcClientConfigSchema } from "io-fims-common/domain/oidc-client-config";
 import { parse } from "io-fims-common/parse";
 import { logErrorAndReturnResponse } from "io-fims-common/response";
 
 const requestSchema = schemas.OIDCClientConfig.transform(
-  ({ callbacks, institution_id, service_id }) => ({
+  ({ callbacks, service_id }) => ({
     callbacks: callbacks.map(({ display_name: displayName, uri }) => ({
       displayName,
       uri,
     })),
     id: service_id,
-    institutionId: institution_id,
   }),
 ).pipe(payloadSchema);
 
 const responseSchema = oidcClientConfigSchema
-  .transform(({ callbacks, id, institutionId }) => ({
+  .transform(({ callbacks, id }) => ({
     callbacks: callbacks.map(({ displayName: display_name, uri }) => ({
       display_name,
       uri,
     })),
-    institution_id: institutionId,
     service_id: id,
   }))
   .pipe(schemas.OIDCClientConfig);
