@@ -31,8 +31,8 @@ const makeLogger = (logConfig: LogConfig): Logger =>
       winston.format.simple(),
       winston.format.printf(
         (info) =>
-          `${info.timestamp} [${info.level}] [${logConfig.logName}]: ${info.message}`,
-      ),
+          `${info.timestamp} [${info.level}] [${logConfig.logName}]: ${info.message}`
+      )
     ),
     transports: [new winston.transports.Console({ level: logConfig.logLevel })],
   });
