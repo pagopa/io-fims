@@ -5,6 +5,19 @@ import {
 } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
 
+// A helper function used to read a Node.js readable stream into a String
+export async function getStreamIntoString(
+  readableStream: NodeJS.ReadableStream,
+) {
+  const chunks = [];
+
+  for await (const chunk of readableStream) {
+    chunks.push(Buffer.from(chunk));
+  }
+
+  return Buffer.concat(chunks).toString("utf-8");
+}
+
 export class AccessLogRegister {
   #container: ContainerClient;
 
@@ -12,25 +25,13 @@ export class AccessLogRegister {
     this.#container = client;
   }
 
-  // A helper method used to read a Node.js readable stream into a String
-  async #getStreamIntoString(readableStream: NodeJS.ReadableStream) {
-    let result = "";
-    for await (const chunk of readableStream) {
-      result += chunk;
-    }
-    return result;
-  }
-
   async get(name: string): Promise<AuditEvent> {
-    const blobClient = this.#container.getBlobClient(name);
-
-    // Get blob content from position 0 to the end
-    // get downloaded data by accessing downloadBlockBlobResponse.readableStreamBody
-    const downloadBlockBlobResponse = await blobClient.download();
-    const downloadedStream = downloadBlockBlobResponse.readableStreamBody;
-    assert.ok(downloadedStream, `No Blob with name ${name} found`);
     try {
-      const blobString = await this.#getStreamIntoString(downloadedStream);
+      const blobClient = this.#container.getBlobClient(name);
+      const downloadBlockBlobResponse = await blobClient.download();
+      const downloadedStream = downloadBlockBlobResponse.readableStreamBody;
+      assert.ok(downloadedStream, `No Blob with name ${name} found`);
+      const blobString = await getStreamIntoString(downloadedStream);
       const parsedResult = JSON.parse(blobString);
       return auditEventSchema.parse({
         blobName: name,
