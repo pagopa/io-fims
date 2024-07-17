@@ -1,8 +1,4 @@
-import {
-  BlobServiceClient,
-  BlockBlobUploadResponse,
-  ContainerClient,
-} from "@azure/storage-blob";
+import { BlockBlobUploadResponse, ContainerClient } from "@azure/storage-blob";
 import {
   AuditEvent,
   auditEventSchema,
@@ -12,25 +8,17 @@ import * as assert from "node:assert/strict";
 export class AccessLogRegister {
   #container: ContainerClient;
 
-  constructor(blobServiceClient: BlobServiceClient, containerName: string) {
-    this.#container = blobServiceClient.getContainerClient(containerName);
+  constructor(client: ContainerClient) {
+    this.#container = client;
   }
 
   // A helper method used to read a Node.js readable stream into a String
-  async #streamToAuditEvent(readableStream: NodeJS.ReadableStream) {
+  async #getStreamIntoString(readableStream: NodeJS.ReadableStream) {
     let result = "";
     for await (const chunk of readableStream) {
       result += chunk;
     }
-
-    try {
-      const parsedResult = JSON.parse(result);
-      return auditEventSchema.parse(parsedResult);
-    } catch (e) {
-      throw new Error(`Error during conversion of the downloaded stream`, {
-        cause: e,
-      });
-    }
+    return result;
   }
 
   async get(name: string): Promise<AuditEvent> {
@@ -40,9 +28,15 @@ export class AccessLogRegister {
     // get downloaded data by accessing downloadBlockBlobResponse.readableStreamBody
     const downloadBlockBlobResponse = await blobClient.download();
     const downloadedStream = downloadBlockBlobResponse.readableStreamBody;
-    assert.ok(downloadedStream, "No Blob with name " + name + " found");
+    assert.ok(downloadedStream, `No Blob with name ${name} found`);
     try {
-      return await this.#streamToAuditEvent(downloadedStream);
+      const blobString = await this.#getStreamIntoString(downloadedStream);
+      const parsedResult = JSON.parse(blobString);
+      return auditEventSchema.parse({
+        blobName: name,
+        data: parsedResult,
+        type: "rpStep",
+      });
     } catch (error) {
       throw new Error(`Error retrieving blob with name ${name}`, {
         cause: error,
@@ -55,11 +49,11 @@ export class AccessLogRegister {
       content.blobName,
     );
     try {
-      const parsedContent = JSON.stringify(content);
+      const parsedContent = JSON.stringify(content.data);
       return blockBlobClient.upload(parsedContent, parsedContent.length);
-    } catch (e) {
+    } catch (error) {
       throw new Error("Error creating new blob", {
-        cause: e,
+        cause: error,
       });
     }
   }

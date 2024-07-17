@@ -11,13 +11,35 @@ export const rpParamsSchema = z.object({
 
 export type RPParams = z.TypeOf<typeof rpParamsSchema>;
 
-export const auditEventSchema = z.object({
-  blobName: z.string().min(1),
-  idToken: z.string().min(1).optional(),
-  ipAddress: z.string().min(1).optional(),
-  rpParams: rpParamsSchema.optional(),
-  timestamp: z.number().optional(),
-  userData: userMetadataSchema.optional(),
-});
+export const auditEventSchema = z.discriminatedUnion("type", [
+  z.object({
+    blobName: z.string().min(1),
+    data: z.object({
+      ipAddress: z.string().min(1),
+      rpParams: rpParamsSchema,
+      timestamp: z.number(),
+      userData: userMetadataSchema,
+    }),
+    type: z.literal("rpStep"),
+  }),
+  z.object({
+    blobName: z.string().min(1),
+    data: z.object({
+      idToken: z.string().min(1),
+    }),
+    type: z.literal("idToken"),
+  }),
+  z.object({
+    blobName: z.string().min(1),
+    data: z.object({
+      idToken: z.string().min(1),
+      ipAddress: z.string().min(1),
+      rpParams: rpParamsSchema,
+      timestamp: z.number(),
+      userData: userMetadataSchema,
+    }),
+    type: z.literal("complete"),
+  }),
+]);
 
 export type AuditEvent = z.TypeOf<typeof auditEventSchema>;
