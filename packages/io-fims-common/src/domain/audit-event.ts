@@ -4,8 +4,8 @@ import { userMetadataSchema } from "./user-metadata.js";
 
 export const requestParamsSchema = z.object({
   client_id: z.string().min(1),
-  redirect_uri: z.string().min(1).optional(),
-  response_type: z.string().min(1).optional(),
+  redirect_uri: z.string().url(),
+  response_type: z.union([z.literal("id_token"), z.literal("code")]),
   scope: z.string().min(1).optional(),
 });
 

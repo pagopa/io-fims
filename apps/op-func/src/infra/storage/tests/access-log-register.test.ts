@@ -9,6 +9,8 @@ describe("Readeable stream conversion", () => {
       ipAddress: "127.0.0.1",
       requestParams: {
         client_id: "aClientId",
+        redirect_uri: "http://test.test",
+        response_type: "code",
       },
       timestamp: 123456789,
       userData: {

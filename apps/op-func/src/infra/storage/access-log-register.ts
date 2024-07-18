@@ -29,13 +29,16 @@ export class AccessLogRegister {
     try {
       const blobClient = this.#container.getBlobClient(name);
       const downloadBlockBlobResponse = await blobClient.download();
+      assert.ok(
+        downloadBlockBlobResponse.errorCode,
+        `No Blob with name ${name} found`,
+      );
       const downloadedStream = downloadBlockBlobResponse.readableStreamBody;
       assert.ok(downloadedStream, `No Blob with name ${name} found`);
       const blobString = await getStreamIntoString(downloadedStream);
-      const parsedResult = JSON.parse(blobString);
       return auditEventSchema.parse({
         blobName: name,
-        data: parsedResult,
+        data: JSON.parse(blobString),
         type: "rpStep",
       });
     } catch (error) {
@@ -46,10 +49,10 @@ export class AccessLogRegister {
   }
 
   async upload(content: AuditEvent): Promise<BlockBlobUploadResponse> {
-    const blockBlobClient = this.#container.getBlockBlobClient(
-      content.blobName,
-    );
     try {
+      const blockBlobClient = this.#container.getBlockBlobClient(
+        content.blobName,
+      );
       const parsedContent = JSON.stringify(content.data);
       return blockBlobClient.upload(parsedContent, parsedContent.length);
     } catch (error) {
