@@ -5,6 +5,7 @@ import { ErrorRequestHandler } from "express";
 import session from "express-session";
 import helmet from "helmet";
 import * as assert from "node:assert/strict";
+import * as crypto from "node:crypto";
 import { Logger } from "pino";
 import { pinoHttp } from "pino-http";
 import { z } from "zod";
@@ -73,6 +74,7 @@ export function createApplication(
         response_mode: "query",
         response_type: "code",
         scope: "openid profile",
+        state: crypto.randomBytes(15).toString("hex"),
       });
       res.redirect(redirectTo);
     } else {
