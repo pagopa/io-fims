@@ -46,7 +46,7 @@ export function createApplication(
     }),
   );
 
-  app.use("/", async (req, res, next) => {
+  app.get("/", async (req, res, next) => {
     if (
       typeof req.query.sid === "string" &&
       req.session.id !== req.query.sid &&
@@ -68,7 +68,7 @@ export function createApplication(
     }
   });
 
-  app.use("/", (req, res, next) => {
+  app.get("/", (req, res, next) => {
     if (!req.session.profile) {
       const redirectTo = oidcClient.authorizationUrl({
         response_mode: "query",
