@@ -5,7 +5,7 @@ locals {
 }
 
 module "user_func" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.28.2"
 
   name                = "${var.project_legacy}-user-func"
   location            = var.environment.location
@@ -54,7 +54,7 @@ resource "azurerm_cosmosdb_sql_role_assignment" "user_func_sql_role" {
 }
 
 module "user_func_staging_slot" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.28.2"
 
   name                = "staging"
   location            = var.environment.location

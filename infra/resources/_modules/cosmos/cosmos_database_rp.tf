@@ -1,5 +1,5 @@
 module "cosmosdb_database_relying_party" {
-  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v8.28.2"
 
   name                = "rp"
   resource_group_name = var.resource_group_name
