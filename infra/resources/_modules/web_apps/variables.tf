@@ -87,4 +87,9 @@ variable "redis_cache" {
   })
 }
 
+variable "application_insights" {
+  type = object({
+    connection_string = string
+  })
+}
 

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "main": "dist/web.js",
+  "main": "./src/web.ts",
   "dependencies": {
     "@azure/cosmos": "^4.0.0",
     "@azure/identity": "^4.1.0",
@@ -30,10 +30,10 @@
     "format:check": "prettier --check .",
     "lint": "eslint --fix src",
     "lint:check": "eslint src",
-    "build": "tsup-node",
-    "build:watch": "tsup-node --watch",
-    "start": "node .",
-    "start:dev": "node --env-file=.env . | pino-pretty",
+    "build": "esbuild --bundle ./src/web.ts --format=esm --platform=node --target=node20 --outdir=dist --packages=external",
+    "build:watch": "yarn build --watch",
+    "start": "node ./dist/web.js",
+    "start:dev": "node --env-file=.env ./dist/web.js | pino-pretty",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "generate:io-client": "gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/io-backend/v13.0.0/openapi/generated/api_fims.yaml --no-strict --out-dir ./src/adapters/outboud/io/generated --request-types --response-decoders --client",
@@ -49,12 +49,12 @@
     "@types/oidc-provider": "^8.4.4",
     "@types/supertest": "^6.0.2",
     "@vitest/coverage-v8": "^1.5.0",
+    "esbuild": "^0.21.5",
     "eslint": "8.57.0",
     "openapi-zod-client": "^1.16.4",
     "pino-pretty": "^11.2.0",
     "prettier": "3.2.5",
     "supertest": "^7.0.0",
-    "tsup": "^8.0.2",
     "vitest": "^1.5.0"
   }
 }
