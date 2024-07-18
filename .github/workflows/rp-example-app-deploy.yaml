@@ -2,7 +2,6 @@ name: Deploy (rp-example-app)
 
 on:
   workflow_dispatch:
-  push:
 
 jobs:
   rp_example_app_deploy:
