@@ -4,6 +4,7 @@ import {
   auditEventSchema,
 } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
+import { BlobNotFoundError } from "./blob-error.js";
 
 // A helper function used to read a Node.js readable stream into a String
 export async function getStreamIntoString(
@@ -26,13 +27,23 @@ export class AccessLogRegister {
   }
 
   async get(name: string): Promise<AuditEvent> {
+    const blobClient = this.#container.getBlobClient(name);
+    const downloadBlockBlobResponse = await blobClient.download();
+    /* if the blob requested does not exists a different error is returned
+    *  in order to avoid unwanted retries
+    */
+    assert.equal(
+      downloadBlockBlobResponse.errorCode,
+      404,
+      new BlobNotFoundError(`No Blob with name ${name} found`),
+    );
+
+    assert.ok(
+      downloadBlockBlobResponse.errorCode,
+      `Error retrieving blob with name ${name} with error code ${downloadBlockBlobResponse.errorCode}`,
+    );
+
     try {
-      const blobClient = this.#container.getBlobClient(name);
-      const downloadBlockBlobResponse = await blobClient.download();
-      assert.ok(
-        downloadBlockBlobResponse.errorCode,
-        `No Blob with name ${name} found`,
-      );
       const downloadedStream = downloadBlockBlobResponse.readableStreamBody;
       assert.ok(downloadedStream, `No Blob with name ${name} found`);
       const blobString = await getStreamIntoString(downloadedStream);
