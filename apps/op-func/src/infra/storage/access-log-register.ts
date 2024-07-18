@@ -4,6 +4,7 @@ import {
   auditEventSchema,
 } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
+
 import { BlobNotFoundError } from "./blob-error.js";
 
 // A helper function used to read a Node.js readable stream into a String
@@ -30,8 +31,8 @@ export class AccessLogRegister {
     const blobClient = this.#container.getBlobClient(name);
     const downloadBlockBlobResponse = await blobClient.download();
     /* if the blob requested does not exists a different error is returned
-    *  in order to avoid unwanted retries
-    */
+     *  in order to avoid unwanted retries
+     */
     assert.equal(
       downloadBlockBlobResponse.errorCode,
       404,
