@@ -1,12 +1,16 @@
 locals {
   op_app = {
     common_app_settings = {
-      COSMOS_ENDPOINT = data.azurerm_cosmosdb_account.fims.endpoint
-      COSMOS_DBNAME   = data.azurerm_cosmosdb_sql_database.fims_op.name
-      REDIS_URL       = var.redis_cache.url
-      REDIS_PASSWORD  = var.redis_cache.access_key
-      OIDC_ISSUER     = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-oidc-issuer)"
-      IO_BASE_URL     = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=io-be-base-url)"
+      WEBSITE_WARMUP_PATH               = "/health"
+      WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
+      COSMOS_ENDPOINT                   = data.azurerm_cosmosdb_account.fims.endpoint
+      COSMOS_DBNAME                     = data.azurerm_cosmosdb_sql_database.fims_op.name
+      REDIS_URL                         = var.redis_cache.url
+      REDIS_PASSWORD                    = var.redis_cache.access_key
+      # https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-best-practices-connection#idle-timeout
+      REDIS_PING_INTERVAL = 1000 * 60 * 9
+      OIDC_ISSUER         = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-oidc-issuer)"
+      IO_BASE_URL         = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=io-be-base-url)"
     }
   }
 }
@@ -24,6 +28,8 @@ module "op_app" {
   resource_group_name = var.resource_group_name
 
   health_check_path = "/health"
+
+  application_insights_connection_string = var.application_insights.connection_string
 
   app_settings = merge(local.op_app.common_app_settings, {
     NODE_ENVIRONMENT = "production"
@@ -43,9 +49,9 @@ module "op_app" {
   tags = var.tags
 }
 
-resource "azurerm_role_assignment" "key_vault_fims_op_app" {
+resource "azurerm_role_assignment" "key_vault_fims_op_app_secrets_user" {
   scope                = var.key_vault.id
-  role_definition_name = "Key Vault Reader"
+  role_definition_name = "Key Vault Secrets User"
   principal_id         = module.op_app.app_service.app_service.principal_id
 }
 

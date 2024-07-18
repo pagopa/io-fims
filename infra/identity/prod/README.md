@@ -16,7 +16,8 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_managed_identities"></a> [managed\_identities](#module\_managed\_identities) | ../_modules/managed_identities | n/a |
+| <a name="module_app_federated_identities"></a> [app\_federated\_identities](#module\_app\_federated\_identities) | github.com/pagopa/dx//infra/modules/azure_federated_identity_with_github | main |
+| <a name="module_federated_identities"></a> [federated\_identities](#module\_federated\_identities) | github.com/pagopa/dx//infra/modules/azure_federated_identity_with_github | main |
 
 ## Resources
 
@@ -28,8 +29,5 @@ No inputs.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_managed_identity_github_cd"></a> [managed\_identity\_github\_cd](#output\_managed\_identity\_github\_cd) | n/a |
-| <a name="output_managed_identity_github_ci"></a> [managed\_identity\_github\_ci](#output\_managed\_identity\_github\_ci) | n/a |
+No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
