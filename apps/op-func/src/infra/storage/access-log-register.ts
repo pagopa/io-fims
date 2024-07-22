@@ -33,11 +33,8 @@ export class AccessLogRegister {
     /* if the blob requested does not exists a different error is returned
      *  in order to avoid unwanted retries
      */
-    assert.equal(
-      downloadBlockBlobResponse.errorCode,
-      404,
-      new BlobNotFoundError(`No Blob with name ${name} found`),
-    );
+    if (downloadBlockBlobResponse.errorCode && downloadBlockBlobResponse.errorCode === 404)
+      throw new BlobNotFoundError(`No Blob with name ${name} found`);
 
     assert.ok(
       downloadBlockBlobResponse.errorCode,
