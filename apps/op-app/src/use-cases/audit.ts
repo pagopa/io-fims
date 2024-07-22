@@ -2,6 +2,7 @@ import {
   Event,
   Session,
   SessionEnvironment,
+  eventsSchema,
   getEvent,
   getSession,
   writeEvent,
@@ -9,11 +10,13 @@ import {
 import { StorageEnvironment, sendEventsMessage } from "@/domain/storage.js";
 import * as O from "fp-ts/lib/Option.js";
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
-import { flow } from "fp-ts/lib/function.js";
+import { flow, pipe } from "fp-ts/lib/function.js";
 import { AuditEvent, RPParams } from "io-fims-common/domain/audit-event";
 import { UserMetadata } from "io-fims-common/domain/user-metadata";
 import * as jose from "jose";
 import * as assert from "node:assert/strict";
+import * as TE from "fp-ts/lib/TaskEither.js";
+
 
 export class AuditError extends Error {
   name = "AuditError";
@@ -59,7 +62,7 @@ export class AuditUseCase {
       blobName: event?.blobName,
       idTokenString,
     } as AuditEvent;
-    await sendEventsMessage(auditEvent);
+    await sendEventsMessage(auditEvent)(this.#ctx)();
   }
 
   async manageUserAndRpParams(
@@ -73,18 +76,18 @@ export class AuditUseCase {
     assert.equal(findUserData._tag, "Right", new AuditError());
     const userData = findUserData.right;
     const blobName = `${userData?.fiscalCode}_${rpParams.client_id}_${sessionId}.json`;
-    const redisEvent = {
+    const redisEvent = eventsSchema.parse({
       blobName,
       clientId: rpParams.client_id,
       fiscalCode: userData?.fiscalCode,
-    } as Event;
+    });
     const auditEvent = {
       blobName: blobName,
       ipAddress: ipAddress,
       rpParams: rpParams,
       userData: userData,
     } as AuditEvent;
-    await writeEvent(redisEvent);
-    await sendEventsMessage(auditEvent);
+    await writeEvent(redisEvent)(this.#ctx)();
+    await sendEventsMessage(auditEvent)(this.#ctx)();
   }
 }
