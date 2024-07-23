@@ -8,6 +8,7 @@ import * as assert from "node:assert/strict";
 import { ZodError } from "zod";
 
 import { Client, createClient } from "./generated/client.js";
+import { NonEmptyString } from "@pagopa/ts-commons/lib/strings.js";
 
 export class IO implements IdentityProvider {
   #client: Client;
@@ -19,10 +20,16 @@ export class IO implements IdentityProvider {
     });
   }
 
-  async getUserMetadata(token: string): Promise<UserMetadata> {
+  async getUserMetadata(
+    token: string,
+    operationId: NonEmptyString,
+  ): Promise<UserMetadata> {
     try {
-      const result = await this.#client.getUserForFIMS({
+      const result = await this.#client.getLollipopUserForFIMS({
         Bearer: `Bearer ${token}`,
+        body: {
+          operation_id: operationId,
+        },
       });
       assert.ok(E.isRight(result));
       assert.strictEqual(result.right.status, 200);
@@ -30,7 +37,7 @@ export class IO implements IdentityProvider {
         family_name: lastName,
         fiscal_code: fiscalCode,
         name: firstName,
-      } = result.right.value;
+      } = result.right.value.profile;
       return userMetadataSchema.parse({ firstName, fiscalCode, lastName });
     } catch (e) {
       const err = {

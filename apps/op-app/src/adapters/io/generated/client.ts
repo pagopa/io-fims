@@ -17,6 +17,8 @@ import { identity } from "fp-ts/lib/function.js";
 import {
   GetUserForFIMST,
   getUserForFIMSDefaultDecoder,
+  GetLollipopUserForFIMST,
+  getLollipopUserForFIMSDefaultDecoder,
 } from "./requestTypes.js";
 
 // This is a placeholder for undefined when dealing with object keys
@@ -25,9 +27,11 @@ import {
 // We use this as a placeholder for type parameters indicating "no key"
 type __UNDEFINED_KEY = "_____";
 
-export type ApiOperation = TypeofApiCall<GetUserForFIMST>;
+export type ApiOperation = TypeofApiCall<GetUserForFIMST> &
+  TypeofApiCall<GetLollipopUserForFIMST>;
 
-export type ParamKeys = keyof TypeofApiParams<GetUserForFIMST>;
+export type ParamKeys = keyof (TypeofApiParams<GetUserForFIMST> &
+  TypeofApiParams<GetLollipopUserForFIMST>);
 
 /**
  * Defines an adapter for TypeofApiCall which omit one or more parameters in the signature
@@ -50,7 +54,7 @@ export type OmitApiCallParams<
  */
 export type WithDefaultsT<
   K extends ParamKeys | __UNDEFINED_KEY = __UNDEFINED_KEY,
-> = OmitApiCallParams<GetUserForFIMST, K>;
+> = OmitApiCallParams<GetUserForFIMST | GetLollipopUserForFIMST, K>;
 
 /**
  * Defines a collection of api operations
@@ -60,12 +64,21 @@ export type Client<K extends ParamKeys | __UNDEFINED_KEY = __UNDEFINED_KEY> =
   K extends __UNDEFINED_KEY
     ? {
         readonly getUserForFIMS: TypeofApiCall<GetUserForFIMST>;
+
+        readonly getLollipopUserForFIMS: TypeofApiCall<GetLollipopUserForFIMST>;
       }
     : {
         readonly getUserForFIMS: TypeofApiCall<
           ReplaceRequestParams<
             GetUserForFIMST,
             Omit<RequestParams<GetUserForFIMST>, K>
+          >
+        >;
+
+        readonly getLollipopUserForFIMS: TypeofApiCall<
+          ReplaceRequestParams<
+            GetLollipopUserForFIMST,
+            Omit<RequestParams<GetLollipopUserForFIMST>, K>
           >
         >;
       };
@@ -128,7 +141,35 @@ export function createClient<K extends ParamKeys>({
   const getUserForFIMS: TypeofApiCall<GetUserForFIMST> =
     createFetchRequestForApi(getUserForFIMST, options);
 
+  const getLollipopUserForFIMST: ReplaceRequestParams<
+    GetLollipopUserForFIMST,
+    RequestParams<GetLollipopUserForFIMST>
+  > = {
+    method: "post",
+
+    headers: ({ ["Bearer"]: Bearer }) => ({
+      Authorization: Bearer,
+
+      "Content-Type": "application/json",
+    }),
+    response_decoder: getLollipopUserForFIMSDefaultDecoder(),
+    url: ({}) => `${basePath}/lollipop-user`,
+
+    body: ({ ["body"]: body }) =>
+      body?.constructor?.name === "Readable" ||
+      body?.constructor?.name === "ReadableStream"
+        ? (body as ReadableStream)
+        : body?.constructor?.name === "Buffer"
+          ? (body as Buffer)
+          : JSON.stringify(body),
+
+    query: () => withoutUndefinedValues({}),
+  };
+  const getLollipopUserForFIMS: TypeofApiCall<GetLollipopUserForFIMST> =
+    createFetchRequestForApi(getLollipopUserForFIMST, options);
+
   return {
     getUserForFIMS: (withDefaults || identity)(getUserForFIMS),
+    getLollipopUserForFIMS: (withDefaults || identity)(getLollipopUserForFIMS),
   };
 }

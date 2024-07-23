@@ -20,9 +20,9 @@ export class LoginUseCase {
     this.#ctx = ctx;
   }
 
-  async execute(token: string): Promise<Session["id"]> {
+  async execute(token: string, operationId: string): Promise<Session["id"]> {
     const login = flow(getUserMetadata, RTE.flatMap(startSession));
-    const result = await login(token)(this.#ctx)();
+    const result = await login(token, operationId)(this.#ctx)();
     assert.equal(result._tag, "Right", new LoginError());
     return result.right;
   }
