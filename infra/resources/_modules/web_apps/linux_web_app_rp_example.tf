@@ -1,7 +1,11 @@
 locals {
   rp_example = {
     common_app_settings = {
-      OIDC_ISSUER_URL = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-oidc-issuer)"
+      OIDC_ISSUER_URL          = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-oidc-issuer)",
+      OIDC_CLIENT_ID           = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=rp-example-client-id)",
+      OIDC_CLIENT_SECRET       = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=rp-example-client-secret)",
+      OIDC_CLIENT_REDIRECT_URI = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=rp-example-redirect-uri)",
+      SESSION_SECRET           = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=rp-example-session-secret)"
     }
   }
 }
