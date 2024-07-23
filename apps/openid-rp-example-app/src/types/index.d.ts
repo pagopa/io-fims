@@ -84,7 +84,7 @@ declare module "openid-client" {
 
   export type UserinfoResponse<
     UserInfo extends {} = UnknownObject,
-    ExtendedAddress extends {} = UnknownObject,
+    ExtendedAddress extends {} = UnknownObject
   > = Override<
     {
       address?: Address<ExtendedAddress>;
