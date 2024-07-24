@@ -1,7 +1,13 @@
 import { z } from "zod";
 
 export const ioConfigSchema = z.object({
-  baseUrl: z.string().url(),
+  lollipop: z.object({
+    apiKey: z.string().min(1),
+    baseUrl: z.string().url(),
+  }),
+  sessionManager: z.object({
+    baseUrl: z.string().url(),
+  }),
 });
 
-export type IOConfigSchema = z.TypeOf<typeof ioConfigSchema>;
+export type IOConfig = z.TypeOf<typeof ioConfigSchema>;

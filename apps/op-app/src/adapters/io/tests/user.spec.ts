@@ -2,18 +2,31 @@ import { EmailString, NonEmptyString } from "@pagopa/ts-commons/lib/strings.js";
 import * as E from "fp-ts/lib/Either.js";
 import { describe, expect, it, vi } from "vitest";
 
-import { FiscalCode } from "../generated/FiscalCode.js";
-import { SpidLevelEnum } from "../generated/SpidLevel.js";
-import { IO } from "../user-metadata.js";
+import { FiscalCode } from "../generated/session-manager/FiscalCode.js";
+import { SpidLevelEnum } from "../generated/session-manager/SpidLevel.js";
+import { IO, UserNotLoggedError } from "../user-metadata.js";
 
-const repo = new IO("http://localhost");
+const repo = new IO({
+  lollipop: {
+    apiKey: "api-key",
+    baseUrl: "http://localhost",
+  },
+  sessionManager: {
+    baseUrl: "http://localhost",
+  },
+});
 
-const { getLollipopUserForFIMS } = vi.hoisted(() => ({
+const { getAssertion, getLollipopUserForFIMS } = vi.hoisted(() => ({
+  getAssertion: vi.fn(),
   getLollipopUserForFIMS: vi.fn(),
 }));
 
-vi.mock("../generated/client", () => ({
+vi.mock("../generated/session-manager/client", () => ({
   createClient: vi.fn().mockReturnValue({ getLollipopUserForFIMS }),
+}));
+
+vi.mock("../generated/lollipop/client", () => ({
+  createClient: vi.fn().mockReturnValue({ getAssertion }),
 }));
 
 const withOperationId = (
@@ -28,15 +41,25 @@ const withOperationId = (
 
 describe("getUserMetadata", () => {
   it("Retrieves correctly the user metadata using the federation token", async () => {
-    const value = {
-      profile: {
-        acr: SpidLevelEnum["https://www.spid.gov.it/SpidL2"],
-        auth_time: 1648474413,
-        date_of_birth: new Date(),
-        email: "email@test.com" as EmailString,
-        family_name: "Surname",
-        fiscal_code: "AAABBB01C02D123Z" as FiscalCode,
-        name: "Name",
+    const response = {
+      getAssertion: {
+        response_xml: "<my-saml-assertion></my-saml-assertion>",
+      },
+      getLollipopUserForFIMS: {
+        lc_params: {
+          assertion_ref: "sha256-k8YQcM9wlvc1Zb3o7l88htasPda3dYiZ3Xt17ulY6fE",
+          lc_authentication_bearer: "my-auth-token",
+          pub_key: "my-pub-key",
+        },
+        profile: {
+          acr: SpidLevelEnum["https://www.spid.gov.it/SpidL2"],
+          auth_time: 1648474413,
+          date_of_birth: new Date(),
+          email: "email@test.com" as EmailString,
+          family_name: "Surname",
+          fiscal_code: "AAABBB01C02D123Z" as FiscalCode,
+          name: "Name",
+        },
       },
     };
 
@@ -44,7 +67,15 @@ describe("getUserMetadata", () => {
       E.right({
         headers: {},
         status: 200,
-        value,
+        value: response.getLollipopUserForFIMS,
+      }),
+    );
+
+    getAssertion.mockResolvedValueOnce(
+      E.right({
+        headers: {},
+        status: 200,
+        value: response.getAssertion,
       }),
     );
 
@@ -53,15 +84,21 @@ describe("getUserMetadata", () => {
         repo.getUserMetadata("my-fed-token", operationId),
       ).resolves.toEqual(
         expect.objectContaining({
-          firstName: value.profile.name,
-          fiscalCode: value.profile.fiscal_code,
-          lastName: value.profile.family_name,
+          firstName: response.getLollipopUserForFIMS.profile.name,
+          fiscalCode: response.getLollipopUserForFIMS.profile.fiscal_code,
+          lastName: response.getLollipopUserForFIMS.profile.family_name,
         }),
       );
     });
   });
+
   it("Throws on invalid user schema", async () => {
     const value = {
+      lc_params: {
+        assertion_ref: "sha256-k8YQcM9wlvc1Zb3o7l88htasPda3dYiZ3Xt17ulY6fE",
+        lc_authentication_bearer: "my-auth-token",
+        pub_key: "my-pub-key",
+      },
       profile: {
         acr: SpidLevelEnum["https://www.spid.gov.it/SpidL2"],
         auth_time: 1648474413,
@@ -69,6 +106,7 @@ describe("getUserMetadata", () => {
         name: "Name",
       },
     };
+
     getLollipopUserForFIMS.mockResolvedValueOnce(
       E.right({
         headers: {},
@@ -80,7 +118,7 @@ describe("getUserMetadata", () => {
     withOperationId(async (operationId) => {
       await expect(
         repo.getUserMetadata("my-fed-token", operationId),
-      ).rejects.toThrowError("Invalid user data");
+      ).rejects.toThrowError("Unable to retrieve the IO user metadata");
     });
   });
   it("Throws on invalid request", async () => {
@@ -89,10 +127,25 @@ describe("getUserMetadata", () => {
     withOperationId(async (operationId) => {
       await expect(
         repo.getUserMetadata("my-fed-token", operationId),
-      ).rejects.toThrowError("Request failed");
+      ).rejects.toThrowError("Unable to retrieve the IO user metadata");
     });
   });
   it("Throws on request failed", async () => {
+    getLollipopUserForFIMS.mockResolvedValueOnce(
+      E.right({
+        headers: {},
+        status: 500,
+        value: "Token null or expired",
+      }),
+    );
+
+    withOperationId(async (operationId) => {
+      await expect(
+        repo.getUserMetadata("my-fed-token", operationId),
+      ).rejects.toThrowError("Unable to retrieve the IO user metadata");
+    });
+  });
+  it("Throws with UserNotLoggedError cause on 401", async () => {
     getLollipopUserForFIMS.mockResolvedValueOnce(
       E.right({
         headers: {},
@@ -101,10 +154,16 @@ describe("getUserMetadata", () => {
       }),
     );
 
+    expect.assertions(1);
+
     withOperationId(async (operationId) => {
-      await expect(
-        repo.getUserMetadata("my-fed-token", operationId),
-      ).rejects.toThrowError("Request failed");
+      try {
+        await repo.getUserMetadata("my-fed-token", operationId);
+      } catch (err) {
+        if (err instanceof Error) {
+          expect(err.cause).instanceof(UserNotLoggedError);
+        }
+      }
     });
   });
   it("Throws on client error", async () => {
@@ -113,7 +172,7 @@ describe("getUserMetadata", () => {
     withOperationId(async (operationId) => {
       await expect(
         repo.getUserMetadata("my-fed-token", operationId),
-      ).rejects.toThrowError("Unable to fetch user data. Request failed");
+      ).rejects.toThrowError("Unable to retrieve the IO user metadata");
     });
   });
 });
