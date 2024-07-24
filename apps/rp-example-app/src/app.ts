@@ -119,7 +119,7 @@ export function createApplication(
   });
 
   app.get("/health", (req, res) => {
-    res.status(200);
+    res.status(204).end();
   });
 
   const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
