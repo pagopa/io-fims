@@ -71,13 +71,13 @@ export function createApplication(
 
   app.use(
     session({
+      cookie: {
+        sameSite: true,
+        secure: true,
+      },
       resave: true,
       saveUninitialized: true,
       secret: sessionSecret,
-      cookie: {
-        secure: true,
-        sameSite: true,
-      },
     }),
   );
 
