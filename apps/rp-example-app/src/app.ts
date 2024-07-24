@@ -58,7 +58,6 @@ export function createApplication(
   const app = express();
 
   app.disable("x-powered-by");
-  app.enable("trust proxy");
   app.set("view engine", "ejs");
 
   app.use(

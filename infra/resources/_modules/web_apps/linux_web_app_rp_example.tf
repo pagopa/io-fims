@@ -1,7 +1,7 @@
 locals {
   rp_example = {
     common_app_settings = {
-      OIDC_ISSUER_URL          = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-oidc-issuer)",
+      OIDC_ISSUER_URL          = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-app-base-url)",
       OIDC_CLIENT_ID           = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=rp-example-client-id)",
       OIDC_CLIENT_SECRET       = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=rp-example-client-secret)",
       OIDC_CLIENT_REDIRECT_URI = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=rp-example-redirect-uri)",
@@ -11,7 +11,7 @@ locals {
 }
 
 module "rp_example" {
-  source = "git::https://github.com/pagopa/dx.git//infra/modules/azure_app_service_exposed?ref=fix-app-service-exposed"
+  source = "git::https://github.com/pagopa/dx.git//infra/modules/azure_app_service_exposed?ref=main"
 
   environment = merge(var.environment, {
     app_name        = "rp-example",
