@@ -1,5 +1,5 @@
 module "fims_snet" {
-  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.13.0"
+  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.28.2"
   name                 = "fims"
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
