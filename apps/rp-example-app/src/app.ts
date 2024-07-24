@@ -2,6 +2,7 @@ import type * as oidc from "openid-client";
 
 import express from "express";
 import { ErrorRequestHandler } from "express";
+import rateLimit from "express-rate-limit";
 import session from "express-session";
 import helmet from "helmet";
 import * as assert from "node:assert/strict";
@@ -45,6 +46,8 @@ export function createApplication(
       secret: sessionSecret,
     }),
   );
+
+  app.use(rateLimit());
 
   app.get("/", async (req, res, next) => {
     if (
