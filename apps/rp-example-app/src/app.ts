@@ -44,6 +44,10 @@ export function createApplication(
       resave: true,
       saveUninitialized: true,
       secret: sessionSecret,
+      cookie: {
+        secure: true,
+        sameSite: true,
+      },
     }),
   );
 
