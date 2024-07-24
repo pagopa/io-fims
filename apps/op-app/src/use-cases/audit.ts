@@ -1,5 +1,4 @@
 import {
-  Event,
   Session,
   SessionEnvironment,
   eventsSchema,
@@ -11,36 +10,30 @@ import { StorageEnvironment, sendEventsMessage } from "@/domain/storage.js";
 import * as O from "fp-ts/lib/Option.js";
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
 import { flow, pipe } from "fp-ts/lib/function.js";
-import { AuditEvent, RPParams } from "io-fims-common/domain/audit-event";
-import { UserMetadata } from "io-fims-common/domain/user-metadata";
+import { RPParams, auditEventSchema } from "io-fims-common/domain/audit-event";
 import * as jose from "jose";
 import * as assert from "node:assert/strict";
-import * as TE from "fp-ts/lib/TaskEither.js";
-
 
 export class AuditError extends Error {
   name = "AuditError";
-  constructor() {
-    super("Unexpected error during audit use case.");
+  constructor(message?: string) {
+    super(message || "Unexpected error during audit use case.");
   }
 }
 
 type Context = SessionEnvironment & StorageEnvironment;
 
-const userDataFromSession = ({ userMetadata }: Session): UserMetadata =>
-  userMetadata;
-
 const safeFindSession = flow(
   getSession,
-  RTE.map(flow(O.map(userDataFromSession), O.toUndefined)),
+  RTE.map(
+    flow(
+      O.map(({ userMetadata }: Session) => userMetadata),
+      O.toUndefined,
+    ),
+  ),
 );
 
-const eventFromEvent = (event: Event): Event => event;
-
-const safeGetEvent = flow(
-  getEvent,
-  RTE.map(flow(O.map(eventFromEvent), O.toUndefined)),
-);
+const safeGetEvent = flow(getEvent, RTE.map(O.toUndefined));
 
 export class AuditUseCase {
   #ctx: Context;
@@ -52,42 +45,56 @@ export class AuditUseCase {
   async manageIdToken(idTokenString: string): Promise<void> {
     const idToken = jose.decodeJwt(idTokenString);
     const clientId = Array.isArray(idToken.aud) ? idToken.aud[0] : idToken.aud;
-    const findEvent = await safeGetEvent(
-      clientId || "",
-      idToken.sub || "",
-    )(this.#ctx.eventRepository)();
+
+    assert.ok(clientId, new AuditError());
+    assert.ok(idToken.sub, new AuditError());
+
+    const findEvent = await safeGetEvent(clientId, idToken.sub)(this.#ctx)();
     assert.equal(findEvent._tag, "Right", new AuditError());
     const event = findEvent.right;
-    const auditEvent = {
+    const auditEvent = auditEventSchema.parse({
       blobName: event?.blobName,
-      idTokenString,
-    } as AuditEvent;
+      data: {
+        isToken: idTokenString,
+      },
+      type: "idToken",
+    });
     await sendEventsMessage(auditEvent)(this.#ctx)();
   }
 
-  async manageUserAndRpParams(
+  async manageUserAndRequestParams(
     sessionId: string,
-    rpParams: RPParams,
+    requestParams: RPParams,
     ipAddress: string,
   ): Promise<void> {
-    const findUserData = await safeFindSession(sessionId)({
-      sessionRepository: this.#ctx.sessionRepository,
-    })();
-    assert.equal(findUserData._tag, "Right", new AuditError());
+    const findUserData = await safeFindSession(sessionId)(this.#ctx)();
+    assert.equal(
+      findUserData._tag,
+      "Right",
+      new AuditError(`No session found with sessionId ${sessionId}`),
+    );
     const userData = findUserData.right;
-    const blobName = `${userData?.fiscalCode}_${rpParams.client_id}_${sessionId}.json`;
+    const blobName = `${userData?.fiscalCode}_${requestParams.client_id}_${sessionId}.json`;
     const redisEvent = eventsSchema.parse({
       blobName,
-      clientId: rpParams.client_id,
+      clientId: requestParams.client_id,
       fiscalCode: userData?.fiscalCode,
     });
-    const auditEvent = {
+    const auditEvent = auditEventSchema.parse({
       blobName: blobName,
-      ipAddress: ipAddress,
-      rpParams: rpParams,
-      userData: userData,
-    } as AuditEvent;
-    await writeEvent(redisEvent)(this.#ctx)();
-    await sendEventsMessage(auditEvent)(this.#ctx)();
+      data: {
+        ipAddress: ipAddress,
+        requestParams: requestParams,
+        timestamp: new Date().getSeconds(),
+        userData: userData,
+      },
+      type: "rpStep",
+    });
+    const audit = pipe(
+      writeEvent(redisEvent),
+      RTE.chain(() => sendEventsMessage(auditEvent)),
+    );
+    const result = await audit(this.#ctx)();
+    assert.equal(result._tag, "Right", new AuditError());
   }
 }

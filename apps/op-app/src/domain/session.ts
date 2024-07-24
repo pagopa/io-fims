@@ -81,7 +81,9 @@ export const writeEvent =
 
 export const getEvent =
   (clientId: string, fiscalCode: string) =>
-  (eventRepository: EventRepository): TE.TaskEither<Error, O.Option<Event>> =>
+  ({
+    eventRepository: eventRepository,
+  }: StorageEnvironment): TE.TaskEither<Error, O.Option<Event>> =>
     pipe(
       TE.tryCatch(() => eventRepository.get(clientId, fiscalCode), E.toError),
       TE.map(O.fromNullable),

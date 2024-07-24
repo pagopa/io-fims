@@ -4,7 +4,7 @@ import type Provider from "oidc-provider";
 import { metadataForConsentFromScopes } from "@/domain/user-metadata.js";
 import { AuditUseCase } from "@/use-cases/audit.js";
 import * as express from "express";
-import { rpParamsSchema } from "io-fims-common/domain/audit-event";
+import { requestParamsSchema } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
 import { z } from "zod";
 
@@ -174,14 +174,14 @@ export default function createInteractionRouter(
         new HttpBadRequestError(`Unable to parse the "_io_fims_token" cookie.`),
       );
       req.log.debug("_io_fims_token parsed from cookies");
-      const rpParams = rpParamsSchema.safeParse(interaction.params);
+      const rpParams = requestParamsSchema.safeParse(interaction.params);
       assert.ok(
         rpParams.success,
         new HttpBadRequestError(`Unable to parse the query params.`),
       );
       const ipAddress = req.ip || "";
       const accountId = await loginUseCase.execute(cookies.data._io_fims_token);
-      await auditUseCase.manageUserAndRpParams(
+      await auditUseCase.manageUserAndRequestParams(
         accountId,
         rpParams.data,
         ipAddress,
