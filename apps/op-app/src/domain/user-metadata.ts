@@ -18,6 +18,7 @@ export type UserMetadata = z.TypeOf<typeof userMetadataSchema>;
 export const claims = {
   openid: ["sub"],
   profile: ["given_name", "family_name", "fiscal_code"],
+  lollipop: ["public_key", "assertion_ref", "assertion"],
 } as const;
 
 export type Scope = keyof typeof claims;
@@ -45,6 +46,9 @@ export const claimsFromUserMetadata = (
   fiscal_code: userMetadata.fiscalCode,
   given_name: userMetadata.firstName,
   sub: userMetadata.fiscalCode,
+  public_key: userMetadata.publicKey,
+  assertion_ref: userMetadata.assertionRef,
+  assertion: userMetadata.assertion,
 });
 
 export const federationTokenSchema = z.string().min(1);
