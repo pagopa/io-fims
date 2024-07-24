@@ -1,7 +1,7 @@
 import type * as oidc from "openid-client";
 
 import express from "express";
-import { ErrorRequestHandler } from "express";
+import { ErrorRequestHandler, RequestHandler } from "express";
 import rateLimit from "express-rate-limit";
 import session from "express-session";
 import helmet from "helmet";
@@ -18,6 +18,37 @@ declare module "express-session" {
     profile: Profile;
   }
 }
+
+const requireAuth =
+  (oidcClient: oidc.Client): RequestHandler =>
+  (req, res, next) => {
+    if (!req.session.profile) {
+      const redirectTo = oidcClient.authorizationUrl({
+        response_mode: "query",
+        response_type: "code",
+        scope: "openid profile",
+        state: crypto.randomBytes(15).toString("hex"),
+      });
+      res.redirect(redirectTo);
+    } else {
+      next();
+    }
+  };
+
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  if (res.headersSent) {
+    next(err);
+  } else {
+    res.render("index", {
+      error: {
+        message:
+          err instanceof Error
+            ? err.message
+            : "Si è verificato un errore inaspettato.",
+      },
+    });
+  }
+};
 
 export function createApplication(
   sessionSecret: string,
@@ -75,21 +106,7 @@ export function createApplication(
     }
   });
 
-  app.get("/", (req, res, next) => {
-    if (!req.session.profile) {
-      const redirectTo = oidcClient.authorizationUrl({
-        response_mode: "query",
-        response_type: "code",
-        scope: "openid profile",
-        state: crypto.randomBytes(15).toString("hex"),
-      });
-      res.redirect(redirectTo);
-    } else {
-      next();
-    }
-  });
-
-  app.get("/", (req, res) => {
+  app.get("/", requireAuth(oidcClient), (req, res) => {
     res.render("index", { profile: req.session.profile });
   });
 
@@ -121,21 +138,6 @@ export function createApplication(
   app.get("/health", (req, res) => {
     res.status(204).end();
   });
-
-  const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-    if (res.headersSent) {
-      next(err);
-    } else {
-      res.render("index", {
-        error: {
-          message:
-            err instanceof Error
-              ? err.message
-              : "Si è verificato un errore inaspettato.",
-        },
-      });
-    }
-  };
 
   app.use(errorHandler);
 
