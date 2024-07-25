@@ -16,9 +16,9 @@ export const userMetadataSchema = z.object({
 export type UserMetadata = z.TypeOf<typeof userMetadataSchema>;
 
 export const claims = {
+  lollipop: ["public_key", "assertion_ref", "assertion"],
   openid: ["sub"],
   profile: ["given_name", "family_name", "fiscal_code"],
-  lollipop: ["public_key", "assertion_ref", "assertion"],
 } as const;
 
 export type Scope = keyof typeof claims;
@@ -42,13 +42,13 @@ export const metadataForConsentFromScopes = (
 export const claimsFromUserMetadata = (
   userMetadata: UserMetadata,
 ): Record<Claim, string> => ({
+  assertion: userMetadata.assertion,
+  assertion_ref: userMetadata.assertionRef,
   family_name: userMetadata.lastName,
   fiscal_code: userMetadata.fiscalCode,
   given_name: userMetadata.firstName,
-  sub: userMetadata.fiscalCode,
   public_key: userMetadata.publicKey,
-  assertion_ref: userMetadata.assertionRef,
-  assertion: userMetadata.assertion,
+  sub: userMetadata.fiscalCode,
 });
 
 export const federationTokenSchema = z.string().min(1);

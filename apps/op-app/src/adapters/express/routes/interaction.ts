@@ -16,7 +16,7 @@ const consentSchema = z.object({
   }),
   prompt: z.object({
     details: z.object({
-      missingOIDCScope: z.array(z.enum(["openid", "profile"])),
+      missingOIDCScope: z.array(z.enum(["openid", "profile", "lollipop"])),
     }),
     name: z.literal("consent"),
   }),
