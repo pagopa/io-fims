@@ -5,10 +5,12 @@ locals {
       WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
       COSMOS_ENDPOINT                   = data.azurerm_cosmosdb_account.fims.endpoint
       COSMOS_DBNAME                     = data.azurerm_cosmosdb_sql_database.fims_op.name,
-      CONFIG_QUEUE__queueServiceUri = "https://${var.storage_account.name}.queue.core.windows.net"
-      CONFIG_QUEUE__name            = var.storage_account.queues.config.name
-      EVENT_QUEUE__queueServiceUri  = "https://${var.storage_account.name}.queue.core.windows.net"
-      EVENT_QUEUE__name             = var.storage_account.queues.event.name
+      CONFIG_QUEUE__queueServiceUri     = "https://${var.storage_account.name}.queue.core.windows.net"
+      CONFIG_QUEUE__name                = var.storage_account.queues.config.name
+      EVENT_QUEUE__queueServiceUri      = "https://${var.storage_account.name}.queue.core.windows.net"
+      EVENT_QUEUE__name                 = var.storage_account.queues.event.name
+      EVENT_STORAGE_URI                 = "https://${var.event_storage_account.name}.blob.core.windows.net"
+      EVENT_CONTAINER_NAME              = var.event_storage_account.container_name
     }
   }
 }

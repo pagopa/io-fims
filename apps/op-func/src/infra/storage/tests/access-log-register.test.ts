@@ -1,7 +1,7 @@
 import { Readable } from "stream";
 import { describe, expect, test } from "vitest";
 
-import { getStreamIntoString } from "../access-log-register.js";
+import { getStreamIntoString } from "../audit-event.js";
 
 describe("Readeable stream conversion", () => {
   test("return a correct string from the readable stream", async () => {
