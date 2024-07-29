@@ -36,7 +36,7 @@ module "web_apps" {
   key_vault             = module.key_vaults.fims
   cosmosdb_account      = module.cosmos.fims
   storage_account       = module.storage.fims
-  event_storage_account = module.storage.fimsevent
+  storage_account_event = module.storage.fimsevent
   redis_cache           = module.redis_cache.fims
   application_insights  = data.azurerm_application_insights.common
 }
