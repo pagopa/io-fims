@@ -1,5 +1,5 @@
 module "cosmosdb_database_op" {
-  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v8.28.2"
 
   name                = "op"
   resource_group_name = var.resource_group_name
@@ -7,7 +7,7 @@ module "cosmosdb_database_op" {
 }
 
 module "comsosdb_sql_container_op_clients" {
-  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.28.2"
 
   name                = "clients"
   resource_group_name = var.resource_group_name
@@ -20,7 +20,7 @@ module "comsosdb_sql_container_op_clients" {
 }
 
 module "comsosdb_sql_container_op_grants" {
-  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.28.2"
 
   name                = "grants"
   resource_group_name = var.resource_group_name
@@ -33,7 +33,7 @@ module "comsosdb_sql_container_op_grants" {
 }
 
 module "comsosdb_sql_container_op_sessions" {
-  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.28.2"
 
   name                = "sessions"
   resource_group_name = var.resource_group_name
@@ -46,7 +46,7 @@ module "comsosdb_sql_container_op_sessions" {
 }
 
 module "comsosdb_sql_container_op_sessions_by_id" {
-  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.28.2"
 
   name                = "sessions-by-uid"
   resource_group_name = var.resource_group_name
@@ -59,7 +59,7 @@ module "comsosdb_sql_container_op_sessions_by_id" {
 }
 
 module "comsosdb_sql_container_op_interactions" {
-  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.28.2"
 
   name                = "interactions"
   resource_group_name = var.resource_group_name
@@ -72,7 +72,7 @@ module "comsosdb_sql_container_op_interactions" {
 }
 
 module "comsosdb_sql_container_op_access_tokens" {
-  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.28.2"
 
   name                = "access-tokens"
   resource_group_name = var.resource_group_name
@@ -85,7 +85,7 @@ module "comsosdb_sql_container_op_access_tokens" {
 }
 
 module "comsosdb_sql_container_op_authorization_codes" {
-  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.28.2"
 
   name                = "authorization-codes"
   resource_group_name = var.resource_group_name
@@ -98,7 +98,7 @@ module "comsosdb_sql_container_op_authorization_codes" {
 }
 
 module "comsosdb_sql_container_op_authorization_codes_by_id" {
-  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.28.2"
 
   name                = "granteds-by-grant-id"
   resource_group_name = var.resource_group_name
