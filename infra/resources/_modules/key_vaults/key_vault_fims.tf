@@ -1,5 +1,5 @@
 module "key_vault" {
-  source = "github.com/pagopa/terraform-azurerm-v3//key_vault?ref=v8.13.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//key_vault?ref=v8.28.2"
 
   name                       = "${var.project}-kv"
   location                   = var.location
