@@ -56,7 +56,7 @@ async function main(config: Config & WebConfig) {
     logger.error({ cause: err.cause }, err.message);
   });
 
-  const identityProvider = new IO(config.io.baseUrl);
+  const identityProvider = new IO(config.io);
 
   const login = new LoginUseCase({
     identityProvider,

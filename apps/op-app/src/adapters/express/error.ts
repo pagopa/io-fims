@@ -1,4 +1,7 @@
+import { LoginError } from "@/use-cases/login.js";
 import { ErrorRequestHandler } from "express";
+
+import { UserNotLoggedError } from "../io/user-metadata.js";
 
 type HttpErrorStatusCode = 400 | 401 | 403 | 404 | 409 | 422 | 429 | 500 | 503;
 
@@ -60,12 +63,17 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     return next(err);
   }
 
-  const httpError =
-    err instanceof HttpError
-      ? err
-      : new HttpError("Something went wrong!", {
-          cause: err,
-        });
+  let httpError;
+
+  if (err instanceof LoginError && err.cause instanceof UserNotLoggedError) {
+    httpError = new HttpUnauthorizedError("Session expired");
+  } else if (err instanceof HttpError) {
+    httpError = err;
+  } else {
+    httpError = new HttpError("Something went wrong!", {
+      cause: err,
+    });
+  }
 
   if (httpError.status >= 500) {
     req.log.error(

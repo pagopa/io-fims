@@ -36,7 +36,8 @@
     "start:dev": "node --env-file=.env ./dist/web.js | pino-pretty",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "generate:io-client": "gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/io-backend/v13.0.0/openapi/generated/api_fims.yaml --no-strict --out-dir ./src/adapters/outboud/io/generated --request-types --response-decoders --client",
+    "generate:io-session-manager-client": "gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/io-auth-n-identity-domain/main/apps/session-manager/api/fims.yaml --no-strict --out-dir ./src/adapters/io/generated/session-manager --request-types --response-decoders --client",
+    "generate:io-lollipop-client": "gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/io-functions-lollipop/fb86cac676c366ae55ffca35da4e583b872b76ac/openapi/external.yaml --no-strict --out-dir ./src/adapters/io/generated/lollipop --request-types --response-decoders --client",
     "generate:api-models": "openapi-zod-client openapi.yaml -o src/adapters/express/api-models.ts -t schemas-only.hbs --export-schemas"
   },
   "devDependencies": {

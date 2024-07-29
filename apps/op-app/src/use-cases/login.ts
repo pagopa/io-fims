@@ -1,13 +1,14 @@
 import { Session, SessionEnvironment, startSession } from "@/domain/session.js";
 import { IdentityProvider, getUserMetadata } from "@/domain/user-metadata.js";
+import * as E from "fp-ts/lib/Either.js";
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
 import { flow } from "fp-ts/lib/function.js";
-import * as assert from "node:assert/strict";
 
 export class LoginError extends Error {
   name = "LoginError";
-  constructor() {
+  constructor(cause: unknown) {
     super("Unexpected error during login.");
+    this.cause = cause;
   }
 }
 
@@ -20,10 +21,12 @@ export class LoginUseCase {
     this.#ctx = ctx;
   }
 
-  async execute(token: string): Promise<Session["id"]> {
+  async execute(token: string, operationId: string): Promise<Session["id"]> {
     const login = flow(getUserMetadata, RTE.flatMap(startSession));
-    const result = await login(token)(this.#ctx)();
-    assert.equal(result._tag, "Right", new LoginError());
+    const result = await login(token, operationId)(this.#ctx)();
+    if (E.isLeft(result)) {
+      throw new LoginError(result.left);
+    }
     return result.right;
   }
 }
