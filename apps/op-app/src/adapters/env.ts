@@ -11,7 +11,5 @@ export const envSchema = nodeEnvSchema.and(cosmosEnvSchema).and(
     REDIS_PING_INTERVAL: z.coerce.number(),
     REDIS_URL: z.string().url(),
     STORAGE_ACCOUNT_NAME: z.string().min(1),
-    EVENT_STORAGE_NAME: z.string().min(1),
-    EVENT_CONTAINER_NAME: z.string().min(1),
   }),
 );
