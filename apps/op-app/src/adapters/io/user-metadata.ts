@@ -21,6 +21,10 @@ export class UserNotLoggedError extends Error {
   }
 }
 
+const assertionSchema = z.object({
+  response_xml: z.string().min(1),
+});
+
 export class IO implements IdentityProvider {
   #lollipop: Lollipop.Client;
   #lollipopApiKeyAuth: string;
@@ -51,9 +55,6 @@ export class IO implements IdentityProvider {
       });
       assert.ok(E.isRight(response));
       assert.strictEqual(response.right.status, 200);
-      const assertionSchema = z.object({
-        response_xml: z.string().min(1),
-      });
       const assertion = assertionSchema.parse(response.right.value);
       return assertion.response_xml;
     } catch (err) {
