@@ -14,14 +14,17 @@ module "storage_account_event" {
 
   tags = var.tags
 
-  blob_properties {
-    versioning_enabled = true
-  }
+  # Needed for immtability policy
+  blob_versioning_enabled = true
 
-  immutability_policy {
-    allow_protected_append_writes = true
+  blob_storage_policy = {
+    enable_immutability_policy = true
+    blob_restore_policy_days   = 0
+  }
+  
+  immutability_policy_props = {
+    allow_protected_append_writes = false
     period_since_creation_in_days = 730
-    state                         = "Locked"
   }
 }
 
