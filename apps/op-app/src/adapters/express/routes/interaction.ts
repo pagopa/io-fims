@@ -16,7 +16,7 @@ const consentSchema = z.object({
   }),
   prompt: z.object({
     details: z.object({
-      missingOIDCScope: z.array(z.enum(["openid", "profile"])),
+      missingOIDCScope: z.array(z.enum(["openid", "profile", "lollipop"])),
     }),
     name: z.literal("consent"),
   }),
@@ -169,7 +169,10 @@ export default function createInteractionRouter(
         new HttpBadRequestError(`Unable to parse the "_io_fims_token" cookie.`),
       );
       req.log.debug("_io_fims_token parsed from cookies");
-      const accountId = await loginUseCase.execute(cookies.data._io_fims_token);
+      const accountId = await loginUseCase.execute(
+        cookies.data._io_fims_token,
+        interaction.jti,
+      );
       return oidcProvider.interactionFinished(req, res, {
         login: {
           accountId,

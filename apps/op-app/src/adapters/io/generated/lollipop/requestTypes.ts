@@ -7,75 +7,105 @@ import * as t from "io-ts";
 
 import * as r from "@pagopa/ts-commons/lib/requests.js";
 
-import { FIMSUser } from "./FIMSUser.js";
+import { AssertionRef } from "./AssertionRef.js";
+
+import { LollipopAuthBearer } from "./LollipopAuthBearer.js";
+
+import { LCUserInfo } from "./LCUserInfo.js";
 
 import { ProblemJson } from "./ProblemJson.js";
 
 /****************************************************************
- * getUserForFIMS
+ * getAssertion
  */
 
 // Request type definition
-export type GetUserForFIMST = r.IGetApiRequestType<
-  { readonly Bearer: string },
-  "Authorization",
+export type GetAssertionT = r.IGetApiRequestType<
+  {
+    readonly ApiKeyAuth: string;
+    readonly assertion_ref: AssertionRef;
+    readonly "x-pagopa-lollipop-auth": LollipopAuthBearer;
+  },
+  "Ocp-Apim-Subscription-Key",
   never,
-  | r.IResponseType<200, FIMSUser, never>
+  | r.IResponseType<200, LCUserInfo, never>
   | r.IResponseType<400, ProblemJson, never>
   | r.IResponseType<401, undefined, never>
+  | r.IResponseType<403, undefined, never>
   | r.IResponseType<404, ProblemJson, never>
-  | r.IResponseType<429, undefined, never>
+  | r.IResponseType<410, undefined, never>
   | r.IResponseType<500, ProblemJson, never>
 >;
 
-export const getUserForFIMSDefaultResponses = {
-  200: FIMSUser,
+export const getAssertionDefaultResponses = {
+  200: LCUserInfo,
   400: ProblemJson,
   401: t.undefined,
+  403: t.undefined,
   404: ProblemJson,
-  429: t.undefined,
+  410: t.undefined,
   500: ProblemJson,
 };
 
-export type GetUserForFIMSResponsesT<
-  A0 = FIMSUser,
-  C0 = FIMSUser,
+export type GetAssertionResponsesT<
+  A0 = LCUserInfo,
+  C0 = LCUserInfo,
   A1 = ProblemJson,
   C1 = ProblemJson,
   A2 = undefined,
   C2 = undefined,
-  A3 = ProblemJson,
-  C3 = ProblemJson,
-  A4 = undefined,
-  C4 = undefined,
-  A5 = ProblemJson,
-  C5 = ProblemJson,
+  A3 = undefined,
+  C3 = undefined,
+  A4 = ProblemJson,
+  C4 = ProblemJson,
+  A5 = undefined,
+  C5 = undefined,
+  A6 = ProblemJson,
+  C6 = ProblemJson,
 > = {
   200: t.Type<A0, C0>;
   400: t.Type<A1, C1>;
   401: t.Type<A2, C2>;
-  404: t.Type<A3, C3>;
-  429: t.Type<A4, C4>;
-  500: t.Type<A5, C5>;
+  403: t.Type<A3, C3>;
+  404: t.Type<A4, C4>;
+  410: t.Type<A5, C5>;
+  500: t.Type<A6, C6>;
 };
 
-export function getUserForFIMSDecoder<
-  A0 = FIMSUser,
-  C0 = FIMSUser,
+export function getAssertionDecoder<
+  A0 = LCUserInfo,
+  C0 = LCUserInfo,
   A1 = ProblemJson,
   C1 = ProblemJson,
   A2 = undefined,
   C2 = undefined,
-  A3 = ProblemJson,
-  C3 = ProblemJson,
-  A4 = undefined,
-  C4 = undefined,
-  A5 = ProblemJson,
-  C5 = ProblemJson,
+  A3 = undefined,
+  C3 = undefined,
+  A4 = ProblemJson,
+  C4 = ProblemJson,
+  A5 = undefined,
+  C5 = undefined,
+  A6 = ProblemJson,
+  C6 = ProblemJson,
 >(
   overrideTypes:
     | Partial<
-        GetUserForFIMSResponsesT<A0, C0, A1, C1, A2, C2, A3, C3, A4, C4, A5, C5>
+        GetAssertionResponsesT<
+          A0,
+          C0,
+          A1,
+          C1,
+          A2,
+          C2,
+          A3,
+          C3,
+          A4,
+          C4,
+          A5,
+          C5,
+          A6,
+          C6
+        >
       >
     | t.Type<A0, C0>
     | undefined = {},
@@ -83,15 +113,16 @@ export function getUserForFIMSDecoder<
   | r.IResponseType<200, A0, never>
   | r.IResponseType<400, A1, never>
   | r.IResponseType<401, A2, never>
-  | r.IResponseType<404, A3, never>
-  | r.IResponseType<429, A4, never>
-  | r.IResponseType<500, A5, never>
+  | r.IResponseType<403, A3, never>
+  | r.IResponseType<404, A4, never>
+  | r.IResponseType<410, A5, never>
+  | r.IResponseType<500, A6, never>
 > {
   const isDecoder = (d: any): d is t.Type<A0, C0> =>
     typeof d["_A"] !== "undefined";
 
   const type = {
-    ...(getUserForFIMSDefaultResponses as unknown as GetUserForFIMSResponsesT<
+    ...(getAssertionDefaultResponses as unknown as GetAssertionResponsesT<
       A0,
       C0,
       A1,
@@ -103,7 +134,9 @@ export function getUserForFIMSDecoder<
       A4,
       C4,
       A5,
-      C5
+      C5,
+      A6,
+      C6
     >),
     ...(isDecoder(overrideTypes) ? { 200: overrideTypes } : overrideTypes),
   };
@@ -141,6 +174,17 @@ export function getUserForFIMSDecoder<
         >(401, type[401])
   ) as r.ResponseDecoder<r.IResponseType<401, A2, never>>;
 
+  const d403 = (
+    type[403].name === "undefined"
+      ? r.constantResponseDecoder<undefined, 403, never>(403, undefined)
+      : r.ioResponseDecoder<
+          403,
+          (typeof type)[403]["_A"],
+          (typeof type)[403]["_O"],
+          never
+        >(403, type[403])
+  ) as r.ResponseDecoder<r.IResponseType<403, A3, never>>;
+
   const d404 = (
     type[404].name === "undefined"
       ? r.constantResponseDecoder<undefined, 404, never>(404, undefined)
@@ -150,18 +194,18 @@ export function getUserForFIMSDecoder<
           (typeof type)[404]["_O"],
           never
         >(404, type[404])
-  ) as r.ResponseDecoder<r.IResponseType<404, A3, never>>;
+  ) as r.ResponseDecoder<r.IResponseType<404, A4, never>>;
 
-  const d429 = (
-    type[429].name === "undefined"
-      ? r.constantResponseDecoder<undefined, 429, never>(429, undefined)
+  const d410 = (
+    type[410].name === "undefined"
+      ? r.constantResponseDecoder<undefined, 410, never>(410, undefined)
       : r.ioResponseDecoder<
-          429,
-          (typeof type)[429]["_A"],
-          (typeof type)[429]["_O"],
+          410,
+          (typeof type)[410]["_A"],
+          (typeof type)[410]["_O"],
           never
-        >(429, type[429])
-  ) as r.ResponseDecoder<r.IResponseType<429, A4, never>>;
+        >(410, type[410])
+  ) as r.ResponseDecoder<r.IResponseType<410, A5, never>>;
 
   const d500 = (
     type[500].name === "undefined"
@@ -172,19 +216,25 @@ export function getUserForFIMSDecoder<
           (typeof type)[500]["_O"],
           never
         >(500, type[500])
-  ) as r.ResponseDecoder<r.IResponseType<500, A5, never>>;
+  ) as r.ResponseDecoder<r.IResponseType<500, A6, never>>;
 
   return r.composeResponseDecoders(
     r.composeResponseDecoders(
       r.composeResponseDecoders(
-        r.composeResponseDecoders(r.composeResponseDecoders(d200, d400), d401),
+        r.composeResponseDecoders(
+          r.composeResponseDecoders(
+            r.composeResponseDecoders(d200, d400),
+            d401,
+          ),
+          d403,
+        ),
         d404,
       ),
-      d429,
+      d410,
     ),
     d500,
   );
 }
 
 // Decodes the success response with the type defined in the specs
-export const getUserForFIMSDefaultDecoder = () => getUserForFIMSDecoder();
+export const getAssertionDefaultDecoder = () => getAssertionDecoder();
