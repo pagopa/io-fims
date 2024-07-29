@@ -1,9 +1,9 @@
-import { StorageQueueClient } from "@/domain/session.js";
+import { StorageQueueClient } from "@/domain/storage.js";
 import { DefaultAzureCredential } from "@azure/identity";
 import { QueueClient } from "@azure/storage-queue";
+import { AuditEvent } from "io-fims-common/domain/audit-event";
 
 import { Config } from "../config.js";
-import { AuditEvent } from "io-fims-common/domain/audit-event";
 
 export default class EventQueueClient implements StorageQueueClient {
   #client: QueueClient;

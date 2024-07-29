@@ -1,10 +1,8 @@
-import { QueueSendMessageResponse } from "@azure/storage-queue";
 import * as E from "fp-ts/lib/Either.js";
 import * as IO from "fp-ts/lib/IO.js";
 import * as O from "fp-ts/lib/Option.js";
 import * as TE from "fp-ts/lib/TaskEither.js";
 import { pipe } from "fp-ts/lib/function.js";
-import { AuditEvent } from "io-fims-common/domain/audit-event";
 import {
   UserMetadata,
   userMetadataSchema,
@@ -43,10 +41,6 @@ export interface SessionRepository {
 export interface EventRepository {
   get(clientId: string, fiscalCode: UserMetadata["fiscalCode"]): Promise<Event>;
   upsert(event: Event): Promise<void>;
-}
-
-export interface StorageQueueClient {
-  sendMessage(auditEvent: AuditEvent): Promise<QueueSendMessageResponse>;
 }
 
 export interface SessionEnvironment {
