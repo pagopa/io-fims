@@ -24,7 +24,13 @@ export const configFromEnvironment = envSchema.transform(
       endpoint: env.COSMOS_ENDPOINT,
     },
     io: {
-      baseUrl: env.IO_BASE_URL,
+      lollipop: {
+        apiKey: env.LOLLIPOP_API_KEY,
+        baseUrl: env.LOLLIPOP_BASE_URL,
+      },
+      sessionManager: {
+        baseUrl: env.SESSION_MANAGER_BASE_URL,
+      },
     },
     oidc: {
       issuer: env.OIDC_ISSUER,

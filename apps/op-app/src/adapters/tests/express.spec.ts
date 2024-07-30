@@ -56,9 +56,13 @@ const createUserMetadata = (): {
   token: string;
 } => ({
   metadata: {
+    assertion: "<some-xml></some-xml>",
+    assertionRef: "sha256-k8YQcM9wlvc1Zb3o7l88htasPda3dYiZ3Xt17ulY6fE",
     firstName: faker.person.firstName(),
     fiscalCode: faker.string.alphanumeric({ casing: "upper", length: 16 }),
     lastName: faker.person.lastName(),
+    publicKey:
+      "eyJrdHkiOiJFQyIsImNydiI6IlAtMjU2IiwieCI6IlJhVlJ5US1pVk5CR1NxbFFnbmNtdmRUcEZSZFJnN0dweHIzVVBqamtTOU0iLCJ5IjoiWWlHZ2lyNG9Scm4yVkZnNjV0NVJoQjdUU3dyTXJlWUI0XzBQLTZ6LURWayJ9",
   },
   token: faker.string.alpha({ length: 10 }),
 });

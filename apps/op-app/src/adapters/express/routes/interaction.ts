@@ -18,7 +18,7 @@ const consentSchema = z.object({
   }),
   prompt: z.object({
     details: z.object({
-      missingOIDCScope: z.array(z.enum(["openid", "profile"])),
+      missingOIDCScope: z.array(z.enum(["openid", "profile", "lollipop"])),
     }),
     name: z.literal("consent"),
   }),
@@ -180,7 +180,10 @@ export default function createInteractionRouter(
         new HttpBadRequestError(`Unable to parse the query params.`),
       );
       const ipAddress = req.ip || "";
-      const accountId = await loginUseCase.execute(cookies.data._io_fims_token);
+      const accountId = await loginUseCase.execute(
+        cookies.data._io_fims_token,
+        interaction.jti,
+      );
       await auditUseCase.manageUserAndRequestParams(
         accountId,
         rpParams.data,

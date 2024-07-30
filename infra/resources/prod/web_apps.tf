@@ -33,9 +33,10 @@ module "web_apps" {
 
   # backing services
 
-  key_vault            = module.key_vaults.fims
-  cosmosdb_account     = module.cosmos.fims
-  storage_account      = module.storage.fims
-  redis_cache          = module.redis_cache.fims
-  application_insights = data.azurerm_application_insights.common
+  key_vault             = module.key_vaults.fims
+  cosmosdb_account      = module.cosmos.fims
+  storage_account       = module.storage.fims
+  storage_account_event = module.storage.fimsevent
+  redis_cache           = module.redis_cache.fims
+  application_insights  = data.azurerm_application_insights.common
 }

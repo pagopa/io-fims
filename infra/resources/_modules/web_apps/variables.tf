@@ -82,11 +82,10 @@ variable "storage_account" {
   })
 }
 
-variable "event_storage_account" {
+variable "storage_account_event" {
   type = object({
     id   = string
     name = string
-    container_name: string
   })
 }
 
