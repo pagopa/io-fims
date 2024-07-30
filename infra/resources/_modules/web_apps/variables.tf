@@ -86,6 +86,7 @@ variable "storage_account_event" {
   type = object({
     id   = string
     name = string
+    container_name = string
   })
 }
 
