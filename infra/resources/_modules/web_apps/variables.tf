@@ -79,6 +79,13 @@ variable "storage_account" {
   })
 }
 
+variable "storage_account_event" {
+  type = object({
+    id   = string
+    name = string
+  })
+}
+
 variable "redis_cache" {
   type = object({
     id         = string
