@@ -1,9 +1,7 @@
-import type {
-  EventRepository,
-  SessionRepository,
-} from "@/domain/session.js";
+import type { EventRepository, SessionRepository } from "@/domain/session.js";
 import type * as oidc from "oidc-provider";
 
+import { StorageQueueClient } from "@/domain/storage.js";
 import {
   type IdentityProvider,
   type Scope,
@@ -24,9 +22,8 @@ import { z } from "zod";
 
 import { schemas } from "../express/api-models.js";
 import { createApplication } from "../express/application.js";
-import { createProvider } from "../oidc/provider.js";
 import { UserMetadata, userMetadataSchema } from "../io/user-metadata.js";
-import { StorageQueueClient } from "@/domain/storage.js";
+import { createProvider } from "../oidc/provider.js";
 
 const logger = pino();
 
