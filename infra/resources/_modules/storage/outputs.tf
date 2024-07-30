@@ -17,6 +17,7 @@ output "fimsevent" {
   value = {
     id   = module.storage_account_event.id
     name = module.storage_account_event.name
+    container_name = module.storage_account_event.container_name
   }
 }
 
