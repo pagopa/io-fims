@@ -1,8 +1,8 @@
+import { UserMetadata } from "@/adapters/io/user-metadata.js";
 import { NonEmptyString } from "@pagopa/ts-commons/lib/strings.js";
 import * as E from "fp-ts/lib/Either.js";
 import * as TE from "fp-ts/lib/TaskEither.js";
 import { pipe } from "fp-ts/lib/function.js";
-import { UserMetadata } from "io-fims-common/domain/user-metadata";
 import { z } from "zod";
 
 export const claims = {
