@@ -7,9 +7,9 @@ import {
   type Scope,
   metadataForConsentFromScopes,
 } from "@/domain/user-metadata.js";
-import { AuditUseCase } from "@/use-cases/audit.js";
 import { HealthUseCase } from "@/use-cases/health.js";
 import { LoginUseCase } from "@/use-cases/login.js";
+import { SendEventMessageUseCase } from "@/use-cases/send-event-messge.js";
 import { faker } from "@faker-js/faker/locale/it";
 import { ClientMetadata } from "io-fims-common/domain/client-metadata";
 import {
@@ -300,13 +300,19 @@ describe("Consent screen", () => {
         sessionRepository,
       });
 
-      const audit = new AuditUseCase({
+      const eventUseCase = new SendEventMessageUseCase({
         eventRepository,
         queueClient,
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, audit, health, logger);
+      const app = createApplication(
+        provider,
+        login,
+        eventUseCase,
+        health,
+        logger,
+      );
 
       const expected = metadataForConsentFromScopes(scopes);
 
@@ -352,13 +358,19 @@ describe("Consent screen", () => {
       sessionRepository,
     });
 
-    const audit = new AuditUseCase({
+    const eventUseCase = new SendEventMessageUseCase({
       eventRepository,
       queueClient,
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, audit, health, logger);
+    const app = createApplication(
+      provider,
+      login,
+      eventUseCase,
+      health,
+      logger,
+    );
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -416,13 +428,19 @@ describe("Login", () => {
         sessionRepository,
       });
 
-      const audit = new AuditUseCase({
+      const eventUseCase = new SendEventMessageUseCase({
         eventRepository,
         queueClient,
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, audit, health, logger);
+      const app = createApplication(
+        provider,
+        login,
+        eventUseCase,
+        health,
+        logger,
+      );
 
       // setup agent with _io_fims_token
       const agent = request.agent(app).set({
@@ -448,13 +466,19 @@ describe("Login", () => {
         sessionRepository,
       });
 
-      const audit = new AuditUseCase({
+      const eventUseCase = new SendEventMessageUseCase({
         eventRepository,
         queueClient,
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, audit, health, logger);
+      const app = createApplication(
+        provider,
+        login,
+        eventUseCase,
+        health,
+        logger,
+      );
 
       // setup agent WITHOUT _io_fims_token
       const agent = request.agent(app);
@@ -488,13 +512,19 @@ describe("Consent", () => {
       sessionRepository,
     });
 
-    const audit = new AuditUseCase({
+    const eventUseCase = new SendEventMessageUseCase({
       eventRepository,
       queueClient,
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, audit, health, logger);
+    const app = createApplication(
+      provider,
+      login,
+      eventUseCase,
+      health,
+      logger,
+    );
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -533,13 +563,19 @@ describe("Abort", () => {
       sessionRepository,
     });
 
-    const audit = new AuditUseCase({
+    const eventUseCase = new SendEventMessageUseCase({
       eventRepository,
       queueClient,
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, audit, health, logger);
+    const app = createApplication(
+      provider,
+      login,
+      eventUseCase,
+      health,
+      logger,
+    );
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -601,13 +637,19 @@ test.each<OIDCFlow>(["implicit", "authorization_code"])(
       sessionRepository,
     });
 
-    const audit = new AuditUseCase({
+    const eventUseCase = new SendEventMessageUseCase({
       eventRepository,
       queueClient,
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, audit, health, logger);
+    const app = createApplication(
+      provider,
+      login,
+      eventUseCase,
+      health,
+      logger,
+    );
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -700,13 +742,19 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const audit = new AuditUseCase({
+      const eventUseCase = new SendEventMessageUseCase({
         eventRepository,
         queueClient,
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, audit, health, logger);
+      const app = createApplication(
+        provider,
+        login,
+        eventUseCase,
+        health,
+        logger,
+      );
 
       const agent = request.agent(app);
 
@@ -734,13 +782,19 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const audit = new AuditUseCase({
+      const eventUseCase = new SendEventMessageUseCase({
         eventRepository,
         queueClient,
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, audit, health, logger);
+      const app = createApplication(
+        provider,
+        login,
+        eventUseCase,
+        health,
+        logger,
+      );
 
       const agent = request.agent(app);
 
@@ -771,13 +825,19 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const audit = new AuditUseCase({
+      const eventUseCase = new SendEventMessageUseCase({
         eventRepository,
         queueClient,
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, audit, health, logger);
+      const app = createApplication(
+        provider,
+        login,
+        eventUseCase,
+        health,
+        logger,
+      );
 
       const agent = request.agent(app);
 
@@ -813,13 +873,19 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const audit = new AuditUseCase({
+      const eventUseCase = new SendEventMessageUseCase({
         eventRepository,
         queueClient,
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, audit, health, logger);
+      const app = createApplication(
+        provider,
+        login,
+        eventUseCase,
+        health,
+        logger,
+      );
 
       const agent = request.agent(app);
 

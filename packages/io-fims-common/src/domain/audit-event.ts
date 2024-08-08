@@ -1,16 +1,12 @@
 import { z } from "zod";
 
+import { userMetadataSchema } from "./user-metadata.js";
+
 export const requestParamsSchema = z.object({
   client_id: z.string().min(1),
   redirect_uri: z.string().url(),
   response_type: z.union([z.literal("id_token"), z.literal("code")]),
   scope: z.string().min(1).optional(),
-});
-
-export const userDataSchema = z.object({
-  firstName: z.string().min(1),
-  fiscalCode: z.string().min(1),
-  lastName: z.string().min(1),
 });
 
 export type RPParams = z.TypeOf<typeof requestParamsSchema>;
@@ -19,7 +15,7 @@ const commonAuditSchema = z.object({
   ipAddress: z.string().ip(),
   requestParams: requestParamsSchema,
   timestamp: z.number(),
-  userData: userDataSchema,
+  userData: userMetadataSchema,
 });
 
 export const auditEventSchema = z.discriminatedUnion("type", [

@@ -1,10 +1,10 @@
-import { AuditUseCase } from "@/use-cases/audit.js";
+import { SendEventMessageUseCase } from "@/use-cases/send-event-messge.js";
 import Provider from "oidc-provider";
 import { Logger } from "pino";
 
 export function createTokenMiddleware(
   provider: Provider,
-  audit: AuditUseCase,
+  eventUseCase: SendEventMessageUseCase,
   logger: Logger,
 ) {
   provider.use(async (ctx, next) => {
@@ -15,7 +15,10 @@ export function createTokenMiddleware(
       if (tokenResponse.status === 200) {
         const responseBody = tokenResponse.body;
         if (responseBody["id_token"]) {
-          audit.manageIdToken(responseBody["id_token"]);
+          eventUseCase.execute({
+            idTokenString: responseBody["id_token"],
+            type: "idToken",
+          });
         }
       }
     }

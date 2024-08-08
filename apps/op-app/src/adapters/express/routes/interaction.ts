@@ -2,7 +2,7 @@ import type { LoginUseCase } from "@/use-cases/login.js";
 import type Provider from "oidc-provider";
 
 import { metadataForConsentFromScopes } from "@/domain/user-metadata.js";
-import { AuditUseCase } from "@/use-cases/audit.js";
+import { SendEventMessageUseCase } from "@/use-cases/send-event-messge.js";
 import * as express from "express";
 import { requestParamsSchema } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
@@ -55,7 +55,7 @@ export const parseRedirectDisplayName = (
 export default function createInteractionRouter(
   oidcProvider: Provider,
   loginUseCase: LoginUseCase,
-  auditUseCase: AuditUseCase,
+  eventUseCase: SendEventMessageUseCase,
 ) {
   const router = express.Router();
 
@@ -187,11 +187,12 @@ export default function createInteractionRouter(
         cookies.data._io_fims_token,
         interaction.jti,
       );
-      await auditUseCase.manageUserAndRequestParams(
-        accountId,
-        rpParams.data,
-        req.ip,
-      );
+      await eventUseCase.execute({
+        ipAddress: req.ip,
+        requestParams: rpParams.data,
+        sessionId: accountId,
+        type: "rpStep",
+      });
       return oidcProvider.interactionFinished(req, res, {
         login: {
           accountId,

@@ -16,9 +16,9 @@ import RedisEventRepository from "./adapters/redis/event.js";
 import RedisHealthChecker from "./adapters/redis/health.js";
 import RedisSessionRepository from "./adapters/redis/session.js";
 import EventQueueClient from "./adapters/storage/event-client.js";
-import { AuditUseCase } from "./use-cases/audit.js";
 import { HealthUseCase } from "./use-cases/health.js";
 import { LoginUseCase } from "./use-cases/login.js";
+import { SendEventMessageUseCase } from "./use-cases/send-event-messge.js";
 
 const webConfig = z.object({
   web: z.object({
@@ -70,7 +70,7 @@ async function main(config: Config & WebConfig) {
     sessionRepository,
   });
 
-  const audit = new AuditUseCase({
+  const eventUseCase = new SendEventMessageUseCase({
     eventRepository,
     queueClient,
     sessionRepository,
@@ -81,9 +81,9 @@ async function main(config: Config & WebConfig) {
     new RedisHealthChecker(redis),
   ]);
 
-  createTokenMiddleware(oidc, audit, logger);
+  createTokenMiddleware(oidc, eventUseCase, logger);
 
-  const app = createApplication(oidc, login, audit, health, logger);
+  const app = createApplication(oidc, login, eventUseCase, health, logger);
 
   const server = app.listen(config.web.port, () => {
     logger.info(`http server listening on ${config.web.port}`);

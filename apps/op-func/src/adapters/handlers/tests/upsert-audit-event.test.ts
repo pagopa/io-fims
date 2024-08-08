@@ -32,6 +32,9 @@ const aValidCompleteAuditEvent: AuditEvent = {
       firstName: "aFirstName",
       fiscalCode: "aFiscalCode",
       lastName: "aLastName",
+      assertion: "anAssertion",
+      assertionRef: "anAssertionRef",
+      publicKey: "aPublicKey"
     },
   },
   type: "complete",
@@ -48,9 +51,12 @@ const aValidRpStepAuditEvent: AuditEvent = {
     },
     timestamp: 123456789,
     userData: {
+      assertion: "anAssertion",
+      assertionRef: "anAssertionRef",
       firstName: "aFirstName",
       fiscalCode: "aFiscalCode",
       lastName: "aLastName",
+      publicKey: "aPublicKey",
     },
   },
   type: "rpStep",
