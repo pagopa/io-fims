@@ -9,6 +9,7 @@ import { AssertionRef } from "./generated/lollipop/AssertionRef.js";
 import { LollipopAuthBearer } from "./generated/lollipop/LollipopAuthBearer.js";
 import * as Lollipop from "./generated/lollipop/client.js";
 import * as SessionManager from "./generated/session-manager/client.js";
+import { userMetadataSchema } from "io-fims-common/domain/user-metadata";
 
 export class UserNotLoggedError extends Error {
   name = "UserNotLoggedError";
@@ -16,17 +17,6 @@ export class UserNotLoggedError extends Error {
     super("User not logged");
   }
 }
-
-export const userMetadataSchema = z.object({
-  assertion: z.string().min(1),
-  assertionRef: z.string().min(1),
-  firstName: z.string().min(1),
-  fiscalCode: z.string().min(1),
-  lastName: z.string().min(1),
-  publicKey: z.string().min(1),
-});
-
-export type UserMetadata = z.TypeOf<typeof userMetadataSchema>;
 
 const assertionSchema = z.object({
   response_xml: z.string().min(1),

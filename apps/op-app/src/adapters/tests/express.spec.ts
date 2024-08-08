@@ -12,6 +12,10 @@ import { HealthUseCase } from "@/use-cases/health.js";
 import { LoginUseCase } from "@/use-cases/login.js";
 import { faker } from "@faker-js/faker/locale/it";
 import { ClientMetadata } from "io-fims-common/domain/client-metadata";
+import {
+  UserMetadata,
+  userMetadataSchema,
+} from "io-fims-common/domain/user-metadata";
 import * as jose from "jose";
 import * as crypto from "node:crypto";
 import { pino } from "pino";
@@ -22,7 +26,6 @@ import { z } from "zod";
 
 import { schemas } from "../express/api-models.js";
 import { createApplication } from "../express/application.js";
-import { UserMetadata, userMetadataSchema } from "../io/user-metadata.js";
 import { createProvider } from "../oidc/provider.js";
 
 const logger = pino();

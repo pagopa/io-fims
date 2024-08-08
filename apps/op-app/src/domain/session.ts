@@ -1,12 +1,12 @@
-import {
-  UserMetadata,
-  userMetadataSchema,
-} from "@/adapters/io/user-metadata.js";
 import * as E from "fp-ts/lib/Either.js";
 import * as IO from "fp-ts/lib/IO.js";
 import * as O from "fp-ts/lib/Option.js";
 import * as TE from "fp-ts/lib/TaskEither.js";
 import { pipe } from "fp-ts/lib/function.js";
+import {
+  UserMetadata,
+  userMetadataSchema,
+} from "io-fims-common/domain/user-metadata";
 import { ulid } from "ulid";
 import { z } from "zod";
 
