@@ -7,6 +7,7 @@ import {
   writeEvent,
 } from "@/domain/session.js";
 import { StorageEnvironment, sendEventsMessage } from "@/domain/storage.js";
+import * as E from "fp-ts/lib/Either.js";
 import * as O from "fp-ts/lib/Option.js";
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
 import { flow, pipe } from "fp-ts/lib/function.js";
@@ -17,13 +18,6 @@ import {
 import * as jose from "jose";
 import * as assert from "node:assert/strict";
 import { z } from "zod";
-
-export class AuditError extends Error {
-  name = "AuditError";
-  constructor(message?: string) {
-    super(message || "Unexpected error during audit use case.");
-  }
-}
 
 const eventParamsSchema = z.discriminatedUnion("type", [
   z.object({
@@ -69,11 +63,15 @@ export class SendEventMessageUseCase {
         ? idToken.aud[0]
         : idToken.aud;
 
-      assert.ok(clientId, new AuditError());
-      assert.ok(idToken.sub, new AuditError());
+      assert.ok(clientId, new Error("The clientId is undefined"));
+      assert.ok(idToken.sub, new Error("The fiscal code is undefined"));
 
       const findEvent = await safeGetEvent(clientId, idToken.sub)(this.#ctx)();
-      assert.equal(findEvent._tag, "Right", new AuditError());
+      if (E.isLeft(findEvent)) {
+        throw new Error("Unexpected error during send event message", {
+          cause: findEvent.left,
+        });
+      }
       const event = findEvent.right;
       const auditEvent = auditEventSchema.parse({
         blobName: event?.blobName,
@@ -82,18 +80,23 @@ export class SendEventMessageUseCase {
         },
         type: "idToken",
       });
-      await sendEventsMessage(auditEvent)(this.#ctx)();
+      const result = await sendEventsMessage(auditEvent)(this.#ctx)();
+      if (E.isLeft(result)) {
+        throw new Error("Unexpected error during send event message", {
+          cause: result.left,
+        });
+      }
     }
 
     if (params.type === "rpStep") {
       const sessionId = params.sessionId;
       const requestParams = params.requestParams;
       const findUserData = await safeFindSession(sessionId)(this.#ctx)();
-      assert.equal(
-        findUserData._tag,
-        "Right",
-        new AuditError(`No session found with sessionId ${sessionId}`),
-      );
+      if (E.isLeft(findUserData)) {
+        throw new Error(`No session found with sessionId ${sessionId}`, {
+          cause: findUserData.left,
+        });
+      }
       const userData = findUserData.right;
       const blobName = `${userData?.fiscalCode}_${requestParams.client_id}_${sessionId}.json`;
       const redisEvent = eventsSchema.parse({
@@ -116,7 +119,11 @@ export class SendEventMessageUseCase {
         RTE.chain(() => sendEventsMessage(auditEvent)),
       );
       const result = await audit(this.#ctx)();
-      assert.equal(result._tag, "Right", new AuditError());
+      if (E.isLeft(result)) {
+        throw new Error("Unexpected error during send event message", {
+          cause: result.left,
+        });
+      }
     }
   }
 }
