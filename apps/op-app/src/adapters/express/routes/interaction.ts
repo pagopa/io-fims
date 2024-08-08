@@ -179,7 +179,10 @@ export default function createInteractionRouter(
         rpParams.success,
         new HttpBadRequestError(`Unable to parse the query params.`),
       );
-      const ipAddress = req.ip || "";
+      assert.ok(
+        req.ip,
+        new HttpBadRequestError(`Unable to retrieve ip address from request`),
+      );
       const accountId = await loginUseCase.execute(
         cookies.data._io_fims_token,
         interaction.jti,
@@ -187,7 +190,7 @@ export default function createInteractionRouter(
       await auditUseCase.manageUserAndRequestParams(
         accountId,
         rpParams.data,
-        ipAddress,
+        req.ip,
       );
       return oidcProvider.interactionFinished(req, res, {
         login: {
