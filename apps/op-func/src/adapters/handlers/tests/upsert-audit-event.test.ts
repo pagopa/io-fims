@@ -29,12 +29,12 @@ const aValidCompleteAuditEvent: AuditEvent = {
     },
     timestamp: 123456789,
     userData: {
+      assertion: "anAssertion",
+      assertionRef: "anAssertionRef",
       firstName: "aFirstName",
       fiscalCode: "aFiscalCode",
       lastName: "aLastName",
-      assertion: "anAssertion",
-      assertionRef: "anAssertionRef",
-      publicKey: "aPublicKey"
+      publicKey: "aPublicKey",
     },
   },
   type: "complete",
