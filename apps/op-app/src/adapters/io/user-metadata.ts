@@ -1,6 +1,7 @@
 import { IdentityProvider } from "@/domain/user-metadata.js";
 import { NonEmptyString } from "@pagopa/ts-commons/lib/strings.js";
 import * as E from "fp-ts/lib/Either.js";
+import { userMetadataSchema } from "io-fims-common/domain/user-metadata";
 import * as assert from "node:assert/strict";
 import { ZodError, z } from "zod";
 
@@ -9,7 +10,6 @@ import { AssertionRef } from "./generated/lollipop/AssertionRef.js";
 import { LollipopAuthBearer } from "./generated/lollipop/LollipopAuthBearer.js";
 import * as Lollipop from "./generated/lollipop/client.js";
 import * as SessionManager from "./generated/session-manager/client.js";
-import { userMetadataSchema } from "io-fims-common/domain/user-metadata";
 
 export class UserNotLoggedError extends Error {
   name = "UserNotLoggedError";
