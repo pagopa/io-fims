@@ -162,7 +162,7 @@ export default function createInteractionRouter(
       assert.equal(
         interaction.prompt.name,
         "login",
-        new Error("Interaction type mismatch, login expected"),
+        "Interaction type mismatch, login expected",
       );
 
       const cookiesSchema = z.object({

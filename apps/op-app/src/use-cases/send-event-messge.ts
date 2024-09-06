@@ -65,19 +65,19 @@ export class SendEventMessageUseCase {
     assert.ok(clientId, "The clientId is undefined");
     assert.ok(idTokenDecoded.sub, "The fiscal code is undefined");
 
-    const findEvent = await safeGetEvent(
+    const findAuditEventSession = await safeGetEvent(
       clientId,
       idTokenDecoded.sub,
     )(this.#ctx)();
-    if (E.isLeft(findEvent)) {
+    if (E.isLeft(findAuditEventSession)) {
       throw new Error("Unexpected error during send audit event message", {
-        cause: findEvent.left,
+        cause: findAuditEventSession.left,
       });
     }
-    const event = findEvent.right;
-    assert.ok(event, "Data to send audit event message not found");
+    const auditEventSession = findAuditEventSession.right;
+    assert.ok(auditEventSession, "Audit event session not found");
     const auditEvent = auditEventSchema.parse({
-      blobName: event.blobName,
+      blobName: auditEventSession.blobName,
       data: {
         idToken: idTokenDecoded,
       },
