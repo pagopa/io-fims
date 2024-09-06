@@ -19,13 +19,13 @@ export const sessionSchema = z.object({
 
 export type Session = z.TypeOf<typeof sessionSchema>;
 
-export const eventsSchema = z.object({
+export const auditEventSessionSchema = z.object({
   blobName: z.string().min(1),
   clientId: z.string().min(1),
   fiscalCode: z.string().min(1),
 });
 
-export type Event = z.TypeOf<typeof eventsSchema>;
+export type Event = z.TypeOf<typeof auditEventSessionSchema>;
 
 export const createSession = (userMetadata: UserMetadata) =>
   pipe(

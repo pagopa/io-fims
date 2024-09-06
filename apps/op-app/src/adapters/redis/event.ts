@@ -1,4 +1,8 @@
-import { Event, EventRepository, eventsSchema } from "@/domain/session.js";
+import {
+  Event,
+  EventRepository,
+  auditEventSessionSchema,
+} from "@/domain/session.js";
 import * as assert from "node:assert/strict";
 import {
   RedisClientType,
@@ -24,7 +28,11 @@ export default class RedisEventRepository implements EventRepository {
     const blobName = await this.#client.hGetAll(
       this.#key(clientId, fiscalCode),
     );
-    const event = eventsSchema.parse({ blobName, clientId, fiscalCode });
+    const event = auditEventSessionSchema.parse({
+      blobName,
+      clientId,
+      fiscalCode,
+    });
     return event;
   }
 

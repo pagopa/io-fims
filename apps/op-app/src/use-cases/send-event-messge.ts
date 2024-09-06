@@ -1,7 +1,7 @@
 import {
   Session,
   SessionEnvironment,
-  eventsSchema,
+  auditEventSessionSchema,
   getEvent,
   getSession,
   writeEvent,
@@ -12,6 +12,7 @@ import * as O from "fp-ts/lib/Option.js";
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
 import { flow, pipe } from "fp-ts/lib/function.js";
 import {
+  RPParams,
   auditEventSchema,
   requestParamsSchema,
 } from "io-fims-common/domain/audit-event";
@@ -19,7 +20,7 @@ import * as jose from "jose";
 import * as assert from "node:assert/strict";
 import { z } from "zod";
 
-const eventParamsSchema = z.discriminatedUnion("type", [
+const auditEventParamsSchema = z.discriminatedUnion("type", [
   z.object({
     ipAddress: z.string().ip(),
     requestParams: requestParamsSchema,
@@ -27,12 +28,12 @@ const eventParamsSchema = z.discriminatedUnion("type", [
     type: z.literal("rpStep"),
   }),
   z.object({
-    idTokenString: z.string().min(1),
+    idToken: z.string().min(1),
     type: z.literal("idToken"),
   }),
 ]);
 
-type EventParams = z.TypeOf<typeof eventParamsSchema>;
+type AuditEventParams = z.TypeOf<typeof auditEventParamsSchema>;
 
 type Context = SessionEnvironment & StorageEnvironment;
 
@@ -55,75 +56,97 @@ export class SendEventMessageUseCase {
     this.#ctx = ctx;
   }
 
-  async execute(params: EventParams): Promise<void> {
-    if (params.type === "idToken") {
-      const idTokenString = params.idTokenString;
-      const idToken = jose.decodeJwt(idTokenString);
-      const clientId = Array.isArray(idToken.aud)
-        ? idToken.aud[0]
-        : idToken.aud;
+  async #sendIdTokenStepMessage(idToken: string) {
+    const idTokenDecoded = jose.decodeJwt(idToken);
+    const clientId = Array.isArray(idTokenDecoded.aud)
+      ? idTokenDecoded.aud[0]
+      : idTokenDecoded.aud;
 
-      assert.ok(clientId, new Error("The clientId is undefined"));
-      assert.ok(idToken.sub, new Error("The fiscal code is undefined"));
+    assert.ok(clientId, "The clientId is undefined");
+    assert.ok(idTokenDecoded.sub, "The fiscal code is undefined");
 
-      const findEvent = await safeGetEvent(clientId, idToken.sub)(this.#ctx)();
-      if (E.isLeft(findEvent)) {
-        throw new Error("Unexpected error during send event message", {
-          cause: findEvent.left,
-        });
-      }
-      const event = findEvent.right;
-      const auditEvent = auditEventSchema.parse({
-        blobName: event?.blobName,
-        data: {
-          idToken: idTokenString,
-        },
-        type: "idToken",
+    const findEvent = await safeGetEvent(
+      clientId,
+      idTokenDecoded.sub,
+    )(this.#ctx)();
+    if (E.isLeft(findEvent)) {
+      throw new Error("Unexpected error during send audit event message", {
+        cause: findEvent.left,
       });
-      const result = await sendEventsMessage(auditEvent)(this.#ctx)();
-      if (E.isLeft(result)) {
-        throw new Error("Unexpected error during send event message", {
-          cause: result.left,
-        });
-      }
+    }
+    const event = findEvent.right;
+    assert.ok(event, "Data to send audit event message not found");
+    const auditEvent = auditEventSchema.parse({
+      blobName: event.blobName,
+      data: {
+        idToken: idTokenDecoded,
+      },
+      type: "idToken",
+    });
+    const result = await sendEventsMessage(auditEvent)(this.#ctx)();
+    if (E.isLeft(result)) {
+      throw new Error("Unexpected error during send event message", {
+        cause: result.left,
+      });
+    }
+  }
+
+  async #sendRpStepMessage(
+    requestParams: RPParams,
+    sessionId: string,
+    ipAddress: string,
+  ) {
+    const findUserData = await safeFindSession(sessionId)(this.#ctx)();
+    if (E.isLeft(findUserData)) {
+      throw new Error(`No session found with sessionId ${sessionId}`, {
+        cause: findUserData.left,
+      });
     }
 
+    const userData = findUserData.right;
+    assert.ok(
+      userData,
+      `The session with sessionId ${sessionId} is not present`,
+    );
+
+    const blobName = `${userData.fiscalCode}_${requestParams.client_id}_${sessionId}.json`;
+    const auditEventSession = auditEventSessionSchema.parse({
+      blobName,
+      clientId: requestParams.client_id,
+      fiscalCode: userData.fiscalCode,
+    });
+    const auditEvent = auditEventSchema.parse({
+      blobName: blobName,
+      data: {
+        ipAddress: ipAddress,
+        requestParams: requestParams,
+        timestamp: new Date().getSeconds(),
+        userData: userData,
+      },
+      type: "rpStep",
+    });
+    const audit = pipe(
+      writeEvent(auditEventSession),
+      RTE.chain(() => sendEventsMessage(auditEvent)),
+    );
+    const result = await audit(this.#ctx)();
+    if (E.isLeft(result)) {
+      throw new Error("Unexpected error during send event message", {
+        cause: result.left,
+      });
+    }
+  }
+
+  async execute(params: AuditEventParams): Promise<void> {
+    if (params.type === "idToken") {
+      this.#sendIdTokenStepMessage(params.idToken);
+    }
     if (params.type === "rpStep") {
-      const sessionId = params.sessionId;
-      const requestParams = params.requestParams;
-      const findUserData = await safeFindSession(sessionId)(this.#ctx)();
-      if (E.isLeft(findUserData)) {
-        throw new Error(`No session found with sessionId ${sessionId}`, {
-          cause: findUserData.left,
-        });
-      }
-      const userData = findUserData.right;
-      const blobName = `${userData?.fiscalCode}_${requestParams.client_id}_${sessionId}.json`;
-      const redisEvent = eventsSchema.parse({
-        blobName,
-        clientId: requestParams.client_id,
-        fiscalCode: userData?.fiscalCode,
-      });
-      const auditEvent = auditEventSchema.parse({
-        blobName: blobName,
-        data: {
-          ipAddress: params.ipAddress,
-          requestParams: requestParams,
-          timestamp: new Date().getSeconds(),
-          userData: userData,
-        },
-        type: "rpStep",
-      });
-      const audit = pipe(
-        writeEvent(redisEvent),
-        RTE.chain(() => sendEventsMessage(auditEvent)),
+      this.#sendRpStepMessage(
+        params.requestParams,
+        params.sessionId,
+        params.ipAddress,
       );
-      const result = await audit(this.#ctx)();
-      if (E.isLeft(result)) {
-        throw new Error("Unexpected error during send event message", {
-          cause: result.left,
-        });
-      }
     }
   }
 }
