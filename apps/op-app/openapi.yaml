@@ -13,8 +13,71 @@ servers:
         default: "3000"
 
 paths:
+  /authorize:
+    get:
+      operationId: authenticationRequest
+      tags:
+        - OIDC
+      parameters:
+        - in: query
+          name: client_id
+          schema:
+            type: string
+            format: ulid
+          required: true
+        - in: query
+          name: response_type
+          schema:
+            type: string
+            enum: ["code"]
+          required: true
+        - in: query
+          name: scope
+          schema:
+            type: string
+            enum: ["openid profile lollipop"]
+          required: true
+        - in: query
+          name: redirect
+          schema:
+            type: string
+            format: uri
+          required: true
+        - in: query
+          name: state
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: nonce
+          schema:
+            type: string
+          required: false
+      responses:
+        302:
+          description: Found
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+        303:
+          description: See other
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OIDCError"
+
   /interaction/{id}:
     get:
+      operationId: getInteraction
       tags:
         - Interaction
       security:
@@ -33,9 +96,22 @@ paths:
             application/hal+json:
               schema:
                 $ref: "#/components/schemas/Consent"
+        400:
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemJson"
+        500:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemJson"
 
   /interaction/{id}/abort:
     post:
+      operationId: abortInteraction
       summary: Abort interaction
       tags:
         - Interaction
@@ -45,6 +121,13 @@ paths:
         - $ref: "#/components/parameters/interactionId"
         - $ref: "#/components/parameters/interactionCookie"
       responses:
+        302:
+          description: Found
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
         303:
           description: See other
           headers:
@@ -52,9 +135,22 @@ paths:
               schema:
                 type: string
                 format: uri
+        400:
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemJson"
+        500:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemJson"
 
   /interaction/{id}/consent:
     post:
+      operationId: giveConsent
       summary: Give consent
       tags:
         - Interaction
@@ -71,9 +167,22 @@ paths:
               schema:
                 type: string
                 format: url
+        400:
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemJson"
+        500:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemJson"
 
   /health:
     get:
+      operationId: health
       summary: Health
       tags:
         - Health
@@ -176,3 +285,30 @@ components:
       type: array
       items:
         type: string
+
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        title:
+          type: string
+        status:
+          type: number
+      required:
+        - detail
+        - status
+        - title
+
+    OIDCError:
+      type: object
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        state:
+          type: string
+      required:
+        - error
+        - error_description
