@@ -1,4 +1,5 @@
-import { BlockBlobUploadResponse, ContainerClient } from "@azure/storage-blob";
+import { AuditEventRepository } from "@/domain/audit-event.js";
+import { ContainerClient } from "@azure/storage-blob";
 import {
   AuditEvent,
   auditEventSchema,
@@ -20,7 +21,7 @@ export async function getStreamIntoString(
   return Buffer.concat(chunks).toString("utf-8");
 }
 
-export class AccessLogRegister {
+export class BlobAuditEventRepository implements AuditEventRepository {
   #container: ContainerClient;
 
   constructor(client: ContainerClient) {
@@ -60,13 +61,21 @@ export class AccessLogRegister {
     }
   }
 
-  async upload(content: AuditEvent): Promise<BlockBlobUploadResponse> {
+  async upload(content: AuditEvent): Promise<AuditEvent> {
     try {
       const blockBlobClient = this.#container.getBlockBlobClient(
         content.blobName,
       );
       const parsedContent = JSON.stringify(content.data);
-      return blockBlobClient.upload(parsedContent, parsedContent.length);
+      const response = await blockBlobClient.upload(
+        parsedContent,
+        parsedContent.length,
+      );
+      assert.ok(
+        response.errorCode,
+        `Error uploading blob with name ${name} with error code ${response.errorCode}`,
+      );
+      return content;
     } catch (error) {
       throw new Error("Error creating new blob", {
         cause: error,

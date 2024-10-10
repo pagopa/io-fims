@@ -1,10 +1,7 @@
-import {
-  IdentityProvider,
-  UserMetadata,
-  userMetadataSchema,
-} from "@/domain/user-metadata.js";
+import { IdentityProvider } from "@/domain/user-metadata.js";
 import { NonEmptyString } from "@pagopa/ts-commons/lib/strings.js";
 import * as E from "fp-ts/lib/Either.js";
+import { userMetadataSchema } from "io-fims-common/domain/user-metadata";
 import * as assert from "node:assert/strict";
 import { ZodError, z } from "zod";
 

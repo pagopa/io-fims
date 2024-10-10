@@ -7,5 +7,7 @@
     "COSMOS_DBNAME": "fims",
     "STORAGE_ACCOUNT_NAME": "fims",
     "CONFIG_QUEUE_queueServiceUri": ""
+    "EVENT_STORAGE_URI": "https://fims-storage-event.uri",
+    "EVENT_CONTAINER_NAME": "fimseventcontainer"
   }
 }

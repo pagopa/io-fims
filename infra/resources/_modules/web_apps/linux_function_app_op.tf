@@ -7,6 +7,10 @@ locals {
       COSMOS_DBNAME                     = data.azurerm_cosmosdb_sql_database.fims_op.name,
       CONFIG_QUEUE__queueServiceUri     = "https://${var.storage_account.name}.queue.core.windows.net"
       CONFIG_QUEUE__name                = var.storage_account.queues.config.name
+      EVENT_QUEUE__queueServiceUri      = "https://${var.storage_account.name}.queue.core.windows.net"
+      EVENT_QUEUE__name                 = var.storage_account.queues.event.name
+      EVENT_STORAGE_URI                 = "https://${var.storage_account_event.name}.blob.core.windows.net"
+      EVENT_CONTAINER_NAME              = var.storage_account_event.container_name
     }
   }
 }

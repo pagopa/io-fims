@@ -1,5 +1,6 @@
 import { app } from "@azure/functions";
 import { DefaultAzureCredential } from "@azure/identity";
+import { BlobServiceClient } from "@azure/storage-blob";
 import {
   azureFunction,
   httpAzureFunction,
@@ -15,12 +16,25 @@ import {
   createOIDCClientHandler,
   inputDecoder,
 } from "./adapters/handlers/create-oidc-client.js";
+import {
+  auditEventInputDecoder,
+  manageAuditEventHandler,
+} from "./adapters/handlers/upsert-audit-event.js";
+import { BlobAuditEventRepository } from "./infra/storage/audit-event.js";
 
 async function main(config: Config) {
   const cosmos = initCosmos(config.cosmos, new DefaultAzureCredential());
   const health = new HealthUseCase([cosmos.healthChecker]);
+  const blobServiceClient = new BlobServiceClient(
+    config.eventStorage.uri,
+    new DefaultAzureCredential(),
+  );
+  const containerClient = await blobServiceClient.getContainerClient(
+    config.eventStorage.containerName,
+  );
 
   const oidcClientRepository = new CosmosOIDCClientRepository(cosmos.database);
+  const auditEventRepository = new BlobAuditEventRepository(containerClient);
 
   app.http("Health", {
     handler: httpAzureFunction(healthHandler)({
@@ -37,6 +51,15 @@ async function main(config: Config) {
       oidcClientRepository,
     }),
     queueName: config.storage.queue.config.name,
+  });
+
+  app.storageQueue("ManageAuditEvent", {
+    connection: config.storage.eventQueue.config.connectionPrefix,
+    handler: azureFunction(manageAuditEventHandler)({
+      auditEventRepository,
+      inputDecoder: auditEventInputDecoder,
+    }),
+    queueName: config.storage.eventQueue.config.name,
   });
 }
 
