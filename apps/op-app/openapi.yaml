@@ -311,4 +311,3 @@ components:
           type: string
       required:
         - error
-        - error_description
