@@ -233,6 +233,17 @@ components:
       required:
         - href
 
+    Claim:
+      type: object
+      properties:
+        name:
+          type: string
+        display_name:
+          type: string
+      required:
+        - name
+        - display_name
+
     Consent:
       type: object
       properties:
@@ -265,15 +276,7 @@ components:
         user_metadata:
           type: array
           items:
-            type: object
-            properties:
-              name:
-                type: string
-              display_name:
-                type: string
-            required:
-              - name
-              - display_name
+            $ref: "#/components/schemas/Claim"
       required:
         - _links
         - service_id
