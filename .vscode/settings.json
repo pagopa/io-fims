@@ -15,5 +15,6 @@
   "editor.formatOnPaste": true,
   "[terraform]": {
     "editor.defaultFormatter": "hashicorp.terraform"
-  }
+  },
+  "yaml.validate": false
 }

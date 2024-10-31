@@ -5,3 +5,11 @@ output "fims" {
     resource_group_name = module.key_vault.resource_group_name
   }
 }
+
+output "common" {
+  value = {
+    id                  = data.azurerm_key_vault.common.id
+    name                = data.azurerm_key_vault.common.name
+    resource_group_name = data.azurerm_key_vault.common.resource_group_name
+  }
+}

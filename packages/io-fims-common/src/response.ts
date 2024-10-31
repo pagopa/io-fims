@@ -2,6 +2,7 @@ import * as H from "@pagopa/handler-kit";
 import { errorRTE } from "@pagopa/logger";
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
 import { flow } from "fp-ts/lib/function.js";
+import { z } from "zod";
 
 import { ValidationError } from "./parse.js";
 
@@ -41,3 +42,16 @@ export const logErrorAndReturnResponse = flow(
   ),
   RTE.map(flow(toProblemJson, H.problemJson)),
 );
+
+export const validationError = (error: z.ZodError) => ({
+  detail: "Your request didn't validate",
+  issues: error.issues,
+  status: 422,
+  title: "Validation Error",
+  type: "https://pagopa.github.io/dx/problems/validation-error",
+});
+
+export const validationErrorResponse = (error: z.ZodError) => ({
+  jsonBody: validationError(error),
+  status: 422,
+});

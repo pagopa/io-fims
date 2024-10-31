@@ -1,16 +1,21 @@
 locals {
+
   prefix = "io"
   domain = "fims"
 
   env_short = "p"
 
-  location       = "westeurope"
-  location_short = "weu"
+  location       = "italynorth"
+  location_short = "itn"
 
-  common_project = "${local.prefix}-${local.env_short}"
+  common_project = "${local.prefix}-${local.env_short}" # example: io-p
 
-  project        = "${local.prefix}-${local.env_short}-${local.location_short}-${local.domain}"
-  project_legacy = "${local.prefix}-${local.env_short}-${local.domain}"
+  project = "${local.prefix}-${local.env_short}-${local.location_short_legacy}-${local.domain}" # example: io-p-weu-fims
+
+  # legacy #
+  location_legacy       = "westeurope"
+  location_short_legacy = "weu"
+  project_legacy        = "${local.prefix}-${local.env_short}-${local.domain}" # example: io-p-fims
 
   tags = {
     CostCenter  = "TS310 - PAGAMENTI & SERVIZI"

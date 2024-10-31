@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const envSchema = nodeEnvSchema.and(cosmosEnvSchema).and(
   z.object({
+    ACCESS_QUEUE_URL: z.string().min(1),
     LOLLIPOP_API_KEY: z.string().min(1),
     LOLLIPOP_BASE_URL: z.string().url(),
     OIDC_ISSUER: z.string().url(),

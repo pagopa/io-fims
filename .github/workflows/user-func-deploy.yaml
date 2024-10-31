@@ -1,0 +1,17 @@
+name: Deploy (user-func)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  user_func_deploy:
+    uses: pagopa/dx/.github/workflows/web_app_deploy.yaml@4d49003e777ad41d85d5e3d67035277a3743c8bc
+    name: Deploy
+    secrets: inherit
+    with:
+      workspace_name: user-func
+      environment: app-prod
+      resource_group_name: io-p-itn-fims-rg-01
+      web_app_name: io-p-itn-fims-user-func-01
+      use_staging_slot: false
+      use_private_agent: true
