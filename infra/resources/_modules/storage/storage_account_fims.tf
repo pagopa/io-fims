@@ -18,3 +18,27 @@ resource "azurerm_storage_queue" "config_queue" {
   name                 = "config-queue"
   storage_account_name = module.storage_account_fims.name
 }
+
+
+module "CES-466-migrate-iopfimsst" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment         = var.environment
+  resource_group_name = var.resource_group_name
+  access_tier         = "Hot"
+
+  ###TO CHECK
+  subnet_pep_id                        = data.azurerm_subnet.pep.id
+  private_dns_zone_resource_group_name = "${local.environment.prefix}-${local.environment.env_short}-rg-common"
+
+  subservices_enabled = {
+    blob  = false
+    file  = false
+    queue = true
+    table = false
+  }
+
+  force_public_network_access_enabled = false
+
+  tags = var.tags
+}
