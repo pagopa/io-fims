@@ -20,7 +20,7 @@ resource "azurerm_storage_queue" "config_queue" {
 }
 
 
-module "CES-466-migrate-iopfimsst" {
+module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
   environment         = var.environment
