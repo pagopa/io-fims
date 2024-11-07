@@ -2,7 +2,7 @@
 locals {
   prefix          = "io"
   env_short       = "p"
-  app_name        = ""
+  app_name        = "example"
   domain          = "fims"
   instance_number = "01"
   itn_environment = {
