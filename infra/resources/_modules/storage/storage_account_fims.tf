@@ -25,7 +25,7 @@ module "azure_storage_account" {
 
   environment         = local.itn_environment
   resource_group_name = var.resource_group_name
-  access_tier         = "Hot"
+  tier                = "l"
 
   ###TO CHECK
   subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
