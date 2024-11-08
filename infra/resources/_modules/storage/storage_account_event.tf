@@ -21,7 +21,7 @@ module "storage_account_event" {
     enable_immutability_policy = true
     blob_restore_policy_days   = 0
   }
-  
+
   immutability_policy_props = {
     allow_protected_append_writes = false
     period_since_creation_in_days = 730
