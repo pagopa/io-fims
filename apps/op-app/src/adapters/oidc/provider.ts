@@ -27,7 +27,7 @@ export function createProvider(
     },
     features: {
       customKeyStore: {
-        enabled: false,
+        enabled: true,
         keyStore,
       },
       devInteractions: {
