@@ -14,6 +14,8 @@ locals {
       LOLLIPOP_BASE_URL        = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-app-lollipop-base-url)"
       LOLLIPOP_API_KEY         = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-app-lollipop-api-key)"
       ACCESS_QUEUE_URL         = "${data.azurerm_storage_account.fims.primary_queue_endpoint}${var.storage.queues.access.name}"
+      KEY_VAULT_URL            = var.key_vault.vault_uri
+      KEY_VAULT_KEY_NAME       = "op-app-key"
     }
   }
 }
@@ -52,9 +54,10 @@ module "op_app" {
   tags = var.tags
 }
 
-resource "azurerm_role_assignment" "key_vault_fims_op_app_secrets_user" {
+resource "azurerm_role_assignment" "key_vault_op_app" {
+  for_each             = toset(["Key Vault Secrets User", "Key Vault Crypto User"])
   scope                = var.key_vault.id
-  role_definition_name = "Key Vault Secrets User"
+  role_definition_name = each.key
   principal_id         = module.op_app.app_service.app_service.principal_id
 }
 
