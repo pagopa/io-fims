@@ -25,10 +25,10 @@ const requestSchema = z
     id: query.page,
   }));
 
-function decodeHttpRequest(
+const decodeHttpRequest = (
   request: HttpRequest,
-): z.infer<typeof requestSchema> {
-  return requestSchema.parse({
+): z.infer<typeof requestSchema> =>
+  requestSchema.parse({
     headers: {
       user: request.headers.get("user"),
     },
@@ -36,11 +36,10 @@ function decodeHttpRequest(
       page: request.query.get("page"),
     },
   });
-}
 
-function encodeAccessHistoryPage(
+const encodeAccessHistoryPage = (
   page: AccessHistoryPage,
-): AccessHistoryPageApiModel {
+): AccessHistoryPageApiModel => {
   const result = AccessHistoryPageApiModel.decode({
     data: page.data.map((access) => ({
       fiscal_code: access.fiscalCode,
@@ -56,7 +55,7 @@ function encodeAccessHistoryPage(
   });
   assert.ok(result._tag === "Right", "Unable to encode AccessHistoryPage");
   return result.right;
-}
+};
 
 export const getOptions = (
   repository: AccessHistoryPageRepository,
