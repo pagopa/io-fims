@@ -2,21 +2,17 @@
 module "redis_cache" {
   source = "../_modules/redis_cache"
 
-  resource_group_name = module.resource_groups.resource_group_fims.name
+  resource_group_name = module.weu_resource_group.name
 
   environment = {
     prefix    = local.prefix
     domain    = local.domain
     env_short = local.env_short
-    location  = local.location
+    location  = module.weu_resource_group.location
   }
 
-  virtual_network = {
-    name                = module.networking.virtual_network.name
-    resource_group_name = module.networking.virtual_network.resource_group_name
-  }
-
-  subnet_pep_id = module.networking.subnet_pep.id
+  virtual_network = data.azurerm_virtual_network.vnet_common
+  subnet_pep_id   = data.azurerm_subnet.pendpoints.id
 
   tags = local.tags
 }

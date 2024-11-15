@@ -1,6 +1,9 @@
 import { DefaultAzureCredential } from "@azure/identity";
+import { QueueClient } from "@azure/storage-queue";
 import { loadConfigFromEnvironment } from "io-fims-common/adapters/config";
 import { initCosmos } from "io-fims-common/adapters/cosmos/index";
+import { StorageQueueEventEmitter } from "io-fims-common/adapters/storage-queue/event-emitter";
+import { AccessMetadata } from "io-fims-common/domain/access-metadata";
 import { pino } from "pino";
 import { createClient } from "redis";
 import { z } from "zod";
@@ -15,6 +18,7 @@ import { createProvider } from "./adapters/oidc/provider.js";
 import RedisHealthChecker from "./adapters/redis/health.js";
 import RedisSessionRepository from "./adapters/redis/session.js";
 import { HealthUseCase } from "./use-cases/health.js";
+import { LogAccessUseCase } from "./use-cases/log-access.js";
 import { LoginUseCase } from "./use-cases/login.js";
 
 const webConfig = z.object({
@@ -73,12 +77,22 @@ async function main(config: Config & WebConfig) {
     sessionRepository,
   });
 
+  const queueClient = new QueueClient(
+    config.storageQueue.accessQueueUrl,
+    credential,
+  );
+
+  const logAccess = new LogAccessUseCase(
+    sessionRepository,
+    new StorageQueueEventEmitter<AccessMetadata>(queueClient),
+  );
+
   const health = new HealthUseCase([
     cosmos.healthChecker,
     new RedisHealthChecker(redis),
   ]);
 
-  const app = createApplication(oidc, login, health, logger);
+  const app = createApplication(oidc, login, logAccess, health, logger);
 
   const server = app.listen(config.web.port, () => {
     logger.info(`http server listening on ${config.web.port}`);

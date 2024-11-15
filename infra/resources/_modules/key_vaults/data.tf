@@ -25,3 +25,8 @@ data "azurerm_user_assigned_identity" "managed_identity_fims_cd" {
   name                = "${var.project}-github-cd-identity"
   resource_group_name = local.resource_group_name_identity
 }
+
+data "azurerm_key_vault" "common" {
+  name                = "${var.common_project}-kv-common"
+  resource_group_name = "${var.common_project}-rg-common"
+}
