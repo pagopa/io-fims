@@ -3,12 +3,14 @@ import { z } from "zod";
 
 import { envSchema } from "./env.js";
 import { ioConfigSchema } from "./io/config.js";
+import { keyVaultConfigSchema } from "./keyvault/config.js";
 import { oidcConfigSchema } from "./oidc/config.js";
 import { redisConfigSchema } from "./redis/config.js";
 
 export const configSchema = z.object({
   cosmos: cosmosConfigSchema,
   io: ioConfigSchema,
+  keyVault: keyVaultConfigSchema,
   oidc: oidcConfigSchema,
   redis: redisConfigSchema,
 });
@@ -29,6 +31,10 @@ export const configFromEnvironment = envSchema.transform(
       sessionManager: {
         baseUrl: env.SESSION_MANAGER_BASE_URL,
       },
+    },
+    keyVault: {
+      keyName: env.KEY_VAULT_KEY_NAME,
+      url: env.KEY_VAULT_URL,
     },
     oidc: {
       issuer: env.OIDC_ISSUER,

@@ -16,6 +16,7 @@ export function createProvider(
   issuer: string,
   sessionRepository: SessionRepository,
   adapter: oidc.AdapterConstructor | oidc.AdapterFactory,
+  keyStore: oidc.CustomKeyStore,
 ) {
   const provider = new Provider(issuer, {
     adapter,
@@ -25,6 +26,10 @@ export function createProvider(
       properties: ["redirect_display_names"],
     },
     features: {
+      customKeyStore: {
+        enabled: false,
+        keyStore,
+      },
       devInteractions: {
         enabled: false,
       },

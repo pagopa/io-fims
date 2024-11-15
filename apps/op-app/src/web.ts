@@ -10,6 +10,7 @@ import { createAdapterFactory } from "./adapters/cosmos/oidc/index.js";
 import { envSchema } from "./adapters/env.js";
 import { createApplication } from "./adapters/express/application.js";
 import { IO } from "./adapters/io/user-metadata.js";
+import { KeyVaultKeystore } from "./adapters/keyvault/keystore.js";
 import { createProvider } from "./adapters/oidc/provider.js";
 import RedisHealthChecker from "./adapters/redis/health.js";
 import RedisSessionRepository from "./adapters/redis/session.js";
@@ -44,12 +45,21 @@ async function main(config: Config & WebConfig) {
 
   const sessionRepository = new RedisSessionRepository(redis);
 
-  const cosmos = initCosmos(config.cosmos, new DefaultAzureCredential());
+  const credential = new DefaultAzureCredential();
+
+  const cosmos = initCosmos(config.cosmos, credential);
+
+  const keyStore = new KeyVaultKeystore(
+    config.keyVault.url,
+    credential,
+    config.keyVault.keyName,
+  );
 
   const oidc = createProvider(
     config.oidc.issuer,
     sessionRepository,
     createAdapterFactory(cosmos.database),
+    keyStore,
   );
 
   oidc.on("server_error", (ctx, err) => {
