@@ -9,6 +9,7 @@ import {
   userMetadataSchema,
 } from "@/domain/user-metadata.js";
 import { HealthUseCase } from "@/use-cases/health.js";
+import { LogAccessUseCase } from "@/use-cases/log-access.js";
 import { LoginUseCase } from "@/use-cases/login.js";
 import { faker } from "@faker-js/faker/locale/it";
 import { ClientMetadata } from "io-fims-common/domain/client-metadata";
@@ -24,7 +25,13 @@ import { schemas } from "../express/api-models.js";
 import { createApplication } from "../express/application.js";
 import { createProvider } from "../oidc/provider.js";
 
-const logger = pino();
+const logger = pino({
+  level: "error",
+});
+
+const eventEmitter = {
+  emit: vi.fn().mockResolvedValue(undefined),
+};
 
 const health = new HealthUseCase([]);
 
@@ -52,7 +59,7 @@ const createUserMetadata = (): {
     assertion: "<some-xml></some-xml>",
     assertionRef: "sha256-k8YQcM9wlvc1Zb3o7l88htasPda3dYiZ3Xt17ulY6fE",
     firstName: faker.person.firstName(),
-    fiscalCode: faker.string.alphanumeric({ casing: "upper", length: 16 }),
+    fiscalCode: "AAAAAA80A01A001A",
     lastName: faker.person.lastName(),
     publicKey:
       "eyJrdHkiOiJFQyIsImNydiI6IlAtMjU2IiwieCI6IlJhVlJ5US1pVk5CR1NxbFFnbmNtdmRUcEZSZFJnN0dweHIzVVBqamtTOU0iLCJ5IjoiWWlHZ2lyNG9Scm4yVkZnNjV0NVJoQjdUU3dyTXJlWUI0XzBQLTZ6LURWayJ9",
@@ -277,7 +284,9 @@ describe("Consent screen", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+      const app = createApplication(provider, login, logAccess, health, logger);
 
       const expected = metadataForConsentFromScopes(scopes);
 
@@ -323,7 +332,9 @@ describe("Consent screen", () => {
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, health, logger);
+    const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+    const app = createApplication(provider, login, logAccess, health, logger);
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -381,7 +392,9 @@ describe("Login", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+      const app = createApplication(provider, login, logAccess, health, logger);
 
       // setup agent with _io_fims_token
       const agent = request.agent(app).set({
@@ -407,7 +420,9 @@ describe("Login", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+      const app = createApplication(provider, login, logAccess, health, logger);
 
       // setup agent WITHOUT _io_fims_token
       const agent = request.agent(app);
@@ -441,7 +456,9 @@ describe("Consent", () => {
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, health, logger);
+    const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+    const app = createApplication(provider, login, logAccess, health, logger);
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -480,7 +497,9 @@ describe("Abort", () => {
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, health, logger);
+    const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+    const app = createApplication(provider, login, logAccess, health, logger);
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -542,7 +561,9 @@ test.each<OIDCFlow>(["implicit", "authorization_code"])(
       sessionRepository,
     });
 
-    const app = createApplication(provider, login, health, logger);
+    const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+    const app = createApplication(provider, login, logAccess, health, logger);
 
     // setup agent with _io_fims_token
     const agent = request.agent(app).set({
@@ -635,7 +656,9 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+      const app = createApplication(provider, login, logAccess, health, logger);
 
       const agent = request.agent(app);
 
@@ -663,7 +686,9 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+      const app = createApplication(provider, login, logAccess, health, logger);
 
       const agent = request.agent(app);
 
@@ -694,7 +719,9 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+      const app = createApplication(provider, login, logAccess, health, logger);
 
       const agent = request.agent(app);
 
@@ -730,7 +757,9 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const app = createApplication(provider, login, health, logger);
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+      const app = createApplication(provider, login, logAccess, health, logger);
 
       const agent = request.agent(app);
 

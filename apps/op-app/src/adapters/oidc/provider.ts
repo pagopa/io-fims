@@ -16,7 +16,7 @@ export function createProvider(
   issuer: string,
   sessionRepository: SessionRepository,
   adapter: oidc.AdapterConstructor | oidc.AdapterFactory,
-  keyStore: oidc.CustomKeyStore,
+  keyStore?: oidc.CustomKeyStore,
 ) {
   const provider = new Provider(issuer, {
     adapter,
@@ -27,7 +27,7 @@ export function createProvider(
     },
     features: {
       customKeyStore: {
-        enabled: true,
+        enabled: typeof keyStore !== "undefined",
         keyStore,
       },
       devInteractions: {
