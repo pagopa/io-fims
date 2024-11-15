@@ -7,12 +7,17 @@ meta {
 post {
   url: {{op_app_url}}/token
   body: formUrlEncoded
-  auth: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{oidc_client_id}}
+  password: {{oidc_client_secret}}
 }
 
 body:form-urlencoded {
   grant_type: authorization_code
-  code: QYsnYpNfW6sOSts-U4z3BmUMTNkYnQrxvOIwxBj-Oih
-  redirect_uri: http://localhost:3000/echo
-  client_id: luca
+  code: -GIj_PnlgaLIS5XFdb4MtDQTQsumbzdsq6YpcakPkuk
+  redirect_uri: https://httpbin.org/get
+  client_id: {{oidc_client_id}}
 }
