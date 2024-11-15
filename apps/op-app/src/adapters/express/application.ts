@@ -2,6 +2,7 @@ import type { LoginUseCase } from "@/use-cases/login.js";
 import type Provider from "oidc-provider";
 
 import { HealthUseCase } from "@/use-cases/health.js";
+import { LogAccessUseCase } from "@/use-cases/log-access.js";
 import cookieParser from "cookie-parser";
 import express from "express";
 import helmet from "helmet";
@@ -16,6 +17,7 @@ import interactionRouter from "./routes/interaction.js";
 export const createApplication = (
   oidc: Provider,
   login: LoginUseCase,
+  logAccess: LogAccessUseCase,
   health: HealthUseCase,
   logger: Logger,
 ): express.Application => {
@@ -35,7 +37,7 @@ export const createApplication = (
     }),
   );
 
-  app.use(interactionRouter(oidc, login));
+  app.use(interactionRouter(oidc, login, logAccess));
 
   app.use(healthRouter(health));
 

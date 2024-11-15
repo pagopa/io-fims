@@ -6,11 +6,16 @@ import { ioConfigSchema } from "./io/config.js";
 import { oidcConfigSchema } from "./oidc/config.js";
 import { redisConfigSchema } from "./redis/config.js";
 
+export const storageQueueConfigSchema = z.object({
+  accessQueueUrl: z.string().url(),
+});
+
 export const configSchema = z.object({
   cosmos: cosmosConfigSchema,
   io: ioConfigSchema,
   oidc: oidcConfigSchema,
   redis: redisConfigSchema,
+  storageQueue: storageQueueConfigSchema,
 });
 
 export type Config = z.TypeOf<typeof configSchema>;
@@ -37,6 +42,9 @@ export const configFromEnvironment = envSchema.transform(
       password: env.REDIS_PASSWORD,
       pingInterval: env.REDIS_PING_INTERVAL,
       url: env.REDIS_URL,
+    },
+    storageQueue: {
+      accessQueueUrl: env.ACCESS_QUEUE_URL,
     },
   }),
 );
