@@ -38,8 +38,9 @@ variable "subnet_cidrs" {
 
 variable "key_vault" {
   type = object({
-    id   = string
-    name = string
+    id        = string
+    name      = string
+    vault_uri = string
   })
 }
 

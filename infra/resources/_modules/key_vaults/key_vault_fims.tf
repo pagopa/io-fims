@@ -11,3 +11,11 @@ module "key_vault" {
 
   tags = var.tags
 }
+
+resource "azurerm_key_vault_key" "op_app" {
+  name         = "op-app-key"
+  key_vault_id = module.key_vault.id
+  key_type     = "RSA"
+  key_size     = 2048
+  key_opts     = ["sign"]
+}
