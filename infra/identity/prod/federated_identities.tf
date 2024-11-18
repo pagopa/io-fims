@@ -47,13 +47,16 @@ module "federated_identities" {
           "Storage Blob Data Contributor"
         ]
         io-p-fims-rg = [
-          "Role Based Access Control Administrator"
+          "Role Based Access Control Administrator",
+          "Key Vault Administrator"
         ],
         io-p-weu-fims-rg-01 = [
-          "Role Based Access Control Administrator"
+          "Role Based Access Control Administrator",
+          "Key Vault Administrator"
         ],
         "io-p-itn-fims-rg-01" = [
-          "Role Based Access Control Administrator"
+          "Role Based Access Control Administrator",
+          "Key Vault Administrator"
         ]
       }
     }
