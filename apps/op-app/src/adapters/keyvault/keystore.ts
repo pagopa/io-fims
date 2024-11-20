@@ -3,6 +3,7 @@ import { CryptographyClient, KeyClient } from "@azure/keyvault-keys";
 import * as assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import * as oidc from "oidc-provider";
+import { generate as tokenHash } from "oidc-token-hash";
 
 const stringFromUint8Array = (uint8Array: Uint8Array) =>
   Buffer.from(uint8Array).toString("base64url");
@@ -86,7 +87,7 @@ export class KeyVaultKeystore implements oidc.CustomKeyStore {
    * ```
    */
   async sign(
-    payload: oidc.SignPayload,
+    payload: Record<string, string> & oidc.SignPayload,
     alg: string,
     options: oidc.SignOptions,
   ): Promise<string> {
@@ -98,6 +99,19 @@ export class KeyVaultKeystore implements oidc.CustomKeyStore {
       ...options.fields,
       kid: key.id, // required to identify the key used to sign the token, needed for verification
     };
+
+    // Adapted from https://github.com/panva/node-oidc-provider/blob/36834369e6b7b4fdee4fd44c15489593ac9be1cf/lib/models/id_token.js#L161
+    const hashes = [
+      "at_hash",
+      "c_hash",
+      "s_hash",
+      "urn:openid:params:jwt:claim:rt_hash",
+    ];
+    hashes.forEach((claim) => {
+      if (payload[claim]) {
+        payload[claim] = tokenHash(payload[claim], alg);
+      }
+    });
 
     // Adapted from https://github.com/panva/node-oidc-provider/blob/main/lib/helpers/jwt.js#L30
     const timestamp = Math.floor(Date.now() / 1000);

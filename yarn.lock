@@ -1856,8 +1856,8 @@ __metadata:
   linkType: hard
 
 "@pagopa/io-functions-commons@npm:^29.1.2":
-  version: 29.1.2
-  resolution: "@pagopa/io-functions-commons@npm:29.1.2"
+  version: 29.2.0
+  resolution: "@pagopa/io-functions-commons@npm:29.2.0"
   dependencies:
     "@azure/cosmos": "npm:^4.0.0"
     "@azure/data-tables": "npm:^13.2.2"
@@ -1884,7 +1884,7 @@ __metadata:
     express: ^4.15.3
     fp-ts: ^2.16.5
     io-ts: ^2.2.21
-  checksum: 10c0/402aa589fcef4701d47f484451b53237a2999ca698fbd62b40ccd1ced944d722fc2c077620117d1f5cff80a06c218e4bf5ce4706352a4c0135622f1d7fcfa581
+  checksum: 10c0/21a76efa4f9e7de736fc76564fda058fd55cf3f34bf6c5439186ec14dc5d8d1ea72fecadb7f6aab778fe49df89fa1867a919052cef547f5c78bd1cca8f3f354a
   languageName: node
   linkType: hard
 
@@ -2477,6 +2477,13 @@ __metadata:
     "@types/koa": "npm:*"
     "@types/node": "npm:*"
   checksum: 10c0/4c5a2f5b3309fe94634c9a8fa922c3eea06dcc2c787987f4e2b69f32a7155fa2155d8c118b288057e62f40d8670dd17d582b78822a5e6a6a77bf79d7e15741c7
+  languageName: node
+  linkType: hard
+
+"@types/oidc-token-hash@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@types/oidc-token-hash@npm:5.0.0"
+  checksum: 10c0/3c2a16989e2824917de79be9121a7dafe66a4a0e73b6843852547fad43d6db1ed3e0e19d1ea5c7cb86df63784fd4ff5dc29e02afb9473541c2159261bea15c57
   languageName: node
   linkType: hard
 
@@ -7642,6 +7649,7 @@ __metadata:
     "@types/i18n": "npm:^0.13.12"
     "@types/node": "npm:^20.14.2"
     "@types/oidc-provider": "patch:@types/oidc-provider@npm%3A8.5.2#~/.yarn/patches/@types-oidc-provider-npm-8.5.2-752a22b18a.patch"
+    "@types/oidc-token-hash": "npm:^5.0.0"
     "@types/supertest": "npm:^6.0.2"
     "@vitest/coverage-v8": "npm:^1.5.0"
     cookie-parser: "npm:^1.4.6"
@@ -7655,6 +7663,7 @@ __metadata:
     io-ts: "npm:^2.2.21"
     jose: "npm:^5.4.0"
     oidc-provider: "patch:oidc-provider@npm%3A8.5.3#~/.yarn/patches/oidc-provider-npm-8.5.3-1967dc1d44.patch"
+    oidc-token-hash: "npm:^5.0.3"
     pino: "npm:^9.1.0"
     pino-http: "npm:^10.1.0"
     pino-pretty: "npm:^11.2.0"
