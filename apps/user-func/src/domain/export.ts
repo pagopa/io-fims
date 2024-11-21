@@ -1,6 +1,6 @@
+import { apply as htmlTemplate } from "@pagopa/io-app-email-templates/FimsAccessExport/index";
 import { EventEmitter } from "io-fims-common/domain/event-emitter";
 import {
-  EmailAddress,
   FiscalCode,
   emailAddressSchema,
   fiscalCodeSchema,
@@ -44,24 +44,42 @@ export interface AccessExporter {
   export(accessList: Access[]): Promise<AccessExport>;
 }
 
-// TODO(IOCOM-1925): Replace with the actual template
 export const exportMailOptions = (
-  email: EmailAddress,
   exportFile: AccessExport,
-): nodemailer.SendMailOptions => ({
-  attachments: [
-    {
-      content: exportFile.content,
-      contentType: exportFile.type,
-      filename: "export.csv",
-    },
-  ],
-  from: "IO - l'app dei servizi pubblici <no-reply@io.italia.it>",
-  html: "<p>In allegato il file richiesto</p>",
-  subject: "Ecco il tuo la lista dei tuoi accessi",
-  text: "In allegato il file richiesto",
-  to: email,
-});
+): Pick<
+  nodemailer.SendMailOptions,
+  "attachments" | "html" | "subject" | "text"
+> => {
+  const exportDate = new Date();
+  // Format the date in the format gg/mm/aa (example: 01/01/21)
+  const formattedDate = exportDate.toLocaleDateString("it-IT", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+  });
+  // Format the date in the format ggmmaaaa (example: 01012021)
+  const formattedDateNoSlash = exportDate
+    .toLocaleDateString("it-IT", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    .replace(/\//g, "");
+  return {
+    attachments: [
+      {
+        cid: "access-export",
+        content: exportFile.content,
+        filename: `Accessi a servizi di terze parti-${formattedDateNoSlash}.csv`,
+      },
+    ],
+    html: htmlTemplate(exportDate),
+    subject: "I tuoi accessi a servizi di terze parti",
+    text: `Ciao, la cronologia dei tuoi accessi a servizi di terze parti aggiornata al ${formattedDate} è disponibile nel file allegato a questa email.
+  Per ciascun accesso effettuato sono riportati: Data e ora di accesso, nome del servizio esterno utilizzato, link alla piattaforma web del servizio.
+  Ti ricordiamo che puoi sempre consultare la cronologia dei tuoi accessi aggiornata su IO, dalla sezione Impostazioni > Sicurezza e accessi.`,
+  };
+};
 
 export interface ExportRequestRepository {
   create(request: ExportRequest): Promise<void>;
