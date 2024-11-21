@@ -71,6 +71,7 @@ async function main(config: Config) {
         accessRepository,
         new CSVAccessExporter(),
         emailService,
+        config.mailer.MAIL_FROM,
       ),
     ),
   );
