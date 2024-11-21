@@ -81,7 +81,11 @@ export function createApplication(
     }),
   );
 
-  app.use(rateLimit());
+  app.use(
+    rateLimit({
+      limit: 100,
+    }),
+  );
 
   app.get("/", async (req, res, next) => {
     if (
