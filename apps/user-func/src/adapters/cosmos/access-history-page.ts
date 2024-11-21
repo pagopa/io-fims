@@ -21,15 +21,25 @@ export class CosmosDBAccessHistoryPageRepository
   ): Promise<AccessHistoryPage> {
     try {
       const response = await this.#container.items
-        .readAll({
-          continuationToken: id,
-          partitionKey: fiscalCode,
-        })
+        .query(
+          {
+            query: "SELECT * FROM c ORDER BY c._ts DESC",
+          },
+          {
+            continuationToken: id
+              ? Buffer.from(id, "base64url").toString()
+              : undefined,
+            maxItemCount: 15,
+            partitionKey: fiscalCode,
+          },
+        )
         .fetchNext();
 
       return accessHistoryPageSchema.parse({
         data: response.resources,
-        next: response.continuationToken,
+        next: response.continuationToken
+          ? Buffer.from(response.continuationToken).toString("base64url")
+          : undefined,
       });
     } catch (e) {
       throw new Error("Failed to get AccessHistoryPage", { cause: e });
