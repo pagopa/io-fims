@@ -1,0 +1,51 @@
+diff --git a/index.d.ts b/index.d.ts
+index 8c87849ab3a7f8fd98d320ad68b07f70ead46eb8..adb84aee61243eb6dafc2b5882e5f745d97b8396 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -1176,6 +1176,13 @@ export interface Configuration {
+                 }
+                 | undefined;
+ 
++            customKeyStore?:
++                | {
++                    enabled?: boolean | undefined;
++                    keyStore?: CustomKeyStore | undefined;
++                }
++                | undefined;    
++
+             jwtIntrospection?:
+                 | {
+                     enabled?: boolean | undefined;
+@@ -1396,6 +1403,32 @@ export interface Configuration {
+         | undefined;
+ }
+ 
++export type SignPayload = {
++    aud: string;
++    iat: number;
++    azp: string;
++    iss: string;
++    sub: string;
++    exp: number;
++};
++  
++export type SignOptions = {
++    audience?: string;
++    authorizedParty?: string;
++    expiresIn?: number;
++    iat?: number;
++    issuer?: string;
++    subject?: string;
++    noIat?: boolean;
++    fields: Record<string, string>;
++    typ?: string;
++};
++
++export interface CustomKeyStore {
++    jwksResponse(): Promise<JWKS>;
++    sign(payload: SignPayload, alg: string, options: SignOptions): Promise<string | Buffer>;
++}
++
+ export interface HttpOptions {
+     signal?: AbortSignal | undefined;
+     agent?: http.Agent | https.Agent | undefined;

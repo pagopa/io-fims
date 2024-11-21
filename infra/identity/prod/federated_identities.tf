@@ -27,6 +27,10 @@ module "federated_identities" {
         io-p-weu-fims-rg-01 = [
           "DocumentDB Account Contributor",
           "Key Vault Certificate User"
+        ],
+        io-p-itn-fims-rg-01 = [
+          "DocumentDB Account Contributor",
+          "Key Vault Certificate User"
         ]
       }
     }
@@ -43,10 +47,16 @@ module "federated_identities" {
           "Storage Blob Data Contributor"
         ]
         io-p-fims-rg = [
-          "Role Based Access Control Administrator"
+          "Role Based Access Control Administrator",
+          "Key Vault Administrator"
         ],
         io-p-weu-fims-rg-01 = [
-          "Role Based Access Control Administrator"
+          "Role Based Access Control Administrator",
+          "Key Vault Administrator"
+        ],
+        "io-p-itn-fims-rg-01" = [
+          "Role Based Access Control Administrator",
+          "Key Vault Administrator"
         ]
       }
     }

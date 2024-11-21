@@ -25,3 +25,15 @@ variable "virtual_network" {
 variable "subnet_pep_id" {
   type = string
 }
+
+# new
+
+variable "environment" {
+  type = object({
+    prefix    = string
+    env_short = string
+    location  = string
+    domain    = string
+  })
+  description = "Values which are used to generate resource names and location short names."
+}

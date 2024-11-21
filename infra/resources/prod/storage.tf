@@ -1,13 +1,19 @@
 module "storage" {
   source = "../_modules/storage"
 
-  location            = module.resource_groups.resource_group_fims_legacy.location
+  location            = azurerm_resource_group.fims.location
   project             = local.project_legacy
-  resource_group_name = module.resource_groups.resource_group_fims_legacy.name
+  resource_group_name = azurerm_resource_group.fims.name
 
-  subnet_pep_id = module.networking.subnet_pep.id
+  virtual_network = data.azurerm_virtual_network.vnet_common
+  subnet_pep_id   = data.azurerm_subnet.pendpoints.id
 
-  virtual_network = module.networking.virtual_network
+  environment = {
+    prefix    = local.prefix
+    env_short = local.env_short
+    location  = local.location_legacy
+    domain    = local.domain
+  }
 
   tags = local.tags
 }

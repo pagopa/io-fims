@@ -3,16 +3,23 @@ import { z } from "zod";
 
 import { envSchema } from "./env.js";
 import { ioConfigSchema } from "./io/config.js";
+import { keyVaultConfigSchema } from "./keyvault/config.js";
 import { oidcConfigSchema } from "./oidc/config.js";
 import { redisConfigSchema } from "./redis/config.js";
 import { storageConfigSchema } from "./storage/config.js";
 
+export const storageQueueConfigSchema = z.object({
+  accessQueueUrl: z.string().url(),
+});
+
 export const configSchema = z.object({
   cosmos: cosmosConfigSchema,
   io: ioConfigSchema,
+  keyVault: keyVaultConfigSchema,
   oidc: oidcConfigSchema,
   redis: redisConfigSchema,
   storage: storageConfigSchema,
+  storageQueue: storageQueueConfigSchema,
 });
 
 export type Config = z.TypeOf<typeof configSchema>;
@@ -32,6 +39,10 @@ export const configFromEnvironment = envSchema.transform(
         baseUrl: env.SESSION_MANAGER_BASE_URL,
       },
     },
+    keyVault: {
+      keyName: env.KEY_VAULT_KEY_NAME,
+      url: env.KEY_VAULT_URL,
+    },
     oidc: {
       issuer: env.OIDC_ISSUER,
     },
@@ -43,6 +54,9 @@ export const configFromEnvironment = envSchema.transform(
     storage: {
       eventsQueueName: env.EVENTS_QUEUE_NAME,
       storageAccountName: env.STORAGE_ACCOUNT_NAME,
+    },
+    storageQueue: {
+      accessQueueUrl: env.ACCESS_QUEUE_URL,
     },
   }),
 );

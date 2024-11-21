@@ -8,6 +8,7 @@ import {
   metadataForConsentFromScopes,
 } from "@/domain/user-metadata.js";
 import { HealthUseCase } from "@/use-cases/health.js";
+import { LogAccessUseCase } from "@/use-cases/log-access.js";
 import { LoginUseCase } from "@/use-cases/login.js";
 import { SendEventMessageUseCase } from "@/use-cases/send-event-messge.js";
 import { faker } from "@faker-js/faker/locale/it";
@@ -28,7 +29,13 @@ import { schemas } from "../express/api-models.js";
 import { createApplication } from "../express/application.js";
 import { createProvider } from "../oidc/provider.js";
 
-const logger = pino();
+const logger = pino({
+  level: "error",
+});
+
+const eventEmitter = {
+  emit: vi.fn().mockResolvedValue(undefined),
+};
 
 const health = new HealthUseCase([]);
 
@@ -56,7 +63,7 @@ const createUserMetadata = (): {
     assertion: "<some-xml></some-xml>",
     assertionRef: "sha256-k8YQcM9wlvc1Zb3o7l88htasPda3dYiZ3Xt17ulY6fE",
     firstName: faker.person.firstName(),
-    fiscalCode: faker.string.alphanumeric({ casing: "upper", length: 16 }),
+    fiscalCode: "AAAAAA80A01A001A",
     lastName: faker.person.lastName(),
     publicKey:
       "eyJrdHkiOiJFQyIsImNydiI6IlAtMjU2IiwieCI6IlJhVlJ5US1pVk5CR1NxbFFnbmNtdmRUcEZSZFJnN0dweHIzVVBqamtTOU0iLCJ5IjoiWWlHZ2lyNG9Scm4yVkZnNjV0NVJoQjdUU3dyTXJlWUI0XzBQLTZ6LURWayJ9",
@@ -306,10 +313,13 @@ describe("Consent screen", () => {
         sessionRepository,
       });
 
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
       const app = createApplication(
         provider,
         login,
         eventUseCase,
+        logAccess,
         health,
         logger,
       );
@@ -364,10 +374,13 @@ describe("Consent screen", () => {
       sessionRepository,
     });
 
+    const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
     const app = createApplication(
       provider,
       login,
       eventUseCase,
+      logAccess,
       health,
       logger,
     );
@@ -434,10 +447,13 @@ describe("Login", () => {
         sessionRepository,
       });
 
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
       const app = createApplication(
         provider,
         login,
         eventUseCase,
+        logAccess,
         health,
         logger,
       );
@@ -472,10 +488,13 @@ describe("Login", () => {
         sessionRepository,
       });
 
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
       const app = createApplication(
         provider,
         login,
         eventUseCase,
+        logAccess,
         health,
         logger,
       );
@@ -518,10 +537,13 @@ describe("Consent", () => {
       sessionRepository,
     });
 
+    const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
     const app = createApplication(
       provider,
       login,
       eventUseCase,
+      logAccess,
       health,
       logger,
     );
@@ -569,10 +591,13 @@ describe("Abort", () => {
       sessionRepository,
     });
 
+    const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
     const app = createApplication(
       provider,
       login,
       eventUseCase,
+      logAccess,
       health,
       logger,
     );
@@ -643,10 +668,13 @@ test.each<OIDCFlow>(["implicit", "authorization_code"])(
       sessionRepository,
     });
 
+    const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
     const app = createApplication(
       provider,
       login,
       eventUseCase,
+      logAccess,
       health,
       logger,
     );
@@ -748,10 +776,13 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
       const app = createApplication(
         provider,
         login,
         eventUseCase,
+        logAccess,
         health,
         logger,
       );
@@ -788,10 +819,13 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
       const app = createApplication(
         provider,
         login,
         eventUseCase,
+        logAccess,
         health,
         logger,
       );
@@ -831,10 +865,13 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
       const app = createApplication(
         provider,
         login,
         eventUseCase,
+        logAccess,
         health,
         logger,
       );
@@ -879,10 +916,13 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
       const app = createApplication(
         provider,
         login,
         eventUseCase,
+        logAccess,
         health,
         logger,
       );

@@ -3,6 +3,7 @@ import type Provider from "oidc-provider";
 
 import { metadataForConsentFromScopes } from "@/domain/user-metadata.js";
 import { SendEventMessageUseCase } from "@/use-cases/send-event-messge.js";
+import { LogAccessUseCase } from "@/use-cases/log-access.js";
 import * as express from "express";
 import { requestParamsSchema } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
@@ -27,18 +28,21 @@ const consentSchema = z.object({
   }),
 });
 
+const redirectDisplayNamesSchema = (redirectUri: string) =>
+  z.object({
+    // since we don't know [redirectUri] at compile time, we parse it with
+    // a dynamic schema
+    [redirectUri]: z.record(z.string()).and(z.object({ it: z.string() })),
+  });
+
 // Parses and retrieves the localized display name for a given redirect URI and locale.
 export const parseRedirectDisplayName = (
   redirectDisplayNames: unknown,
   redirectUri: string,
   locale: string,
 ) => {
-  const redirectDisplayNamesSchema = z.object({
-    // since we don't know [redirectUri] at compile time, we parse it with
-    // a dynamic schema
-    [redirectUri]: z.record(z.string()),
-  });
-  const result = redirectDisplayNamesSchema.safeParse(redirectDisplayNames);
+  const result =
+    redirectDisplayNamesSchema(redirectUri).safeParse(redirectDisplayNames);
   assert.ok(
     result.success,
     "Failed to validate the client. The redirect_display_name field is either missing or invalid.",
@@ -54,8 +58,9 @@ export const parseRedirectDisplayName = (
 
 export default function createInteractionRouter(
   oidcProvider: Provider,
-  loginUseCase: LoginUseCase,
+  login: LoginUseCase,
   eventUseCase: SendEventMessageUseCase,
+  logAccess: LogAccessUseCase,
 ) {
   const router = express.Router();
 
@@ -183,7 +188,7 @@ export default function createInteractionRouter(
         req.ip,
         new HttpBadRequestError(`Unable to retrieve ip address from request`),
       );
-      const accountId = await loginUseCase.execute(
+      const accountId = await login.execute(
         cookies.data._io_fims_token,
         interaction.jti,
       );
@@ -224,6 +229,25 @@ export default function createInteractionRouter(
       });
       const grantId = await grant.save();
       req.log.debug({ grantId }, "grant saved");
+
+      const client = await oidcProvider.Client.find(consent.params.client_id);
+      assert.ok(client, new HttpError("Client not found"));
+
+      req.log.debug(client, "client retrieved from oidc provided");
+
+      const redirectDisplayNames = redirectDisplayNamesSchema(
+        consent.params.redirect_uri,
+      ).parse(client["redirect_display_names"]);
+
+      await logAccess.execute(
+        consent.session.accountId,
+        {
+          client_id: consent.params.client_id,
+          redirect_display_names: redirectDisplayNames,
+        },
+        consent.params.redirect_uri,
+      );
+
       return await oidcProvider.interactionFinished(req, res, {
         consent: {
           grantId,

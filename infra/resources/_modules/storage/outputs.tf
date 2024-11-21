@@ -1,23 +1,24 @@
 output "fims" {
   value = {
-    id   = module.storage_account_fims.id
-    name = module.storage_account_fims.name
+    id                  = module.storage_account_fims.id
+    name                = module.storage_account_fims.name
+    resource_group_name = module.storage_account_fims.resource_group_name
     queues = {
-      config = {
-        name = azurerm_storage_queue.config_queue.name
-      }
-      event = {
-        name = azurerm_storage_queue.events_queue.name
-      }
+      config = azurerm_storage_queue.config
+      access = azurerm_storage_queue.access
+      export = azurerm_storage_queue.export
     }
   }
 }
 
-output "fimsevent" {
+output "audit" {
   value = {
-    id   = module.storage_account_event.id
-    name = module.storage_account_event.name
-    container_name = azurerm_storage_container.event_sc.name
+    id                  = module.audit_st.id
+    name                = module.audit_st.name
+    resource_group_name = module.audit_st.resource_group_name
+    containers = {
+      events = azurerm_storage_container.events
+    }
   }
 }
 

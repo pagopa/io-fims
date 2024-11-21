@@ -2,7 +2,11 @@
   "name": "user-func",
   "private": true,
   "main": "dist/func.js",
+  "version": "0.1.0",
   "type": "module",
+  "files": [
+    "host.json"
+  ],
   "scripts": {
     "build": "tsup-node",
     "build:watch": "tsc -w",
@@ -13,23 +17,35 @@
     "typecheck": "tsc",
     "test": "vitest run --passWithNoTests",
     "test:coverage": "vitest run --coverage --passWithNoTests",
-    "generate:openapi-schema": "openapi-zod-client openapi.yaml -o src/infra/openapi.ts"
+    "generate:api-models": "gen-api-models --api-spec openapi.yaml --out-dir ./src/adapters/api-models"
   },
   "dependencies": {
+    "@azure/cosmos": "^4.0.0",
     "@azure/functions": "^4.4.0",
+    "@azure/identity": "^4.1.0",
+    "@azure/storage-queue": "^12.24.0",
     "@pagopa/handler-kit": "^1.1.0",
     "@pagopa/handler-kit-azure-func": "^2.0.3",
-    "fp-ts": "^2.16.5",
-    "io-fims-common": "workspace:^"
+    "@pagopa/io-app-email-templates": "^0.2.0",
+    "@pagopa/io-functions-commons": "^29.2.0",
+    "@pagopa/ts-commons": "^13.1.1",
+    "fp-ts": "^2.16.9",
+    "io-fims-common": "workspace:^",
+    "io-ts": "^2.2.21",
+    "nodemailer": "^6.9.16",
+    "ulid": "^2.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@pagopa/eslint-config": "^4.0.1",
+    "@pagopa/openapi-codegen-ts": "^14.0.0",
     "@types/node": "^20.12.7",
+    "@types/nodemailer": "^6.4.16",
     "@vitest/coverage-v8": "^1.5.0",
     "eslint": "8.57.0",
     "prettier": "3.2.5",
     "tsup": "^8.0.2",
-    "typescript": "5.4.3",
+    "typescript": "5.6.3",
     "vitest": "^1.5.0"
   }
 }

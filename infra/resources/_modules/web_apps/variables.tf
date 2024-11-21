@@ -1,21 +1,3 @@
-# --- start legacy ---
-variable "product" {
-  type = string
-}
-
-variable "project_legacy" {
-  type = string
-}
-
-variable "resource_group_name_legacy" {
-  type = string
-}
-
-variable "subnet_id" {
-  type = string
-}
-# --- end legacy ---
-
 variable "resource_group_name" {
   type = string
 }
@@ -49,16 +31,26 @@ variable "subnet_cidrs" {
   type = object({
     op_app     = string
     op_func    = string
+    user_func  = string
     rp_example = string
   })
 }
 
 variable "key_vault" {
   type = object({
+    id        = string
+    name      = string
+    vault_uri = string
+  })
+}
+
+variable "key_vault_common" {
+  type = object({
     id   = string
     name = string
   })
 }
+
 
 variable "cosmosdb_account" {
   type = object({
@@ -67,10 +59,11 @@ variable "cosmosdb_account" {
   })
 }
 
-variable "storage_account" {
+variable "storage" {
   type = object({
-    id   = string
-    name = string
+    id                  = string
+    name                = string
+    resource_group_name = string
     queues = object({
       event = object({
         name = string
@@ -78,15 +71,26 @@ variable "storage_account" {
       config = object({
         name = string
       })
+      access = object({
+        name = string
+      })
+      export = object({
+        name = string
+      })
     })
   })
 }
 
-variable "storage_account_event" {
+variable "audit_storage" {
   type = object({
-    id   = string
-    name = string
-    container_name = string
+    id                  = string
+    name                = string
+    resource_group_name = string
+    containers = object({
+      events = object({
+        name = string
+      })
+    })
   })
 }
 

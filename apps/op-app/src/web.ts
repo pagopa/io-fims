@@ -1,6 +1,9 @@
 import { DefaultAzureCredential } from "@azure/identity";
+import { QueueClient } from "@azure/storage-queue";
 import { loadConfigFromEnvironment } from "io-fims-common/adapters/config";
 import { initCosmos } from "io-fims-common/adapters/cosmos/index";
+import { StorageQueueEventEmitter } from "io-fims-common/adapters/storage-queue/event-emitter";
+import { AccessMetadata } from "io-fims-common/domain/access-metadata";
 import { pino } from "pino";
 import { createClient } from "redis";
 import { z } from "zod";
@@ -11,12 +14,14 @@ import { envSchema } from "./adapters/env.js";
 import { createApplication } from "./adapters/express/application.js";
 import { IO } from "./adapters/io/user-metadata.js";
 import { createTokenMiddleware } from "./adapters/oidc/middleware.js";
+import { KeyVaultKeystore } from "./adapters/keyvault/keystore.js";
 import { createProvider } from "./adapters/oidc/provider.js";
 import RedisEventRepository from "./adapters/redis/event.js";
 import RedisHealthChecker from "./adapters/redis/health.js";
 import RedisSessionRepository from "./adapters/redis/session.js";
 import EventQueueClient from "./adapters/storage/event-client.js";
 import { HealthUseCase } from "./use-cases/health.js";
+import { LogAccessUseCase } from "./use-cases/log-access.js";
 import { LoginUseCase } from "./use-cases/login.js";
 import { SendEventMessageUseCase } from "./use-cases/send-event-messge.js";
 
@@ -51,12 +56,21 @@ async function main(config: Config & WebConfig) {
   const sessionRepository = new RedisSessionRepository(redis);
   const eventRepository = new RedisEventRepository(redis);
 
-  const cosmos = initCosmos(config.cosmos, new DefaultAzureCredential());
+  const credential = new DefaultAzureCredential();
+
+  const cosmos = initCosmos(config.cosmos, credential);
+
+  const keyStore = new KeyVaultKeystore(
+    config.keyVault.url,
+    credential,
+    config.keyVault.keyName,
+  );
 
   const oidc = createProvider(
     config.oidc.issuer,
     sessionRepository,
     createAdapterFactory(cosmos.database),
+    keyStore,
   );
 
   oidc.on("server_error", (ctx, err) => {
@@ -76,6 +90,16 @@ async function main(config: Config & WebConfig) {
     sessionRepository,
   });
 
+  const queueClient = new QueueClient(
+    config.storageQueue.accessQueueUrl,
+    credential,
+  );
+
+  const logAccess = new LogAccessUseCase(
+    sessionRepository,
+    new StorageQueueEventEmitter<AccessMetadata>(queueClient),
+  );
+
   const health = new HealthUseCase([
     cosmos.healthChecker,
     new RedisHealthChecker(redis),
@@ -83,7 +107,14 @@ async function main(config: Config & WebConfig) {
 
   createTokenMiddleware(oidc, eventUseCase, logger);
 
-  const app = createApplication(oidc, login, eventUseCase, health, logger);
+  const app = createApplication(
+    oidc,
+    login,
+    logAccess,
+    eventUseCase,
+    health,
+    logger,
+  );
 
   const server = app.listen(config.web.port, () => {
     logger.info(`http server listening on ${config.web.port}`);
