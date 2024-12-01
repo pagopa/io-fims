@@ -307,11 +307,11 @@ describe("Consent screen", () => {
         sessionRepository,
       });
 
-      const eventUseCase = new SendEventMessageUseCase({
-        eventRepository,
-        queueClient,
+      const eventUseCase = new SendEventMessageUseCase(
         sessionRepository,
-      });
+        eventRepository,
+        eventEmitter,
+      );
 
       const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
 
@@ -368,11 +368,11 @@ describe("Consent screen", () => {
       sessionRepository,
     });
 
-    const eventUseCase = new SendEventMessageUseCase({
-      eventRepository,
-      queueClient,
+    const eventUseCase = new SendEventMessageUseCase(
       sessionRepository,
-    });
+      eventRepository,
+      eventEmitter,
+    );
 
     const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
 
@@ -441,11 +441,11 @@ describe("Login", () => {
         sessionRepository,
       });
 
-      const eventUseCase = new SendEventMessageUseCase({
-        eventRepository,
-        queueClient,
+      const eventUseCase = new SendEventMessageUseCase(
         sessionRepository,
-      });
+        eventRepository,
+        eventEmitter,
+      );
 
       const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
 
@@ -482,11 +482,11 @@ describe("Login", () => {
         sessionRepository,
       });
 
-      const eventUseCase = new SendEventMessageUseCase({
-        eventRepository,
-        queueClient,
+      const eventUseCase = new SendEventMessageUseCase(
         sessionRepository,
-      });
+        eventRepository,
+        eventEmitter,
+      );
 
       const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
 
@@ -531,11 +531,11 @@ describe("Consent", () => {
       sessionRepository,
     });
 
-    const eventUseCase = new SendEventMessageUseCase({
-      eventRepository,
-      queueClient,
+    const eventUseCase = new SendEventMessageUseCase(
       sessionRepository,
-    });
+      eventRepository,
+      eventEmitter,
+    );
 
     const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
 
@@ -585,11 +585,11 @@ describe("Abort", () => {
       sessionRepository,
     });
 
-    const eventUseCase = new SendEventMessageUseCase({
-      eventRepository,
-      queueClient,
+    const eventUseCase = new SendEventMessageUseCase(
       sessionRepository,
-    });
+      eventRepository,
+      eventEmitter,
+    );
 
     const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
 
@@ -662,11 +662,11 @@ test.each<OIDCFlow>(["implicit", "authorization_code"])(
       sessionRepository,
     });
 
-    const eventUseCase = new SendEventMessageUseCase({
-      eventRepository,
-      queueClient,
+    const eventUseCase = new SendEventMessageUseCase(
       sessionRepository,
-    });
+      eventRepository,
+      eventEmitter,
+    );
 
     const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
 
@@ -770,11 +770,11 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const eventUseCase = new SendEventMessageUseCase({
-        eventRepository,
-        queueClient,
+      const eventUseCase = new SendEventMessageUseCase(
         sessionRepository,
-      });
+        eventRepository,
+        eventEmitter,
+      );
 
       const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
 
@@ -813,11 +813,11 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const eventUseCase = new SendEventMessageUseCase({
-        eventRepository,
-        queueClient,
+      const eventUseCase = new SendEventMessageUseCase(
         sessionRepository,
-      });
+        eventRepository,
+        eventEmitter,
+      );
 
       const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
 
@@ -859,11 +859,11 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const eventUseCase = new SendEventMessageUseCase({
-        eventRepository,
-        queueClient,
+      const eventUseCase = new SendEventMessageUseCase(
         sessionRepository,
-      });
+        eventRepository,
+        eventEmitter,
+      );
 
       const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
 
@@ -910,11 +910,11 @@ describe("Authentication Error Response", () => {
         sessionRepository,
       });
 
-      const eventUseCase = new SendEventMessageUseCase({
-        eventRepository,
-        queueClient,
+      const eventUseCase = new SendEventMessageUseCase(
         sessionRepository,
-      });
+        eventRepository,
+        eventEmitter,
+      );
 
       const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
 

@@ -5,9 +5,10 @@
     "FUNCTIONS_WORKER_RUNTIME": "node",
     "COSMOS_ENDPOINT": "https://io-d-itn-common-cosno-01.documents.azure.com:443/",
     "COSMOS_DBNAME": "fims",
-    "STORAGE_ACCOUNT_NAME": "fims",
-    "CONFIG_QUEUE_queueServiceUri": ""
-    "EVENT_STORAGE_URI": "https://fims-storage-event.uri",
-    "EVENT_CONTAINER_NAME": "fimseventcontainer"
+    "FIMS_STORAGE__queueServiceUri": "https://lcavallaro.queue.core.windows.net/",
+    "CONFIG_QUEUE_NAME": "config-queue",
+    "AUDIT_EVENT_QUEUE_NAME": "audit-events",
+    "AUDIT_STORAGE_URI": "https://lcavallaro.blob.core.windows.net/",
+    "AUDIT_EVENT_CONTAINER_NAME": "events"
   }
 }

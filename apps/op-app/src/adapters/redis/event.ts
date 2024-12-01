@@ -25,9 +25,7 @@ export default class RedisEventRepository implements EventRepository {
   }
 
   async get(clientId: string, fiscalCode: string) {
-    const blobName = await this.#client.hGetAll(
-      this.#key(clientId, fiscalCode),
-    );
+    const blobName = await this.#client.GET(this.#key(clientId, fiscalCode));
     const event = auditEventSessionSchema.parse({
       blobName,
       clientId,
@@ -37,11 +35,10 @@ export default class RedisEventRepository implements EventRepository {
   }
 
   async upsert(event: Event) {
-    const result = await this.#client.hSet(
+    const result = await this.#client.SET(
       this.#key(event.clientId, event.fiscalCode),
-      "blobName",
       event.blobName,
     );
-    assert.equal(result, Object.keys(event.blobName).length);
+    assert.equal(result, "OK");
   }
 }

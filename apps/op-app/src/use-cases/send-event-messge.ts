@@ -1,21 +1,25 @@
 import {
+  EventRepository,
   Session,
-  SessionEnvironment,
+  SessionRepository,
   auditEventSessionSchema,
   getEvent,
   getSession,
   writeEvent,
 } from "@/domain/session.js";
-import { StorageEnvironment, sendEventsMessage } from "@/domain/storage.js";
+import { StorageEnvironment } from "@/domain/storage.js";
 import * as E from "fp-ts/lib/Either.js";
 import * as O from "fp-ts/lib/Option.js";
 import * as RTE from "fp-ts/lib/ReaderTaskEither.js";
+import * as TE from "fp-ts/lib/TaskEither.js";
 import { flow, pipe } from "fp-ts/lib/function.js";
 import {
+  AuditEvent,
   RPParams,
   auditEventSchema,
   requestParamsSchema,
 } from "io-fims-common/domain/audit-event";
+import { EventEmitter } from "io-fims-common/domain/event-emitter";
 import * as jose from "jose";
 import * as assert from "node:assert/strict";
 import { z } from "zod";
@@ -35,8 +39,6 @@ const auditEventParamsSchema = z.discriminatedUnion("type", [
 
 type AuditEventParams = z.TypeOf<typeof auditEventParamsSchema>;
 
-type Context = SessionEnvironment & StorageEnvironment;
-
 const safeFindSession = flow(
   getSession,
   RTE.map(
@@ -50,10 +52,18 @@ const safeFindSession = flow(
 const safeGetEvent = flow(getEvent, RTE.map(O.toUndefined));
 
 export class SendEventMessageUseCase {
-  #ctx: Context;
+  #eventEmitter: EventEmitter<AuditEvent>;
+  #eventRepository: EventRepository;
+  #sessionRepository: SessionRepository;
 
-  constructor(ctx: Context) {
-    this.#ctx = ctx;
+  constructor(
+    sessionRepository: SessionRepository,
+    eventRepository: EventRepository,
+    eventEmitter: EventEmitter<AuditEvent>,
+  ) {
+    this.#sessionRepository = sessionRepository;
+    this.#eventRepository = eventRepository;
+    this.#eventEmitter = eventEmitter;
   }
 
   async #sendIdTokenStepMessage(idToken: string) {
@@ -68,25 +78,33 @@ export class SendEventMessageUseCase {
     const findAuditEventSession = await safeGetEvent(
       clientId,
       idTokenDecoded.sub,
-    )(this.#ctx)();
+    )({
+      eventEmitter: this.#eventEmitter,
+      eventRepository: this.#eventRepository,
+    })();
+
     if (E.isLeft(findAuditEventSession)) {
       throw new Error("Unexpected error during send audit event message", {
         cause: findAuditEventSession.left,
       });
     }
+
     const auditEventSession = findAuditEventSession.right;
     assert.ok(auditEventSession, "Audit event session not found");
+
     const auditEvent = auditEventSchema.parse({
       blobName: auditEventSession.blobName,
       data: {
-        idToken: idTokenDecoded,
+        idToken,
       },
       type: "idToken",
     });
-    const result = await sendEventsMessage(auditEvent)(this.#ctx)();
-    if (E.isLeft(result)) {
+
+    try {
+      await this.#eventEmitter.emit(auditEvent);
+    } catch (e) {
       throw new Error("Unexpected error during send event message", {
-        cause: result.left,
+        cause: e,
       });
     }
   }
@@ -96,7 +114,10 @@ export class SendEventMessageUseCase {
     sessionId: string,
     ipAddress: string,
   ) {
-    const findUserData = await safeFindSession(sessionId)(this.#ctx)();
+    const findUserData = await safeFindSession(sessionId)({
+      sessionRepository: this.#sessionRepository,
+    })();
+
     if (E.isLeft(findUserData)) {
       throw new Error(`No session found with sessionId ${sessionId}`, {
         cause: findUserData.left,
@@ -104,17 +125,20 @@ export class SendEventMessageUseCase {
     }
 
     const userData = findUserData.right;
+
     assert.ok(
       userData,
       `The session with sessionId ${sessionId} is not present`,
     );
 
     const blobName = `${userData.fiscalCode}_${requestParams.client_id}_${sessionId}.json`;
+
     const auditEventSession = auditEventSessionSchema.parse({
       blobName,
       clientId: requestParams.client_id,
       fiscalCode: userData.fiscalCode,
     });
+
     const auditEvent = auditEventSchema.parse({
       blobName: blobName,
       data: {
@@ -125,11 +149,23 @@ export class SendEventMessageUseCase {
       },
       type: "rpStep",
     });
+
+    const emitEventRTE = (auditEvent: AuditEvent) => (r: StorageEnvironment) =>
+      TE.tryCatch(
+        () => r.eventEmitter.emit(auditEvent),
+        (e) => new Error("Error during emit event", { cause: e }),
+      );
+
     const audit = pipe(
       writeEvent(auditEventSession),
-      RTE.chain(() => sendEventsMessage(auditEvent)),
+      RTE.chain(() => emitEventRTE(auditEvent)),
     );
-    const result = await audit(this.#ctx)();
+
+    const result = await audit({
+      eventEmitter: this.#eventEmitter,
+      eventRepository: this.#eventRepository,
+    })();
+
     if (E.isLeft(result)) {
       throw new Error("Unexpected error during send event message", {
         cause: result.left,
@@ -140,8 +176,7 @@ export class SendEventMessageUseCase {
   async execute(params: AuditEventParams): Promise<void> {
     if (params.type === "idToken") {
       this.#sendIdTokenStepMessage(params.idToken);
-    }
-    if (params.type === "rpStep") {
+    } else if (params.type === "rpStep") {
       this.#sendRpStepMessage(
         params.requestParams,
         params.sessionId,

@@ -9,14 +9,14 @@ export function createTokenMiddleware(
 ) {
   provider.use(async (ctx, next) => {
     await next();
-    if (ctx.oidc.route === "token") {
+    if (ctx.oidc && ctx.oidc.route === "token") {
       logger.info(`started post middleware for the route 'token'`);
       const tokenResponse = ctx.response;
       if (tokenResponse.status === 200) {
         const responseBody = tokenResponse.body;
         if (responseBody["id_token"]) {
           eventUseCase.execute({
-            idTokenString: responseBody["id_token"],
+            idToken: responseBody["id_token"],
             type: "idToken",
           });
         }

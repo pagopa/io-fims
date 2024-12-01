@@ -31,18 +31,11 @@ export class BlobAuditEventRepository implements AuditEventRepository {
   async get(name: string): Promise<AuditEvent> {
     const blobClient = this.#container.getBlobClient(name);
     const downloadBlockBlobResponse = await blobClient.download();
-    /* if the blob requested does not exists a different error is returned
-     *  in order to avoid unwanted retries
-     */
+
     assert.notStrictEqual(
       downloadBlockBlobResponse.errorCode,
       "BlobNotFound",
       new BlobNotFoundError(`No Blob with name ${name} found`),
-    );
-
-    assert.ok(
-      downloadBlockBlobResponse.errorCode,
-      `Error retrieving blob with name ${name} with error code ${downloadBlockBlobResponse.errorCode}`,
     );
 
     try {
@@ -72,8 +65,8 @@ export class BlobAuditEventRepository implements AuditEventRepository {
         parsedContent.length,
       );
       assert.ok(
-        response.errorCode,
-        `Error uploading blob with name ${name} with error code ${response.errorCode}`,
+        typeof response.errorCode !== undefined,
+        `Blob Error: ${response.errorCode}`,
       );
       return content;
     } catch (error) {

@@ -27,7 +27,7 @@
     "build": "esbuild --bundle ./src/index.ts --format=esm --platform=node --target=node20 --outdir=dist --packages=external",
     "build:watch": "yarn build --watch",
     "start": "node .",
-    "start:dev": "node --env-file=.env . | pino-pretty"
+    "start:dev": "node --env-file=.env ."
   },
   "devDependencies": {
     "@pagopa/eslint-config": "^4.0.1",

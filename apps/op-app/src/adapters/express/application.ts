@@ -2,8 +2,8 @@ import type { LoginUseCase } from "@/use-cases/login.js";
 import type Provider from "oidc-provider";
 
 import { HealthUseCase } from "@/use-cases/health.js";
-import { SendEventMessageUseCase } from "@/use-cases/send-event-messge.js";
 import { LogAccessUseCase } from "@/use-cases/log-access.js";
+import { SendEventMessageUseCase } from "@/use-cases/send-event-messge.js";
 import cookieParser from "cookie-parser";
 import express from "express";
 import helmet from "helmet";

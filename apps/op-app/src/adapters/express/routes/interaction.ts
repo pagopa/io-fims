@@ -2,8 +2,8 @@ import type { LoginUseCase } from "@/use-cases/login.js";
 import type Provider from "oidc-provider";
 
 import { metadataForConsentFromScopes } from "@/domain/user-metadata.js";
-import { SendEventMessageUseCase } from "@/use-cases/send-event-messge.js";
 import { LogAccessUseCase } from "@/use-cases/log-access.js";
+import { SendEventMessageUseCase } from "@/use-cases/send-event-messge.js";
 import * as express from "express";
 import { requestParamsSchema } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";

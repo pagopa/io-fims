@@ -3,16 +3,12 @@ import { cosmosConfigSchema } from "io-fims-common/adapters/cosmos/config";
 import { z } from "zod";
 
 import { envSchema } from "./env.js";
-import { eventQueueConfigSchema } from "./event-queue/config.js";
-import { storageQueueConfigSchema } from "./storage-queue/config.js";
+import { storageBindingSchema } from "./storage-queue/config.js";
 
 export const configSchema = z.object({
   cosmos: cosmosConfigSchema,
-  eventStorage: eventStorageConfigSchema,
-  storage: z.object({
-    eventQueue: eventQueueConfigSchema,
-    queue: storageQueueConfigSchema,
-  }),
+  auditEventStorage: eventStorageConfigSchema,
+  storage: storageBindingSchema,
 });
 
 export type Config = z.TypeOf<typeof configSchema>;
@@ -24,21 +20,18 @@ export const configFromEnvironment = envSchema
         databaseName: env.COSMOS_DBNAME,
         endpoint: env.COSMOS_ENDPOINT,
       },
-      eventStorage: {
-        containerName: env.EVENT_CONTAINER_NAME,
-        uri: env.EVENT_STORAGE_URI,
+      auditEventStorage: {
+        containerName: env.AUDIT_EVENT_CONTAINER_NAME,
+        uri: env.AUDIT_STORAGE_URI,
       },
       storage: {
-        eventQueue: {
-          config: {
-            connectionPrefix: "EVENT_QUEUE",
-            name: env.EVENT_QUEUE__name,
-          },
-        },
+        connectionPrefix: "FIMS_STORAGE",
         queue: {
           config: {
-            connectionPrefix: "CONFIG_QUEUE",
-            name: env.CONFIG_QUEUE__name,
+            name: env.CONFIG_QUEUE_NAME,
+          },
+          auditEvents: {
+            name: env.AUDIT_EVENT_QUEUE_NAME,
           },
         },
       },

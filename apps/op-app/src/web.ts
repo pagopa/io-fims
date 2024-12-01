@@ -4,6 +4,7 @@ import { loadConfigFromEnvironment } from "io-fims-common/adapters/config";
 import { initCosmos } from "io-fims-common/adapters/cosmos/index";
 import { StorageQueueEventEmitter } from "io-fims-common/adapters/storage-queue/event-emitter";
 import { AccessMetadata } from "io-fims-common/domain/access-metadata";
+import { AuditEvent } from "io-fims-common/domain/audit-event";
 import { pino } from "pino";
 import { createClient } from "redis";
 import { z } from "zod";
@@ -13,13 +14,12 @@ import { createAdapterFactory } from "./adapters/cosmos/oidc/index.js";
 import { envSchema } from "./adapters/env.js";
 import { createApplication } from "./adapters/express/application.js";
 import { IO } from "./adapters/io/user-metadata.js";
-import { createTokenMiddleware } from "./adapters/oidc/middleware.js";
 import { KeyVaultKeystore } from "./adapters/keyvault/keystore.js";
+import { createTokenMiddleware } from "./adapters/oidc/middleware.js";
 import { createProvider } from "./adapters/oidc/provider.js";
 import RedisEventRepository from "./adapters/redis/event.js";
 import RedisHealthChecker from "./adapters/redis/health.js";
 import RedisSessionRepository from "./adapters/redis/session.js";
-import EventQueueClient from "./adapters/storage/event-client.js";
 import { HealthUseCase } from "./use-cases/health.js";
 import { LogAccessUseCase } from "./use-cases/log-access.js";
 import { LoginUseCase } from "./use-cases/login.js";
@@ -50,8 +50,6 @@ async function main(config: Config & WebConfig) {
 
   await redis.connect();
   logger.debug("redis connected");
-
-  const queueClient = new EventQueueClient(config);
 
   const sessionRepository = new RedisSessionRepository(redis);
   const eventRepository = new RedisEventRepository(redis);
@@ -84,20 +82,19 @@ async function main(config: Config & WebConfig) {
     sessionRepository,
   });
 
-  const eventUseCase = new SendEventMessageUseCase({
-    eventRepository,
-    queueClient,
+  const eventUseCase = new SendEventMessageUseCase(
     sessionRepository,
-  });
-
-  const queueClient = new QueueClient(
-    config.storageQueue.accessQueueUrl,
-    credential,
+    eventRepository,
+    new StorageQueueEventEmitter<AuditEvent>(
+      new QueueClient(config.storageQueue.eventsQueueUrl, credential),
+    ),
   );
 
   const logAccess = new LogAccessUseCase(
     sessionRepository,
-    new StorageQueueEventEmitter<AccessMetadata>(queueClient),
+    new StorageQueueEventEmitter<AccessMetadata>(
+      new QueueClient(config.storageQueue.accessQueueUrl, credential),
+    ),
   );
 
   const health = new HealthUseCase([
@@ -110,8 +107,8 @@ async function main(config: Config & WebConfig) {
   const app = createApplication(
     oidc,
     login,
-    logAccess,
     eventUseCase,
+    logAccess,
     health,
     logger,
   );
