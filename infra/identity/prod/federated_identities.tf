@@ -28,12 +28,12 @@ module "federated_identities" {
         io-p-weu-fims-rg-01 = [
           "DocumentDB Account Contributor",
           "Key Vault Certificate User",
-          "Key Vault Crypto User"
+          "Key Vault Crypto Officer"
         ],
         io-p-itn-fims-rg-01 = [
           "DocumentDB Account Contributor",
           "Key Vault Certificate User",
-          "Key Vault Crypto User"
+          "Key Vault Crypto Officer"
         ]
       }
     }
