@@ -65,7 +65,7 @@ variable "storage" {
     name                = string
     resource_group_name = string
     queues = object({
-      event = object({
+      audit_events = object({
         name = string
       })
       config = object({
