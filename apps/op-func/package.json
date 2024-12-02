@@ -2,7 +2,11 @@
   "name": "op-func",
   "private": true,
   "main": "dist/func.js",
+  "version": "0.1.0",
   "type": "module",
+  "files": [
+    "host.json"
+  ],
   "scripts": {
     "build": "esbuild --bundle ./src/func.ts --format=esm --platform=node --target=node20 --outdir=dist --packages=external",
     "build:watch": "yarn build --watch",
