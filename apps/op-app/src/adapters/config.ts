@@ -52,7 +52,7 @@ export const configFromEnvironment = envSchema.transform(
     },
     storageQueue: {
       accessQueueUrl: env.ACCESS_QUEUE_URL,
-      eventsQueueUrl: env.AUDIT_EVENTS_QUEUE_URL,
+      eventsQueueUrl: env.AUDIT_EVENT_QUEUE_URL,
     },
   }),
 );

@@ -31,3 +31,8 @@ data "azurerm_storage_account" "fims" {
   name                = var.storage.name
   resource_group_name = var.storage.resource_group_name
 }
+
+data "azurerm_storage_account" "audit" {
+  name                = var.audit_storage.name
+  resource_group_name = var.audit_storage.resource_group_name
+}
