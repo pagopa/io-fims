@@ -56,6 +56,7 @@ export const parseRedirectDisplayName = (
   return redirectDisplayName.it;
 };
 
+/* eslint-disable max-lines-per-function */
 export default function createInteractionRouter(
   oidcProvider: Provider,
   login: LoginUseCase,
@@ -269,3 +270,4 @@ export default function createInteractionRouter(
 
   return router;
 }
+/* eslint-enable max-lines-per-function */

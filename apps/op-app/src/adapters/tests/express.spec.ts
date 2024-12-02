@@ -1,7 +1,6 @@
 import type { EventRepository, SessionRepository } from "@/domain/session.js";
 import type * as oidc from "oidc-provider";
 
-import { StorageQueueClient } from "@/domain/storage.js";
 import {
   type IdentityProvider,
   type Scope,
@@ -73,7 +72,6 @@ const createUserMetadata = (): {
 
 const store = new Map<string, unknown>();
 const eventStore = new Map<string, unknown>();
-const eventQueue = [];
 
 const sessionRepository: Mocked<SessionRepository> = {
   get: vi
@@ -93,12 +91,6 @@ const eventRepository: Mocked<EventRepository> = {
   upsert: vi.fn().mockImplementation(async (event) => {
     eventStore.set(`audit:${event.clientId}:${event.fiscalCode}`, event);
   }),
-};
-
-const queueClient: Mocked<StorageQueueClient> = {
-  sendMessage: vi
-    .fn()
-    .mockImplementation(async (auditEvent) => eventQueue.push(auditEvent)),
 };
 
 const adapter = (name: string): Mocked<oidc.Adapter> => ({

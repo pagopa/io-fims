@@ -7,7 +7,7 @@ export const storageQueueSchema = z.object({
 export const storageBindingSchema = z.object({
   connectionPrefix: z.string().min(1),
   queue: z.object({
-    config: storageQueueSchema,
     auditEvents: storageQueueSchema,
+    config: storageQueueSchema,
   }),
 });
