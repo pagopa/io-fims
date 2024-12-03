@@ -65,5 +65,4 @@ module "web_apps_itn" {
   storage              = module.storage.fims
   audit_storage        = module.storage.audit
   application_insights = data.azurerm_application_insights.common
-  key_vault_common     = module.key_vaults.common
 }
