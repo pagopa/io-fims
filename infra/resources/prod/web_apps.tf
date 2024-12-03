@@ -52,13 +52,18 @@ module "web_apps_itn" {
   virtual_network = data.azurerm_virtual_network.itn_common
   subnet_pep_id   = data.azurerm_subnet.itn_pep.id
   subnet_cidrs = {
+    op_app    = "10.20.23.0/26"
+    op_func   = "10.20.23.64/26"
     user_func = "10.20.23.128/26"
   }
   private_dns_zone_resource_group_name = "${local.common_project}-rg-common"
 
   # backing services
+  key_vault            = module.key_vaults.fims
+  redis_cache          = module.redis_cache.fims
   cosmosdb_account     = module.cosmos.fims
   storage              = module.storage.fims
+  audit_storage        = module.storage.audit
   application_insights = data.azurerm_application_insights.common
   key_vault_common     = module.key_vaults.common
 }

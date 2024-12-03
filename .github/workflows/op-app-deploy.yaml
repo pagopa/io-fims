@@ -11,7 +11,7 @@ jobs:
     with:
       workspace_name: op-app
       environment: app-prod
-      resource_group_name: io-p-weu-fims-rg-01
-      web_app_name: io-p-weu-fims-op-app-01
+      resource_group_name: io-p-itn-fims-rg-01
+      web_app_name: io-p-itn-fims-op-app-01
       use_staging_slot: false
       use_private_agent: true
