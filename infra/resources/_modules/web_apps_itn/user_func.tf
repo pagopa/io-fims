@@ -67,12 +67,8 @@ resource "azurerm_cosmosdb_sql_role_assignment" "user_func" {
   scope               = data.azurerm_cosmosdb_account.fims.id
 }
 
-resource "azurerm_key_vault_access_policy" "user_func" {
-  key_vault_id = var.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = module.user_func.function_app.function_app.principal_id
-
-  secret_permissions = [
-    "Get",
-  ]
+resource "azurerm_role_assignment" "key_vault_user_func" {
+  scope                = var.key_vault.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.user_func.function_app.function_app.principal_id
 }
