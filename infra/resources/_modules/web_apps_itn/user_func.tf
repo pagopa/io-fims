@@ -25,14 +25,14 @@ module "user_func" {
 
   resource_group_name = var.resource_group_name
 
-  health_check_path = "/api/health"
+  health_check_path = local.user_func.common_app_settings.WEBSITE_WARMUP_PATH
 
   application_insights_connection_string = var.application_insights.connection_string
 
   app_settings = merge(local.user_func.common_app_settings, {
     NODE_ENV        = "production",
-    MAILUP_SECRET   = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=common-MAILUP-SECRET)",
-    MAILUP_USERNAME = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=common-MAILUP-USERNAME)",
+    MAILUP_SECRET   = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=mailup-secret)",
+    MAILUP_USERNAME = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=mailup-username)",
   })
 
   slot_app_settings = merge(local.user_func.common_app_settings, {
@@ -68,7 +68,7 @@ resource "azurerm_cosmosdb_sql_role_assignment" "user_func" {
 }
 
 resource "azurerm_key_vault_access_policy" "user_func" {
-  key_vault_id = var.key_vault_common.id
+  key_vault_id = var.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.user_func.function_app.function_app.principal_id
 
