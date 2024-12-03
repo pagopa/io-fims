@@ -6,7 +6,7 @@ module "storage_account_fims" {
   account_tier                  = "Standard"
   access_tier                   = "Hot"
   account_replication_type      = "ZRS"
-  resource_group_name           = var.resource_group_name
+  resource_group_name           = var.resource_group_name_legacy
   location                      = var.location
   advanced_threat_protection    = true
   public_network_access_enabled = false
@@ -17,7 +17,7 @@ module "storage_account_fims" {
 resource "azurerm_private_endpoint" "queue" {
   name                = format("%s-queue-endpoint", module.storage_account_fims.name)
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = var.resource_group_name_legacy
   subnet_id           = var.subnet_pep_id
 
   private_service_connection {
