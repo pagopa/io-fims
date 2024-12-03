@@ -142,10 +142,10 @@ export class SendEventMessageUseCase {
     const auditEvent = auditEventSchema.parse({
       blobName: blobName,
       data: {
-        ipAddress: ipAddress,
-        requestParams: requestParams,
-        timestamp: new Date().getSeconds(),
-        userData: userData,
+        ipAddress,
+        requestParams,
+        timestamp: Date.now(),
+        userData,
       },
       type: "rpStep",
     });
