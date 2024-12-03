@@ -3,7 +3,9 @@ import type Provider from "oidc-provider";
 
 import { metadataForConsentFromScopes } from "@/domain/user-metadata.js";
 import { LogAccessUseCase } from "@/use-cases/log-access.js";
+import { SendEventMessageUseCase } from "@/use-cases/send-event-messge.js";
 import * as express from "express";
+import { requestParamsSchema } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
 import { z } from "zod";
 
@@ -54,9 +56,11 @@ export const parseRedirectDisplayName = (
   return redirectDisplayName.it;
 };
 
+/* eslint-disable max-lines-per-function */
 export default function createInteractionRouter(
   oidcProvider: Provider,
   login: LoginUseCase,
+  eventUseCase: SendEventMessageUseCase,
   logAccess: LogAccessUseCase,
 ) {
   const router = express.Router();
@@ -118,6 +122,9 @@ export default function createInteractionRouter(
 
       req.log.debug("using %s as baseUrl for links", baseUrl);
 
+      const userMetadata = metadataForConsentFromScopes(
+        consent.prompt.details.missingOIDCScope,
+      );
       const apiModel = schemas.Consent.safeParse({
         _links: {
           abort: {
@@ -132,9 +139,7 @@ export default function createInteractionRouter(
         },
         service_id: consent.params.client_id,
         type: interactionType,
-        user_metadata: metadataForConsentFromScopes(
-          consent.prompt.details.missingOIDCScope,
-        ).map((name) => ({
+        user_metadata: userMetadata.map((name) => ({
           // name can be "firstName", "lastName", ..
           display_name: req.__(name),
           // localize each metadata name using i18n-node
@@ -163,8 +168,9 @@ export default function createInteractionRouter(
       assert.equal(
         interaction.prompt.name,
         "login",
-        new Error("Interaction type mismatch, login expected"),
+        "Interaction type mismatch, login expected",
       );
+
       const cookiesSchema = z.object({
         _io_fims_token: z.string().min(1),
       });
@@ -174,10 +180,25 @@ export default function createInteractionRouter(
         new HttpBadRequestError(`Unable to parse the "_io_fims_token" cookie.`),
       );
       req.log.debug("_io_fims_token parsed from cookies");
+      const rpParams = requestParamsSchema.safeParse(interaction.params);
+      assert.ok(
+        rpParams.success,
+        new HttpBadRequestError(`Unable to parse the query params.`),
+      );
+      assert.ok(
+        req.ip,
+        new HttpBadRequestError(`Unable to retrieve ip address from request`),
+      );
       const accountId = await login.execute(
         cookies.data._io_fims_token,
         interaction.jti,
       );
+      await eventUseCase.execute({
+        ipAddress: req.ip,
+        requestParams: rpParams.data,
+        sessionId: accountId,
+        type: "rpStep",
+      });
       return oidcProvider.interactionFinished(req, res, {
         login: {
           accountId,
@@ -249,3 +270,4 @@ export default function createInteractionRouter(
 
   return router;
 }
+/* eslint-enable max-lines-per-function */

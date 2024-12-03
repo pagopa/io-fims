@@ -1,4 +1,5 @@
-import { BlockBlobUploadResponse, ContainerClient } from "@azure/storage-blob";
+import { AuditEventRepository } from "@/domain/audit-event.js";
+import { ContainerClient } from "@azure/storage-blob";
 import {
   AuditEvent,
   auditEventSchema,
@@ -20,7 +21,7 @@ export async function getStreamIntoString(
   return Buffer.concat(chunks).toString("utf-8");
 }
 
-export class AccessLogRegister {
+export class BlobAuditEventRepository implements AuditEventRepository {
   #container: ContainerClient;
 
   constructor(client: ContainerClient) {
@@ -30,18 +31,11 @@ export class AccessLogRegister {
   async get(name: string): Promise<AuditEvent> {
     const blobClient = this.#container.getBlobClient(name);
     const downloadBlockBlobResponse = await blobClient.download();
-    /* if the blob requested does not exists a different error is returned
-     *  in order to avoid unwanted retries
-     */
+
     assert.notStrictEqual(
       downloadBlockBlobResponse.errorCode,
       "BlobNotFound",
       new BlobNotFoundError(`No Blob with name ${name} found`),
-    );
-
-    assert.ok(
-      downloadBlockBlobResponse.errorCode,
-      `Error retrieving blob with name ${name} with error code ${downloadBlockBlobResponse.errorCode}`,
     );
 
     try {
@@ -60,13 +54,21 @@ export class AccessLogRegister {
     }
   }
 
-  async upload(content: AuditEvent): Promise<BlockBlobUploadResponse> {
+  async upload(content: AuditEvent): Promise<AuditEvent> {
     try {
       const blockBlobClient = this.#container.getBlockBlobClient(
         content.blobName,
       );
       const parsedContent = JSON.stringify(content.data);
-      return blockBlobClient.upload(parsedContent, parsedContent.length);
+      const response = await blockBlobClient.upload(
+        parsedContent,
+        parsedContent.length,
+      );
+      assert.ok(
+        typeof response.errorCode !== "undefined",
+        `Blob Error: ${response.errorCode}`,
+      );
+      return content;
     } catch (error) {
       throw new Error("Error creating new blob", {
         cause: error,

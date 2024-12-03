@@ -1,5 +1,6 @@
 import { app } from "@azure/functions";
 import { DefaultAzureCredential } from "@azure/identity";
+import { BlobServiceClient } from "@azure/storage-blob";
 import {
   azureFunction,
   httpAzureFunction,
@@ -10,17 +11,32 @@ import healthHandler from "io-fims-common/adapters/handlers/health";
 import { HealthUseCase } from "io-fims-common/use-cases/health";
 
 import { Config, configFromEnvironment } from "./adapters/config.js";
-import { CosmosOIDCClientRepository } from "./adapters/cosmos/oidc-client.js";
+/*import { CosmosOIDCClientRepository } from "./adapters/cosmos/oidc-client.js";
 import {
   createOIDCClientHandler,
   inputDecoder,
-} from "./adapters/handlers/create-oidc-client.js";
+} from "./adapters/handlers/create-oidc-client.js";*/
+import {
+  auditEventInputDecoder,
+  manageAuditEventHandler,
+} from "./adapters/handlers/upsert-audit-event.js";
+import { BlobAuditEventRepository } from "./infra/storage/audit-event.js";
 
 async function main(config: Config) {
   const cosmos = initCosmos(config.cosmos, new DefaultAzureCredential());
   const health = new HealthUseCase([cosmos.healthChecker]);
 
-  const oidcClientRepository = new CosmosOIDCClientRepository(cosmos.database);
+  const blobServiceClient = new BlobServiceClient(
+    config.auditEventStorage.uri,
+    new DefaultAzureCredential(),
+  );
+
+  const containerClient = blobServiceClient.getContainerClient(
+    config.auditEventStorage.containerName,
+  );
+
+  //const oidcClientRepository = new CosmosOIDCClientRepository(cosmos.database);
+  const auditEventRepository = new BlobAuditEventRepository(containerClient);
 
   app.http("Health", {
     handler: httpAzureFunction(healthHandler)({
@@ -30,13 +46,22 @@ async function main(config: Config) {
     route: "health",
   });
 
-  app.storageQueue("CreateOIDCClient", {
-    connection: config.storage.queue.config.connectionPrefix,
+  /*app.storageQueue("CreateOIDCClient", {
+    connection: config.storage.connectionPrefix,
     handler: azureFunction(createOIDCClientHandler)({
       inputDecoder,
       oidcClientRepository,
     }),
     queueName: config.storage.queue.config.name,
+  });*/
+
+  app.storageQueue("ManageAuditEvent", {
+    connection: config.storage.connectionPrefix,
+    handler: azureFunction(manageAuditEventHandler)({
+      auditEventRepository,
+      inputDecoder: auditEventInputDecoder,
+    }),
+    queueName: config.storage.queue.auditEvents.name,
   });
 }
 

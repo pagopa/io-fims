@@ -14,6 +14,7 @@ locals {
       LOLLIPOP_BASE_URL        = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-app-lollipop-base-url)"
       LOLLIPOP_API_KEY         = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-app-lollipop-api-key)"
       ACCESS_QUEUE_URL         = "${data.azurerm_storage_account.fims.primary_queue_endpoint}${var.storage.queues.access.name}"
+      AUDIT_EVENT_QUEUE_URL    = "${data.azurerm_storage_account.fims.primary_queue_endpoint}${var.storage.queues.audit_events.name}"
       KEY_VAULT_URL            = var.key_vault.vault_uri
       KEY_VAULT_KEY_NAME       = "op-app-key"
     }
@@ -37,11 +38,11 @@ module "op_app" {
   application_insights_connection_string = var.application_insights.connection_string
 
   app_settings = merge(local.op_app.common_app_settings, {
-    NODE_ENVIRONMENT = "production"
+    NODE_ENV = "production"
   })
 
   slot_app_settings = merge(local.op_app.common_app_settings, {
-    NODE_ENVIRONMENT = "staging"
+    NODE_ENV = "development"
   })
 
   sticky_app_setting_names = ["NODE_ENVIRONMENT"]

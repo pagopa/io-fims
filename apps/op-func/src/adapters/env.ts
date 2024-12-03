@@ -1,11 +1,13 @@
 import { cosmosEnvSchema, nodeEnvSchema } from "io-fims-common/adapters/env";
+import { queueServiceUriSchema } from "io-fims-common/zod-schemas";
 import { z } from "zod";
 
 export const envSchema = nodeEnvSchema.and(cosmosEnvSchema).and(
   z.object({
-    CONFIG_QUEUE__name: z.string().min(1),
-    CONFIG_QUEUE__queueServiceUri: z
-      .string()
-      .regex(/^https:\/\/([a-z]+)\.queue\.core\.windows\.net$/),
+    AUDIT_EVENT_CONTAINER_NAME: z.string().min(1),
+    AUDIT_EVENT_QUEUE_NAME: z.string().min(1),
+    AUDIT_STORAGE_URI: z.string().url(),
+    CONFIG_QUEUE_NAME: z.string().min(1),
+    FIMS_STORAGE__queueServiceUri: queueServiceUriSchema,
   }),
 );

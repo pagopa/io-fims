@@ -5,8 +5,11 @@ locals {
       WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
       COSMOS_ENDPOINT                   = data.azurerm_cosmosdb_account.fims.endpoint
       COSMOS_DBNAME                     = data.azurerm_cosmosdb_sql_database.fims_op.name,
-      CONFIG_QUEUE__queueServiceUri     = "https://${var.storage.name}.queue.core.windows.net"
-      CONFIG_QUEUE__name                = var.storage.queues.config.name
+      FIMS_STORAGE__queueServiceUri     = data.azurerm_storage_account.fims.primary_queue_endpoint,
+      CONFIG_QUEUE_NAME                 = var.storage.queues.config.name
+      AUDIT_EVENT_QUEUE_NAME            = var.storage.queues.audit_events.name
+      AUDIT_EVENT_CONTAINER_NAME        = var.audit_storage.containers.events.name
+      AUDIT_STORAGE_URI                 = data.azurerm_storage_account.audit.primary_blob_endpoint
     }
   }
 }
@@ -31,14 +34,14 @@ module "op_func" {
   application_insights_connection_string = var.application_insights.connection_string
 
   app_settings = merge(local.op_func.common_app_settings, {
-    NODE_ENVIRONMENT = "production"
+    NODE_ENV = "production"
   })
 
   slot_app_settings = merge(local.op_func.common_app_settings, {
-    NODE_ENVIRONMENT = "staging"
+    NODE_ENV = "development"
   })
 
-  sticky_app_setting_names = ["NODE_ENVIRONMENT"]
+  sticky_app_setting_names = ["NODE_ENV"]
 
   virtual_network = var.virtual_network
 
@@ -52,6 +55,12 @@ resource "azurerm_role_assignment" "config_queue_op_func" {
   for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Reader"])
   scope                = var.storage.id
   role_definition_name = each.key
+  principal_id         = module.op_func.function_app.function_app.principal_id
+}
+
+resource "azurerm_role_assignment" "audit_event_container_op_func" {
+  scope                = var.audit_storage.id
+  role_definition_name = "Storage Blob Data Contributor"
   principal_id         = module.op_func.function_app.function_app.principal_id
 }
 

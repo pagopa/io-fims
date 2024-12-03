@@ -9,6 +9,7 @@ import { redisConfigSchema } from "./redis/config.js";
 
 export const storageQueueConfigSchema = z.object({
   accessQueueUrl: z.string().url(),
+  eventsQueueUrl: z.string().url(),
 });
 
 export const configSchema = z.object({
@@ -51,6 +52,7 @@ export const configFromEnvironment = envSchema.transform(
     },
     storageQueue: {
       accessQueueUrl: env.ACCESS_QUEUE_URL,
+      eventsQueueUrl: env.AUDIT_EVENT_QUEUE_URL,
     },
   }),
 );
