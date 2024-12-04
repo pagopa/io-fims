@@ -44,6 +44,7 @@ export const configFromEnvironment = envSchema.transform(
     },
     oidc: {
       issuer: env.OIDC_ISSUER,
+      cookieKeys: [env.COOKIE_KEY],
     },
     redis: {
       password: env.REDIS_PASSWORD,

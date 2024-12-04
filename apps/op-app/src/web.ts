@@ -68,6 +68,7 @@ async function main(config: Config & WebConfig) {
     config.oidc.issuer,
     sessionRepository,
     createAdapterFactory(cosmos.database),
+    config.oidc.cookieKeys,
     keyStore,
   );
 

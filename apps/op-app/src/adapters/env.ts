@@ -15,5 +15,6 @@ export const envSchema = nodeEnvSchema.and(cosmosEnvSchema).and(
     REDIS_PING_INTERVAL: z.coerce.number(),
     REDIS_URL: z.string().url(),
     SESSION_MANAGER_BASE_URL: z.string().url(),
+    COOKIE_KEY: z.string().min(1),
   }),
 );

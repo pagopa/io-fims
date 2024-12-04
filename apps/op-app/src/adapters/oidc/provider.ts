@@ -16,6 +16,7 @@ export function createProvider(
   issuer: string,
   sessionRepository: SessionRepository,
   adapter: oidc.AdapterConstructor | oidc.AdapterFactory,
+  cookieKeys: string[],
   keyStore?: oidc.CustomKeyStore,
 ) {
   const provider = new Provider(issuer, {
@@ -54,6 +55,9 @@ export function createProvider(
       IdToken: 60,
       Interaction: 5 * 60,
       Session: 5 * 60,
+    },
+    cookies: {
+      keys: cookieKeys,
     },
   });
   // Configure the OIDC provider to trust the X-Forwarded-* headers.
