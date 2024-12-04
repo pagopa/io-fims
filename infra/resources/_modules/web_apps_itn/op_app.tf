@@ -64,11 +64,25 @@ resource "azurerm_role_assignment" "key_vault_op_app" {
   principal_id         = module.op_app.app_service.app_service.principal_id
 }
 
+resource "azurerm_role_assignment" "key_vault_op_app_slot" {
+  for_each             = toset(["Key Vault Secrets User", "Key Vault Crypto User"])
+  scope                = var.key_vault.id
+  role_definition_name = each.key
+  principal_id         = module.op_app.app_service.app_service.slot.principal_id
+}
+
 resource "azurerm_role_assignment" "storage_op_app" {
   for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Message Sender"])
   scope                = var.storage.id
   role_definition_name = each.key
   principal_id         = module.op_app.app_service.app_service.principal_id
+}
+
+resource "azurerm_role_assignment" "storage_op_app_slot" {
+  for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Message Sender"])
+  scope                = var.storage.id
+  role_definition_name = each.key
+  principal_id         = module.op_app.app_service.app_service.slot.principal_id
 }
 
 resource "azurerm_redis_cache_access_policy_assignment" "op_app" {
@@ -79,10 +93,26 @@ resource "azurerm_redis_cache_access_policy_assignment" "op_app" {
   object_id_alias    = "ServicePrincipal"
 }
 
+resource "azurerm_redis_cache_access_policy_assignment" "op_app_slot" {
+  name               = "op-slot"
+  redis_cache_id     = var.redis_cache.id
+  access_policy_name = "Data Contributor"
+  object_id          = module.op_app.app_service.app_service.slot.principal_id
+  object_id_alias    = "ServicePrincipal"
+}
+
 resource "azurerm_cosmosdb_sql_role_assignment" "op_app" {
   resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
   account_name        = data.azurerm_cosmosdb_account.fims.name
   role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
   principal_id        = module.op_app.app_service.app_service.principal_id
+  scope               = data.azurerm_cosmosdb_account.fims.id
+}
+
+resource "azurerm_cosmosdb_sql_role_assignment" "op_app_slot" {
+  resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.fims.name
+  role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
+  principal_id        = module.op_app.app_service.app_service.slot.principal_id
   scope               = data.azurerm_cosmosdb_account.fims.id
 }
