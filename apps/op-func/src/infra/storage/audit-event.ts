@@ -70,7 +70,8 @@ export class BlobAuditEventRepository implements AuditEventRepository {
       );
       return content;
     } catch (error) {
-      throw new Error("Error creating new blob", {
+      const detail = error instanceof Error ? error.message : "Unknown";
+      throw new Error(`Error creating new blob: ${detail}`, {
         cause: error,
       });
     }
