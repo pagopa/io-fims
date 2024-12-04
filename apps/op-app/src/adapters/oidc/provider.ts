@@ -23,6 +23,9 @@ export function createProvider(
     adapter,
     claims: oidcClaims,
     clientAuthMethods: ["client_secret_basic"],
+    cookies: {
+      keys: cookieKeys,
+    },
     extraClientMetadata: {
       properties: ["redirect_display_names"],
     },
@@ -55,9 +58,6 @@ export function createProvider(
       IdToken: 60,
       Interaction: 5 * 60,
       Session: 5 * 60,
-    },
-    cookies: {
-      keys: cookieKeys,
     },
   });
   // Configure the OIDC provider to trust the X-Forwarded-* headers.

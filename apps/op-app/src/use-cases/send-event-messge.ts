@@ -22,9 +22,7 @@ import {
 import { EventEmitter } from "io-fims-common/domain/event-emitter";
 import * as jose from "jose";
 import * as assert from "node:assert/strict";
-
 import * as crypto from "node:crypto";
-
 import { z } from "zod";
 
 const auditEventParamsSchema = z.discriminatedUnion("type", [
