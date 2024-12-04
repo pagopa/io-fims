@@ -29,7 +29,7 @@ module "op_func" {
 
   resource_group_name = var.resource_group_name
 
-  health_check_path = local.op_func.common_app_settings.WEBSITE_WARMUP_PATH
+  health_check_path = local.op_func.common_app_settings.WEBSITE_SWAP_WARMUP_PING_PATH
 
   application_insights_connection_string = var.application_insights.connection_string
 
