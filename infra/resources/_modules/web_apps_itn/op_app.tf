@@ -17,6 +17,7 @@ locals {
       AUDIT_EVENT_QUEUE_URL    = "${data.azurerm_storage_account.fims.primary_queue_endpoint}${var.storage.queues.audit_events.name}"
       KEY_VAULT_URL            = var.key_vault.vault_uri
       KEY_VAULT_KEY_NAME       = "op-app-key"
+      COOKIE_KEY               = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-app-cookie-secret)"
     }
   }
 }
