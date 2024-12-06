@@ -5,6 +5,7 @@ export const envSchema = nodeEnvSchema.and(cosmosEnvSchema).and(
   z.object({
     ACCESS_QUEUE_URL: z.string().min(1),
     AUDIT_EVENT_QUEUE_URL: z.string().url(),
+    COOKIE_KEY: z.string().min(1),
     KEY_VAULT_KEY_NAME: z.string().min(1),
     KEY_VAULT_URL: z.string().url(),
     LOLLIPOP_API_KEY: z.string().min(1),

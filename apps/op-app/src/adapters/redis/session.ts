@@ -27,10 +27,9 @@ export default class RedisSessionRepository implements SessionRepository {
   }
 
   async upsert(session: Session) {
-    const result = await this.#client.HSET(
-      this.#key(session.id),
-      session.userMetadata,
-    );
+    const key = this.#key(session.id);
+    const result = await this.#client.HSET(key, session.userMetadata);
+    await this.#client.EXPIRE(key, 60 * 5); // 5 minutes
     assert.equal(result, Object.keys(session.userMetadata).length);
   }
 }

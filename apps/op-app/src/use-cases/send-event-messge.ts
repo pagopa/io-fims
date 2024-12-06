@@ -22,6 +22,7 @@ import {
 import { EventEmitter } from "io-fims-common/domain/event-emitter";
 import * as jose from "jose";
 import * as assert from "node:assert/strict";
+import * as crypto from "node:crypto";
 import { z } from "zod";
 
 const auditEventParamsSchema = z.discriminatedUnion("type", [
@@ -131,7 +132,9 @@ export class SendEventMessageUseCase {
       `The session with sessionId ${sessionId} is not present`,
     );
 
-    const blobName = `${userData.fiscalCode}_${requestParams.client_id}_${sessionId}.json`;
+    // Generate a random string to avoid collisions in the same session
+    const random = crypto.randomBytes(5).toString("hex");
+    const blobName = `${userData.fiscalCode}_${requestParams.client_id}_${sessionId}_${random}.json`;
 
     const auditEventSession = auditEventSessionSchema.parse({
       blobName,

@@ -38,6 +38,7 @@ export default class RedisEventRepository implements EventRepository {
     const result = await this.#client.SET(
       this.#key(event.clientId, event.fiscalCode),
       event.blobName,
+      { EX: 60 * 5 }, // 5 minutes
     );
     assert.equal(result, "OK");
   }

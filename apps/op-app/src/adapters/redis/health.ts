@@ -17,6 +17,6 @@ export default class RedisHealthChecker implements HealthChecker {
   }
 
   async health() {
-    await this.#client.INCR("health");
+    await this.#client.ping();
   }
 }

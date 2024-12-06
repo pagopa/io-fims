@@ -1,7 +1,7 @@
 locals {
   user_func = {
     common_app_settings = {
-      WEBSITE_WARMUP_PATH               = "/api/v1/fims/health"
+      WEBSITE_SWAP_WARMUP_PING_PATH     = "/api/v1/fims/health"
       WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
       COSMOS_ENDPOINT                   = data.azurerm_cosmosdb_account.fims.endpoint
       COSMOS_DBNAME                     = data.azurerm_cosmosdb_sql_database.fims_user.name,
@@ -25,7 +25,7 @@ module "user_func" {
 
   resource_group_name = var.resource_group_name
 
-  health_check_path = local.user_func.common_app_settings.WEBSITE_WARMUP_PATH
+  health_check_path = local.user_func.common_app_settings.WEBSITE_SWAP_WARMUP_PING_PATH
 
   application_insights_connection_string = var.application_insights.connection_string
 

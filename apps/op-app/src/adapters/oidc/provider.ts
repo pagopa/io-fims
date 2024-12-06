@@ -16,12 +16,16 @@ export function createProvider(
   issuer: string,
   sessionRepository: SessionRepository,
   adapter: oidc.AdapterConstructor | oidc.AdapterFactory,
+  cookieKeys: string[],
   keyStore?: oidc.CustomKeyStore,
 ) {
   const provider = new Provider(issuer, {
     adapter,
     claims: oidcClaims,
     clientAuthMethods: ["client_secret_basic"],
+    cookies: {
+      keys: cookieKeys,
+    },
     extraClientMetadata: {
       properties: ["redirect_display_names"],
     },

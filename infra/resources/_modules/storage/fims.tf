@@ -55,3 +55,8 @@ resource "azurerm_storage_queue" "audit_events" {
   name                 = "audit-events"
   storage_account_name = module.storage_account_fims.name
 }
+
+resource "azurerm_storage_queue" "audit_events_poison" {
+  name                 = "${azurerm_storage_queue.audit_events.name}-poison"
+  storage_account_name = module.storage_account_fims.name
+}

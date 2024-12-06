@@ -38,6 +38,8 @@ const eventEmitter = {
 
 const health = new HealthUseCase([]);
 
+const cookieKeys = ["test1"];
+
 const createClient = (): ClientMetadata => ({
   client_id: ulid(),
   client_id_issued_at: 1715695157510,
@@ -292,6 +294,7 @@ describe("Consent screen", () => {
         "http://localhost",
         sessionRepository,
         adapter,
+        cookieKeys,
       );
 
       const login = new LoginUseCase({
@@ -353,6 +356,7 @@ describe("Consent screen", () => {
       "http://localhost",
       sessionRepository,
       adapter,
+      cookieKeys,
     );
 
     const login = new LoginUseCase({
@@ -426,6 +430,7 @@ describe("Login", () => {
         "http://localhost",
         sessionRepository,
         adapter,
+        cookieKeys,
       );
 
       const login = new LoginUseCase({
@@ -467,6 +472,7 @@ describe("Login", () => {
         "http://localhost",
         sessionRepository,
         adapter,
+        cookieKeys,
       );
 
       const login = new LoginUseCase({
@@ -516,6 +522,7 @@ describe("Consent", () => {
       "http://localhost",
       sessionRepository,
       adapter,
+      cookieKeys,
     );
 
     const login = new LoginUseCase({
@@ -570,6 +577,7 @@ describe("Abort", () => {
       "http://localhost",
       sessionRepository,
       adapter,
+      cookieKeys,
     );
 
     const login = new LoginUseCase({
@@ -647,6 +655,7 @@ test.each<OIDCFlow>(["implicit", "authorization_code"])(
       "http://localhost",
       sessionRepository,
       adapter,
+      cookieKeys,
     );
 
     const login = new LoginUseCase({
@@ -755,6 +764,7 @@ describe("Authentication Error Response", () => {
         "http://localhost",
         sessionRepository,
         adapter,
+        cookieKeys,
       );
 
       const login = new LoginUseCase({
@@ -798,6 +808,7 @@ describe("Authentication Error Response", () => {
         "http://localhost",
         sessionRepository,
         adapter,
+        cookieKeys,
       );
 
       const login = new LoginUseCase({
@@ -844,6 +855,7 @@ describe("Authentication Error Response", () => {
         "http://localhost",
         sessionRepository,
         adapter,
+        cookieKeys,
       );
 
       const login = new LoginUseCase({
@@ -895,6 +907,7 @@ describe("Authentication Error Response", () => {
         "http://localhost",
         sessionRepository,
         adapter,
+        cookieKeys,
       );
 
       const login = new LoginUseCase({
