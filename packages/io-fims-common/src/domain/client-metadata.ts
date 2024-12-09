@@ -13,6 +13,7 @@ const clientMetadataSchema = z
     client_id_issued_at: z.number(),
     client_secret: z.string().min(1),
     grant_types: z.array(z.enum(["implicit", "authorization_code"])),
+    is_internal: z.boolean(),
     redirect_display_names: z.record(
       z.intersection(
         z.record(z.string()),
@@ -48,6 +49,7 @@ const clientMetadataFromConfig = (
       client_id_issued_at,
       client_secret,
       grant_types: ["authorization_code"],
+      is_internal: false,
       redirect_display_names: config.callbacks.reduce(
         (redirectDisplayNames, { displayName, uri }) => ({
           ...redirectDisplayNames,

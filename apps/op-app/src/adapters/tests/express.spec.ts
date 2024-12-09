@@ -40,11 +40,12 @@ const health = new HealthUseCase([]);
 
 const cookieKeys = ["test1"];
 
-const createClient = (): ClientMetadata => ({
+const createClient = (internal = false): ClientMetadata => ({
   client_id: ulid(),
   client_id_issued_at: 1715695157510,
   client_secret: "my-secret",
   grant_types: ["authorization_code", "implicit"],
+  is_internal: internal,
   redirect_display_names: {
     "https://rp.localhost": {
       en: "Manage your appointments",
@@ -156,9 +157,10 @@ async function authenticationRequest(
   agent: Agent,
   responseType: string,
   scopes: Scope[],
+  internal = false,
 ) {
   // create and register a new client
-  const client = createClient();
+  const client = createClient(internal);
   store.set(`Client:${client.client_id}`, client);
 
   // this state is unique to the entire transaction
@@ -263,6 +265,7 @@ const responseTypeFromFlow = (flow: OIDCFlow): "code" | "id_token" => {
   }
 };
 
+/* eslint-disable max-lines-per-function */
 describe("Consent screen", () => {
   test.each<{
     flow: OIDCFlow;
@@ -422,7 +425,59 @@ describe("Consent screen", () => {
       expect(consent.data.user_metadata).toStrictEqual(expected.user_metadata);
     }
   });
+
+  test.each([false, true])(
+    "Consent screen by internal status",
+    async (internal) => {
+      const user = createUserMetadata();
+      store.set(`user-metadata:${user.token}`, user.metadata);
+
+      const provider = createProvider(
+        "http://localhost",
+        sessionRepository,
+        adapter,
+        cookieKeys,
+      );
+
+      const login = new LoginUseCase({
+        identityProvider,
+        sessionRepository,
+      });
+
+      const eventUseCase = new SendEventMessageUseCase(
+        sessionRepository,
+        eventRepository,
+        eventEmitter,
+      );
+
+      const logAccess = new LogAccessUseCase(sessionRepository, eventEmitter);
+
+      const app = createApplication(
+        provider,
+        login,
+        eventUseCase,
+        logAccess,
+        health,
+        logger,
+      );
+
+      // setup agent with _io_fims_token
+      const agent = request.agent(app).set({
+        Cookie: `_io_fims_token=${user.token}`,
+      });
+
+      const { response } = await authenticationRequest(
+        agent,
+        "id_token",
+        ["openid"],
+        internal,
+      );
+
+      expect(response.status).toBe(internal ? 303 : 200);
+    },
+  );
 });
+/* eslint-enable max-lines-per-function */
 describe("Login", () => {
   describe("Recoverable errors", () => {
     test("500 error on login error", async () => {
