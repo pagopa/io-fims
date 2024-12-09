@@ -27,7 +27,7 @@ export function createProvider(
       keys: cookieKeys,
     },
     extraClientMetadata: {
-      properties: ["redirect_display_names"],
+      properties: ["redirect_display_names", "is_internal"],
     },
     features: {
       customKeyStore: {
