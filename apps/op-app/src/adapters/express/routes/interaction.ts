@@ -7,6 +7,7 @@ import { SendEventMessageUseCase } from "@/use-cases/send-event-messge.js";
 import * as express from "express";
 import { requestParamsSchema } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
+import { Logger } from "pino";
 import { z } from "zod";
 
 import { schemas } from "../api-models.js";
@@ -27,6 +28,8 @@ const consentSchema = z.object({
     accountId: z.string().ulid(),
   }),
 });
+
+type Consent = z.infer<typeof consentSchema>;
 
 const redirectDisplayNamesSchema = (redirectUri: string) =>
   z.object({
@@ -54,6 +57,44 @@ export const parseRedirectDisplayName = (
     return redirectDisplayName[locale];
   }
   return redirectDisplayName.it;
+};
+
+const confirmConsent = async (
+  oidcProvider: Provider,
+  consent: Consent,
+  logAccess: LogAccessUseCase,
+  logger: Logger,
+): Promise<string> => {
+  const grant = new oidcProvider.Grant({
+    accountId: consent.session.accountId,
+    clientId: consent.params.client_id,
+  });
+
+  consent.prompt.details.missingOIDCScope.forEach((scope) => {
+    grant.addOIDCScope(scope);
+  });
+
+  const grantId = await grant.save();
+  logger.debug({ grantId }, "grant saved");
+
+  const client = await oidcProvider.Client.find(consent.params.client_id);
+  assert.ok(client, new HttpError("Client not found"));
+
+  logger.debug(client, "client retrieved from oidc provided");
+
+  const redirectDisplayNames = redirectDisplayNamesSchema(
+    consent.params.redirect_uri,
+  ).parse(client["redirect_display_names"]);
+
+  await logAccess.execute(
+    consent.session.accountId,
+    {
+      client_id: consent.params.client_id,
+      redirect_display_names: redirectDisplayNames,
+    },
+    consent.params.redirect_uri,
+  );
+  return grantId;
 };
 
 /* eslint-disable max-lines-per-function */
@@ -100,6 +141,21 @@ export default function createInteractionRouter(
       assert.ok(client !== undefined, new HttpError("Client not found"));
 
       req.log.debug(client, "client retrieved from oidc provided");
+
+      if (Object.hasOwn(client, "is_internal") && client["is_internal"]) {
+        const grantId = await confirmConsent(
+          oidcProvider,
+          consent,
+          logAccess,
+          req.log,
+        );
+
+        return await oidcProvider.interactionFinished(req, res, {
+          consent: {
+            grantId,
+          },
+        });
+      }
 
       const locale = req.getLocale();
 
@@ -218,35 +274,16 @@ export default function createInteractionRouter(
   router[method]("/interaction/:uid/consent", async (req, res, next) => {
     try {
       req.log.debug("consent route");
+
       const interaction = await oidcProvider.interactionDetails(req, res);
       const consent = consentSchema.parse(interaction);
       req.log.debug({ consent }, "interaction parsed to consent type");
-      const grant = new oidcProvider.Grant({
-        accountId: consent.session.accountId,
-        clientId: consent.params.client_id,
-      });
-      consent.prompt.details.missingOIDCScope.forEach((scope) => {
-        grant.addOIDCScope(scope);
-      });
-      const grantId = await grant.save();
-      req.log.debug({ grantId }, "grant saved");
 
-      const client = await oidcProvider.Client.find(consent.params.client_id);
-      assert.ok(client, new HttpError("Client not found"));
-
-      req.log.debug(client, "client retrieved from oidc provided");
-
-      const redirectDisplayNames = redirectDisplayNamesSchema(
-        consent.params.redirect_uri,
-      ).parse(client["redirect_display_names"]);
-
-      await logAccess.execute(
-        consent.session.accountId,
-        {
-          client_id: consent.params.client_id,
-          redirect_display_names: redirectDisplayNames,
-        },
-        consent.params.redirect_uri,
+      const grantId = await confirmConsent(
+        oidcProvider,
+        consent,
+        logAccess,
+        req.log,
       );
 
       return await oidcProvider.interactionFinished(req, res, {
