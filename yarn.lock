@@ -1815,29 +1815,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/handler-kit-azure-func@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "@pagopa/handler-kit-azure-func@npm:2.0.3"
+"@pagopa/handler-kit-azure-func@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@pagopa/handler-kit-azure-func@npm:2.0.7"
   dependencies:
     "@azure/functions": "npm:^4.0.1"
     "@pagopa/handler-kit": "npm:^1.0.1"
     "@pagopa/logger": "npm:^1.0.1"
     fp-ts: "npm:^2.13.1"
     io-ts: "npm:^2.2.20"
-  checksum: 10c0/31ec5646f7243e05c288c3c7e885b576e064d42a26c91a24c404ffda5a183f5b49c63f2ff58c5356b77298252ae17ee8652d2aee4cc3b7b79a7d5270009cbcbd
-  languageName: node
-  linkType: hard
-
-"@pagopa/handler-kit-azure-func@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "@pagopa/handler-kit-azure-func@npm:2.0.4"
-  dependencies:
-    "@azure/functions": "npm:^4.0.1"
-    "@pagopa/handler-kit": "npm:^1.0.1"
-    "@pagopa/logger": "npm:^1.0.1"
-    fp-ts: "npm:^2.13.1"
-    io-ts: "npm:^2.2.20"
-  checksum: 10c0/440de4a81881c254be277a1d4e5ef109987ea0334b35bc809c16a44c4d6af3051ee4f67e66d427fc8acbe233d762a020165eeedf19a906bfb6446b8174c757f8
+  checksum: 10c0/0f1a2f193b2d108d02a46707561ddf8106b901062baef68f36851279848d0c4a82d2d2e17eb2b15683c8312c7bdbbf240420eb36f2014de89b25522f8932fa8e
   languageName: node
   linkType: hard
 
@@ -1855,21 +1842,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-app-email-templates@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "@pagopa/io-app-email-templates@npm:0.2.0"
+"@pagopa/io-app-email-templates@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "@pagopa/io-app-email-templates@npm:0.2.4"
   dependencies:
     "@pagopa/ts-commons": "npm:^13.0.0"
     fp-ts: "npm:^2.16.5"
     io-ts: "npm:^2.2.21"
     moment-timezone: "npm:^0.5.45"
-  checksum: 10c0/e8bd65b7fcda565be04ec8a95787a6736e250e85d667a37b0755997ad7a28f7e12331b5ae85258061cfd29979b8c99a3c5a5c6c104deca9bf928821ce6797271
+  checksum: 10c0/e426b370591578463c91dc828a4f50ea832a1020d07f53cdb6fd95dfa4a5871febe7b2d9bfceccf76bace2dfc01be2b481cd64974d0de0923134cc2bd065092a
   languageName: node
   linkType: hard
 
-"@pagopa/io-functions-commons@npm:^29.2.0":
-  version: 29.2.0
-  resolution: "@pagopa/io-functions-commons@npm:29.2.0"
+"@pagopa/io-functions-commons@npm:^29.3.0":
+  version: 29.3.0
+  resolution: "@pagopa/io-functions-commons@npm:29.3.0"
   dependencies:
     "@azure/cosmos": "npm:^4.0.0"
     "@azure/data-tables": "npm:^13.2.2"
@@ -1896,7 +1883,7 @@ __metadata:
     express: ^4.15.3
     fp-ts: ^2.16.5
     io-ts: ^2.2.21
-  checksum: 10c0/21a76efa4f9e7de736fc76564fda058fd55cf3f34bf6c5439186ec14dc5d8d1ea72fecadb7f6aab778fe49df89fa1867a919052cef547f5c78bd1cca8f3f354a
+  checksum: 10c0/530469426afcf671d47d44310dd04c65efeb66ca067dd80e61f67f349ac60e18764c1be2d6e009f551df7fd29eb10c236ea7fef78ae3c3847fa6073f377a38fb
   languageName: node
   linkType: hard
 
@@ -1951,7 +1938,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/ts-commons@npm:^13.0.0, @pagopa/ts-commons@npm:^13.1.1":
+"@pagopa/ts-commons@npm:^13.0.0, @pagopa/ts-commons@npm:^13.1.1, @pagopa/ts-commons@npm:^13.1.2":
   version: 13.1.2
   resolution: "@pagopa/ts-commons@npm:13.1.2"
   dependencies:
@@ -1969,27 +1956,6 @@ __metadata:
     fp-ts: ^2.16.5
     io-ts: ^2.2.21
   checksum: 10c0/1152c604bcb04d2b4557feb214b79fa643a387cc1ba0a967e9e2071694b9d0af11602d4a9571ff2891a9ac532c30bb12da38e8269a46610d220fcde953dcf093
-  languageName: node
-  linkType: hard
-
-"@pagopa/ts-commons@npm:^13.1.0":
-  version: 13.1.0
-  resolution: "@pagopa/ts-commons@npm:13.1.0"
-  dependencies:
-    abort-controller: "npm:^3.0.0"
-    agentkeepalive: "npm:^4.1.4"
-    applicationinsights: "npm:^2.9.5"
-    jose: "npm:^4.15.5"
-    json-set-map: "npm:^1.1.2"
-    jsonwebtoken: "npm:^9.0.1"
-    node-fetch: "npm:^2.6.0"
-    semver: "npm:^7.5.2"
-    ulid: "npm:^2.3.0"
-    validator: "npm:^13.7.0"
-  peerDependencies:
-    fp-ts: ^2.16.5
-    io-ts: ^2.2.21
-  checksum: 10c0/a473ddcf7a2692adf284c76af717777cc78fc28e55576a56985142568a2a930302109fdd1ca2cf98dc4334755cd94a7d18dcf7816d5ed67e632db877c6315fd7
   languageName: node
   linkType: hard
 
@@ -7685,7 +7651,7 @@ __metadata:
     "@faker-js/faker": "npm:^8.4.1"
     "@pagopa/eslint-config": "npm:^4.0.1"
     "@pagopa/openapi-codegen-ts": "npm:^14.0.0"
-    "@pagopa/ts-commons": "npm:^13.1.0"
+    "@pagopa/ts-commons": "npm:^13.1.2"
     "@types/cookie-parser": "npm:^1.4.7"
     "@types/express": "npm:^4.17.21"
     "@types/i18n": "npm:^0.13.12"
@@ -7728,7 +7694,7 @@ __metadata:
     "@azure/storage-blob": "npm:^12.18.0"
     "@pagopa/eslint-config": "npm:^4.0.1"
     "@pagopa/handler-kit": "npm:^1.1.0"
-    "@pagopa/handler-kit-azure-func": "npm:^2.0.4"
+    "@pagopa/handler-kit-azure-func": "npm:^2.0.7"
     "@pagopa/logger": "npm:^1.0.1"
     "@types/node": "npm:^20.12.2"
     "@vitest/coverage-v8": "npm:^1.5.0"
@@ -8847,7 +8813,7 @@ __metadata:
     "@azure/identity": "npm:^4.1.0"
     "@pagopa/eslint-config": "npm:^4.0.1"
     "@pagopa/handler-kit": "npm:^1.1.0"
-    "@pagopa/handler-kit-azure-func": "npm:^2.0.3"
+    "@pagopa/handler-kit-azure-func": "npm:^2.0.7"
     "@pagopa/logger": "npm:^1.0.1"
     "@types/node": "npm:^20.12.2"
     "@vitest/coverage-v8": "npm:^1.5.0"
@@ -10222,11 +10188,11 @@ __metadata:
     "@azure/storage-queue": "npm:^12.24.0"
     "@pagopa/eslint-config": "npm:^4.0.1"
     "@pagopa/handler-kit": "npm:^1.1.0"
-    "@pagopa/handler-kit-azure-func": "npm:^2.0.3"
-    "@pagopa/io-app-email-templates": "npm:^0.2.0"
-    "@pagopa/io-functions-commons": "npm:^29.2.0"
+    "@pagopa/handler-kit-azure-func": "npm:^2.0.7"
+    "@pagopa/io-app-email-templates": "npm:^0.2.4"
+    "@pagopa/io-functions-commons": "npm:^29.3.0"
     "@pagopa/openapi-codegen-ts": "npm:^14.0.0"
-    "@pagopa/ts-commons": "npm:^13.1.1"
+    "@pagopa/ts-commons": "npm:^13.1.2"
     "@types/node": "npm:^20.12.7"
     "@types/nodemailer": "npm:^6.4.16"
     "@vitest/coverage-v8": "npm:^1.5.0"

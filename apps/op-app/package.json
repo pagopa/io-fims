@@ -10,7 +10,7 @@
     "@azure/keyvault-keys": "^4.9.0",
     "@azure/logger": "^1.1.2",
     "@azure/storage-queue": "^12.24.0",
-    "@pagopa/ts-commons": "^13.1.0",
+    "@pagopa/ts-commons": "^13.1.2",
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
     "fp-ts": "^2.16.6",
