@@ -6,3 +6,8 @@ export const redirectDisplayNameSchema = z.object({
   en: displayNameSchema.optional(),
   it: displayNameSchema,
 });
+
+export const redirectDisplayNamesSchema = z.record(
+  z.string().url(),
+  redirectDisplayNameSchema,
+);

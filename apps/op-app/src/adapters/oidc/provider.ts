@@ -1,8 +1,9 @@
 import { SessionRepository } from "@/domain/session.js";
 import { claims } from "@/domain/user-metadata.js";
-import { redirectDisplayNameSchema } from "io-fims-common/domain/redirect-display-name";
+import { redirectDisplayNamesSchema } from "io-fims-common/domain/redirect-display-name";
 import Provider, * as oidc from "oidc-provider";
-import { z } from "zod";
+
+import * as assert from "node:assert/strict";
 
 import { findAccount } from "./account.js";
 
@@ -37,12 +38,10 @@ export function createProvider(
           );
         }
         if (key === "redirect_display_names") {
-          const result = z
-            .record(z.string().url(), redirectDisplayNameSchema)
-            .safeParse(value);
+          const result = redirectDisplayNamesSchema.safeParse(value);
           if (!result.success) {
             throw new oidc.errors.InvalidClientMetadata(
-              "malformed redirect_display_names",
+              `malformed redirect_display_names: ${result.error.message}`,
             );
           }
         }
