@@ -3,8 +3,6 @@ import { claims } from "@/domain/user-metadata.js";
 import { redirectDisplayNamesSchema } from "io-fims-common/domain/redirect-display-name";
 import Provider, * as oidc from "oidc-provider";
 
-import * as assert from "node:assert/strict";
-
 import { findAccount } from "./account.js";
 
 const oidcClaims: oidc.Configuration["claims"] = Object.entries(claims).reduce(
