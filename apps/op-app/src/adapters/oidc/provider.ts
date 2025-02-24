@@ -1,6 +1,8 @@
 import { SessionRepository } from "@/domain/session.js";
 import { claims } from "@/domain/user-metadata.js";
+import { redirectDisplayNameSchema } from "io-fims-common/domain/redirect-display-name";
 import Provider, * as oidc from "oidc-provider";
+import { z } from "zod";
 
 import { findAccount } from "./account.js";
 
@@ -28,6 +30,23 @@ export function createProvider(
     },
     extraClientMetadata: {
       properties: ["redirect_display_names", "is_internal"],
+      validator: (_, key, value) => {
+        if (key === "is_internal" && typeof value !== "boolean") {
+          throw new oidc.errors.InvalidClientMetadata(
+            "is_internal must be a boolean",
+          );
+        }
+        if (key === "redirect_display_names") {
+          const result = z
+            .record(z.string().url(), redirectDisplayNameSchema)
+            .safeParse(value);
+          if (!result.success) {
+            throw new oidc.errors.InvalidClientMetadata(
+              "malformed redirect_display_names",
+            );
+          }
+        }
+      },
     },
     features: {
       customKeyStore: {
