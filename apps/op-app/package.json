@@ -54,7 +54,7 @@
     "@types/oidc-token-hash": "^5.0.0",
     "@types/supertest": "^6.0.2",
     "@vitest/coverage-v8": "^1.5.0",
-    "esbuild": "^0.21.5",
+    "esbuild": "^0.25.0",
     "eslint": "8.57.0",
     "pino-pretty": "^11.2.0",
     "prettier": "3.2.5",
