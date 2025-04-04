@@ -117,7 +117,7 @@ resource "azurerm_cosmosdb_sql_role_assignment" "op_app_slot" {
   scope               = data.azurerm_cosmosdb_account.fims.id
 }
 
-module "op_app__autoscaler" {
+module "op_app_autoscaler" {
   source  = "pagopa-dx/azure-app-service-plan-autoscaler/azurerm"
   version = "~> 1.0"
 
