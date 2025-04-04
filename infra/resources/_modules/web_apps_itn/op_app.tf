@@ -116,3 +116,21 @@ resource "azurerm_cosmosdb_sql_role_assignment" "op_app_slot" {
   principal_id        = module.op_app.app_service.app_service.slot.principal_id
   scope               = data.azurerm_cosmosdb_account.fims.id
 }
+
+module "op_app_autoscaler" {
+  source  = "pagopa-dx/azure-app-service-plan-autoscaler/azurerm"
+  version = "~> 1.0"
+
+  resource_group_name = var.resource_group_name
+  location            = var.environment.location
+
+  app_service_plan_id = module.op_app.app_service.plan.id
+
+  target_service = {
+    app_service = {
+      id = module.op_app.app_service.app_service.id
+    }
+  }
+
+  tags = var.tags
+}

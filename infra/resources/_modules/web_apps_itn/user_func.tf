@@ -72,3 +72,21 @@ resource "azurerm_role_assignment" "key_vault_user_func" {
   role_definition_name = "Key Vault Secrets User"
   principal_id         = module.user_func.function_app.function_app.principal_id
 }
+
+module "user_autoscaler" {
+  source  = "pagopa-dx/azure-app-service-plan-autoscaler/azurerm"
+  version = "~> 1.0"
+
+  resource_group_name = var.resource_group_name
+  location            = var.environment.location
+
+  app_service_plan_id = module.user_func.function_app.plan.id
+
+  target_service = {
+    function_app = {
+      id = module.user_func.function_app.function_app.id
+    }
+  }
+
+  tags = var.tags
+}
