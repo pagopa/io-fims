@@ -18,10 +18,11 @@ locals {
   project_legacy        = "${local.prefix}-${local.env_short}-${local.domain}" # example: io-p-fims
 
   tags = {
-    CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-    CreatedBy   = "Terraform"
-    Environment = "Prod"
-    Owner       = "IO Comunicazione"
-    Source      = "https://github.com/pagopa/io-fims/blob/main/infra/prod/westeurope"
+    CostCenter     = "TS000 - Tecnologia e Servizi"
+    CreatedBy      = "Terraform"
+    Environment    = "Prod"
+    BusinessUnit   = "App IO"
+    ManagementTeam = "IO Comunicazione"
+    Source         = "https://github.com/pagopa/io-messages/blob/main/infra/resources/prod"
   }
 }
