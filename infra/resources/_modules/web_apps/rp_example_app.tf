@@ -24,15 +24,8 @@ module "rp_example" {
 
   health_check_path = "/health"
 
-  app_settings = merge(local.rp_example.common_app_settings, {
-    NODE_ENVIRONMENT = "production"
-  })
-
-  slot_app_settings = merge(local.rp_example.common_app_settings, {
-    NODE_ENVIRONMENT = "staging"
-  })
-
-  sticky_app_setting_names = ["NODE_ENVIRONMENT"]
+  app_settings      = local.rp_example.common_app_settings
+  slot_app_settings = local.rp_example.common_app_settings
 
   tags = var.tags
 }
