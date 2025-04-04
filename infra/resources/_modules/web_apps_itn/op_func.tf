@@ -84,7 +84,7 @@ module "op_func_autoscaler" {
 
   target_service = {
     function_app = {
-      name = module.op_func.function_app.function_app.name
+      id = module.op_func.function_app.function_app.id
     }
   }
 

@@ -128,7 +128,7 @@ module "op_app_autoscaler" {
 
   target_service = {
     app_service = {
-      name = module.op_app.app_service.app_service.name
+      id = module.op_app.app_service.app_service.id
     }
   }
 

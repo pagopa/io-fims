@@ -84,7 +84,7 @@ module "user_autoscaler" {
 
   target_service = {
     function_app = {
-      name = module.user_func.function_app.function_app.name
+      id = module.user_func.function_app.function_app.id
     }
   }
 
