@@ -80,7 +80,7 @@ module "user_autoscaler" {
   resource_group_name = var.resource_group_name
   location            = var.environment.location
 
-  app_service_plan_id = module.user_func.app_service.plan.id
+  app_service_plan_id = module.user_func.function_app.plan.id
 
   target_service = {
     function_app = {
