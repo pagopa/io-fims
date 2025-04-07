@@ -1,45 +1,73 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
-      "dependsOn": ["^build", "^typecheck"],
-      "inputs": ["src/**/*.ts"],
-      "outputs": ["dist/**"],
-      "outputMode": "errors-only"
+      "dependsOn": [
+        "^build",
+        "^typecheck"
+      ],
+      "inputs": [
+        "src/**/*.ts"
+      ],
+      "outputs": [
+        "dist/**"
+      ],
+      "outputLogs": "errors-only"
     },
     "lint": {
-      "inputs": ["src/**/*.ts"],
-      "outputMode": "errors-only"
+      "inputs": [
+        "src/**/*.ts"
+      ],
+      "outputLogs": "errors-only"
     },
     "lint:check": {
-      "inputs": ["src/**/*.ts"],
-      "outputMode": "errors-only"
+      "inputs": [
+        "src/**/*.ts"
+      ],
+      "outputLogs": "errors-only"
     },
     "test": {
-      "dependsOn": ["^test"],
-      "inputs": ["src/**/*.spec.ts"],
-      "outputMode": "errors-only"
+      "dependsOn": [
+        "^test"
+      ],
+      "inputs": [
+        "src/**/*.spec.ts"
+      ],
+      "outputLogs": "errors-only"
     },
     "test:coverage": {
-      "dependsOn": ["^test"],
-      "inputs": ["src/**/*.spec.ts"],
-      "outputMode": "errors-only"
+      "dependsOn": [
+        "^test"
+      ],
+      "inputs": [
+        "src/**/*.spec.ts"
+      ],
+      "outputLogs": "errors-only"
     },
     "format": {
-      "outputMode": "errors-only"
+      "outputLogs": "errors-only"
     },
     "format:check": {
-      "outputMode": "errors-only"
+      "outputLogs": "errors-only"
     },
     "typecheck": {
-      "dependsOn": ["^build"],
-      "inputs": ["src/**/*.ts"],
-      "outputMode": "errors-only"
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "src/**/*.ts"
+      ],
+      "outputLogs": "errors-only"
     },
     "//#test:coverage": {
-      "inputs": ["apps/**/src/**/*.ts", "packages/**/src/**/*.ts"],
-      "outputs": ["coverage"],
-      "outputMode": "errors-only"
+      "inputs": [
+        "apps/**/src/**/*.ts",
+        "packages/**/src/**/*.ts"
+      ],
+      "outputs": [
+        "coverage"
+      ],
+      "outputLogs": "errors-only"
     }
   }
 }
