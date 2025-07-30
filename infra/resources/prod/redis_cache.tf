@@ -53,7 +53,6 @@ resource "azurerm_private_endpoint" "fims_redis_pep_itn" {
   name = provider::dx::resource_name({
     prefix          = local.prefix
     name            = "fims",
-    domain          = local.domain,
     resource_type   = "private_endpoint",
     environment     = local.env_short,
     location        = local.location
