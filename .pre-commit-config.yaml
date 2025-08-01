@@ -8,3 +8,6 @@ repos:
         args:
           - --args=-json
           - --args=-no-color
+      - id: lock_modules
+        exclude: ^.*/(_modules|modules|\.terraform)(/.*)?$
+        files: infra/(resources/prod|repository)
