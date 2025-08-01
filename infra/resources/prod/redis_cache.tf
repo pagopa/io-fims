@@ -34,7 +34,7 @@ resource "azurerm_redis_cache" "fims_redis_itn" {
 
   capacity            = 2
   family              = "C"
-  sku_name            = "Basic"
+  sku_name            = "Standard"
   minimum_tls_version = "1.2"
 
   identity {
