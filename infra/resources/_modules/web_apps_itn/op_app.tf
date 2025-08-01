@@ -5,8 +5,8 @@ locals {
       WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
       COSMOS_ENDPOINT                   = data.azurerm_cosmosdb_account.fims.endpoint
       COSMOS_DBNAME                     = data.azurerm_cosmosdb_sql_database.fims_op.name
-      REDIS_URL                         = "rediss://${var.redis_cache.hostname}:${var.redis_cache.ssl_port}"
-      REDIS_PASSWORD                    = var.redis_cache.primary_access_key
+      REDIS_URL                         = var.redis_cache.url
+      REDIS_PASSWORD                    = var.redis_cache.access_key
       # https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-best-practices-connection#idle-timeout
       REDIS_PING_INTERVAL      = 1000 * 60 * 9
       OIDC_ISSUER              = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-app-base-url)"
