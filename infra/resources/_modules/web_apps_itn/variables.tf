@@ -87,10 +87,9 @@ variable "audit_storage" {
 
 variable "redis_cache" {
   type = object({
-    id                 = string
-    hostname           = string
-    primary_access_key = string
-    ssl_port           = string
+    id         = string
+    url        = string
+    access_key = string
   })
 }
 
