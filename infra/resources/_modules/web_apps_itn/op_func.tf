@@ -15,7 +15,7 @@ locals {
 }
 
 module "op_func" {
-  source = "git::https://github.com/pagopa/dx.git//infra/modules/azure_function_app?ref=3ea69edffbc18a677f2bf7ab8f2e886ec92b7c49"
+  source = "git::https://github.com/pagopa/dx.git//infra/modules/azure_function_app?ref=b3254c7da4b140070093c4af379b1d3670e4a3c2"
 
   environment = merge(var.environment, {
     app_name        = "op",
