@@ -21,6 +21,11 @@ data "azurerm_subnet" "pendpoints" {
   resource_group_name  = "${local.common_project}-rg-common"
 }
 
+data "azurerm_private_dns_zone" "privatelink_redis_cache" {
+  name                = "privatelink.redis.cache.windows.net"
+  resource_group_name = "${local.common_project}-rg-common"
+}
+
 # itn
 
 data "azurerm_nat_gateway" "itn" {
@@ -38,3 +43,4 @@ data "azurerm_subnet" "itn_pep" {
   virtual_network_name = data.azurerm_virtual_network.itn_common.name
   resource_group_name  = "${local.common_project}-itn-common-rg-01"
 }
+
