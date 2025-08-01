@@ -8,6 +8,9 @@ repos:
         args:
           - --args=-json
           - --args=-no-color
+  - repo: https://github.com/pagopa/dx
+    rev: pre_commit_scripts@0.1.0
+    hooks:
       - id: lock_modules
         exclude: ^.*/(_modules|modules|\.terraform)(/.*)?$
         files: infra/(resources/prod|repository)
