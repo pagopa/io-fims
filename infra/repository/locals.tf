@@ -2,6 +2,7 @@ locals {
   prefix          = "io"
   env_short       = "p"
   location        = "italynorth"
+  location_short  = "itn"
   domain          = "fims"
   instance_number = "01"
 
@@ -36,8 +37,8 @@ locals {
   }
 
   runner = {
-    cae_name                = "${local.prefix}-${local.env_short}-github-runner-cae"
-    cae_resource_group_name = "${local.prefix}-${local.env_short}-github-runner-rg"
+    cae_name                = "${local.prefix}-${local.env_short}-${local.location_short}-github-runner-cae-01"
+    cae_resource_group_name = "${local.prefix}-${local.env_short}-${local.location_short}-github-runner-rg-01"
     secret = {
       kv_name                = "${local.prefix}-${local.env_short}-kv-common"
       kv_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
