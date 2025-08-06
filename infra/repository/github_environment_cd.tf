@@ -1,6 +1,6 @@
 resource "github_repository_environment" "github_repository_environment_prod_cd" {
   environment = "prod-cd"
-  repository  = local.repository
+  repository  = local.repository.name
 
   reviewers {
     teams = matchkeys(
@@ -19,7 +19,7 @@ resource "github_repository_environment" "github_repository_environment_prod_cd"
 resource "github_actions_environment_secret" "env_prod_cd_secrets" {
   for_each = local.cd.secrets
 
-  repository      = local.repository
+  repository      = local.repository.name
   environment     = github_repository_environment.github_repository_environment_prod_cd.environment
   secret_name     = each.key
   plaintext_value = each.value

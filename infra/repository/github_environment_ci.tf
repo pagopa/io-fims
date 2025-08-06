@@ -1,6 +1,6 @@
 resource "github_repository_environment" "github_repository_environment_prod_ci" {
   environment = "prod-ci"
-  repository  = local.repository
+  repository  = local.repository.name
 
   deployment_branch_policy {
     protected_branches     = false
@@ -11,7 +11,7 @@ resource "github_repository_environment" "github_repository_environment_prod_ci"
 resource "github_actions_environment_secret" "env_prod_ci_secrets" {
   for_each = local.ci.secrets
 
-  repository      = local.repository
+  repository      = local.repository.name
   environment     = github_repository_environment.github_repository_environment_prod_ci.environment
   secret_name     = each.key
   plaintext_value = each.value

@@ -1,5 +1,5 @@
 resource "github_repository" "io_fims" {
-  name = local.repository
+  name = local.repository.name
 
   visibility = "public"
 
