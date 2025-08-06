@@ -1,10 +1,10 @@
 resource "github_branch_default" "default_main" {
-  repository = local.repository
+  repository = local.repository.name
   branch     = "main"
 }
 
 resource "github_branch_protection" "protection_main" {
-  repository_id = local.repository
+  repository_id = local.repository.name
   pattern       = "main"
 
   required_status_checks {
