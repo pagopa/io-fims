@@ -12,7 +12,7 @@ relying-party:
 
 relying-party-example:
   - changed-files:
-      - any-glob-to-any-file: ["apps/openid-rp-example-app/**"]
+      - any-glob-to-any-file: ["apps/rp-example-app/**"]
 
 openid-provider:
   - changed-files:
