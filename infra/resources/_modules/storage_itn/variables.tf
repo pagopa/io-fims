@@ -15,13 +15,6 @@ variable "tags" {
   type = map(any)
 }
 
-variable "virtual_network" {
-  type = object({
-    name                = string
-    resource_group_name = string
-  })
-}
-
 variable "subnet_pep_id" {
   type = string
 }

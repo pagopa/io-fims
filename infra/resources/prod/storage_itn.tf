@@ -5,8 +5,7 @@ module "storage_itn" {
   project             = local.project
   resource_group_name = module.itn_resource_group.name
 
-  virtual_network = data.azurerm_virtual_network.itn_common
-  subnet_pep_id   = data.azurerm_subnet.pendpoints.id
+  subnet_pep_id = data.azurerm_subnet.itn_pep.id
 
   environment = {
     prefix    = local.prefix
