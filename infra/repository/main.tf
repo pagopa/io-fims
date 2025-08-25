@@ -8,7 +8,7 @@ terraform {
 
     github = {
       source  = "integrations/github"
-      version = "5.45.0"
+      version = "~> 6.0"
     }
   }
 
@@ -58,7 +58,7 @@ data "azurerm_container_app_environment" "runner" {
   resource_group_name = local.runner.cae_resource_group_name
 }
 
-data "azurerm_key_vault" "common" {
+data "azurerm_key_vault" "fims_kv" {
   name                = local.key_vault.name
   resource_group_name = local.key_vault.resource_group_name
 }
@@ -133,7 +133,7 @@ module "repo" {
   opex_resource_group_id             = data.azurerm_resource_group.dashboards.id
 
   keyvault_common_ids = [
-    data.azurerm_key_vault.common.id
+    data.azurerm_key_vault.fims_kv.id
   ]
 
   tags = local.tags
