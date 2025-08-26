@@ -1,81 +1,3 @@
-terraform {
-
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.94.0"
-    }
-
-    github = {
-      source  = "integrations/github"
-      version = "~> 6.0"
-    }
-  }
-
-  backend "azurerm" {
-    resource_group_name  = "terraform-state-rg"
-    storage_account_name = "tfappprodio"
-    container_name       = "terraform-state"
-    key                  = "io-fims.repository.tfstate"
-  }
-}
-
-provider "azurerm" {
-  features {
-  }
-}
-
-provider "github" {
-  owner = "pagopa"
-}
-
-data "azurerm_client_config" "current" {}
-
-data "azurerm_subscription" "current" {}
-
-data "azurerm_resource_group" "dashboards" {
-  name = "dashboards"
-}
-
-data "azurerm_resource_group" "fims_itn_01" {
-  name = "io-p-itn-fims-rg-01"
-}
-
-data "azurerm_resource_group" "fims_weu_01" {
-  name = "io-p-weu-fims-rg-01"
-}
-
-data "azuread_group" "admins" {
-  display_name = local.adgroups.admins_name
-}
-
-data "azuread_group" "developers" {
-  display_name = local.adgroups.devs_name
-}
-
-data "azurerm_container_app_environment" "runner" {
-  name                = local.runner.cae_name
-  resource_group_name = local.runner.cae_resource_group_name
-}
-
-data "azurerm_key_vault" "fims_kv" {
-  name                = local.key_vault.name
-  resource_group_name = local.key_vault.resource_group_name
-}
-
-data "azurerm_virtual_network" "common" {
-  name                = local.vnet.name
-  resource_group_name = data.azurerm_resource_group.common_itn_01.name
-}
-
-data "azurerm_resource_group" "common_itn_01" {
-  name = local.common.itn_resource_group_name
-}
-
-data "azurerm_resource_group" "common_weu" {
-  name = local.common.weu_resource_group_name
-}
-
 module "repo" {
   source  = "pagopa-dx/azure-github-environment-bootstrap/azurerm"
   version = "~> 2.0"
@@ -89,7 +11,6 @@ module "repo" {
   }
 
   additional_resource_group_ids = [
-    data.azurerm_resource_group.fims_itn_01.id,
     data.azurerm_resource_group.fims_weu_01.id
   ]
 
