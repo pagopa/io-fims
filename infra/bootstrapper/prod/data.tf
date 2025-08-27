@@ -55,3 +55,7 @@ data "azurerm_resource_group" "common_itn_01" {
 data "azurerm_resource_group" "common_weu" {
   name = local.common.weu_resource_group_name
 }
+
+data "azurerm_resource_group" "fims" {
+  name = "io-p-fims-rg"
+}

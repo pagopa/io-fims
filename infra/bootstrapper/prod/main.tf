@@ -11,7 +11,8 @@ module "repo" {
   }
 
   additional_resource_group_ids = [
-    data.azurerm_resource_group.fims_weu_01.id
+    data.azurerm_resource_group.fims_weu_01.id,
+    data.azurerm_resource_group.fims.id
   ]
 
   subscription_id = data.azurerm_subscription.current.id
@@ -60,3 +61,22 @@ module "repo" {
   tags = local.tags
 }
 
+# Role assignments for CD identity
+# Resource group level roles for CD
+resource "azurerm_role_assignment" "cd_fims_rg_kv_admin" {
+  scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/io-p-fims-rg"
+  role_definition_name = "Key Vault Administrator"
+  principal_id         = module.repo.identities.infra.cd.principal_id
+}
+
+resource "azurerm_role_assignment" "cd_weu_fims_rg_kv_admin" {
+  scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/io-p-weu-fims-rg-01"
+  role_definition_name = "Key Vault Administrator"
+  principal_id         = module.repo.identities.infra.cd.principal_id
+}
+
+resource "azurerm_role_assignment" "cd_itn_fims_rg_kv_admin" {
+  scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/io-p-itn-fims-rg-01"
+  role_definition_name = "Key Vault Administrator"
+  principal_id         = module.repo.identities.infra.cd.principal_id
+}
