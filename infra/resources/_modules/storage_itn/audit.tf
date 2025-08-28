@@ -5,7 +5,7 @@ module "storage_account_audit_st_itn" {
   subnet_pep_id       = var.subnet_pep_id
   tags                = var.tags
   tier                = "l"
-  environment         = merge(var.environment, { location = var.location, app_name = "audit_st", domain = "fims", instance_number = "01" })
+  environment         = merge(var.environment, { location = var.location, app_name = "auditst", domain = "fims", instance_number = "01" })
   resource_group_name = var.resource_group_name
 
   subservices_enabled = {
