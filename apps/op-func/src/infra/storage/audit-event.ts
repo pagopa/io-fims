@@ -5,7 +5,6 @@ import {
 } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
 
-import { BlobNotFoundError } from "./blob-error.js";
 import { BaseContainerClientWithFallback } from "@pagopa/azure-storage-migration-kit";
 import { Readable } from "stream";
 
