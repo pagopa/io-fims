@@ -18,3 +18,11 @@ variable "common_project" {
 variable "resource_group_name" {
   type = string
 }
+
+variable "prefix" {
+  type = string
+}
+
+variable "env_short" {
+  type = string
+}

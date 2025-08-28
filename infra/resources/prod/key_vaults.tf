@@ -3,6 +3,8 @@ module "key_vaults" {
 
   resource_group_name = azurerm_resource_group.fims.name
   location            = azurerm_resource_group.fims.location
+  prefix              = local.prefix
+  env_short           = local.env_short
   project             = local.project_legacy
   common_project      = local.common_project
 

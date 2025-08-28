@@ -17,13 +17,13 @@ data "azuread_group" "adgroup_security" {
 }
 
 data "azurerm_user_assigned_identity" "managed_identity_fims_ci" {
-  name                = "${var.project}-github-ci-identity"
-  resource_group_name = local.resource_group_name_identity
+  name                = "${var.prefix}-${var.env_short}-itn-fims-infra-github-ci-id-01"
+  resource_group_name = "${var.prefix}-${var.env_short}-itn-fims-rg-01"
 }
 
 data "azurerm_user_assigned_identity" "managed_identity_fims_cd" {
-  name                = "${var.project}-github-cd-identity"
-  resource_group_name = local.resource_group_name_identity
+  name                = "${var.prefix}-${var.env_short}-itn-fims-infra-github-cd-id-01"
+  resource_group_name = "${var.prefix}-${var.env_short}-itn-fims-rg-01"
 }
 
 data "azurerm_key_vault" "common" {

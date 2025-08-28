@@ -10,10 +10,11 @@ on:
 
 jobs:
   infra_release:
-    uses: pagopa/dx/.github/workflows/infra_apply.yaml@6086d69a207f67cab1c86024c5ec66a878ad50e4
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
     name: Release Infrastructure
     secrets: inherit
     with:
       environment: prod
       base_path: infra/resources
+      override_github_environment: infra-prod
       use_private_agent: true
