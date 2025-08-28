@@ -1,5 +1,4 @@
 terraform {
-
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -8,7 +7,7 @@ terraform {
 
     github = {
       source  = "integrations/github"
-      version = "5.45.0"
+      version = "~> 6.0"
     }
   }
 
@@ -16,7 +15,7 @@ terraform {
     resource_group_name  = "terraform-state-rg"
     storage_account_name = "tfappprodio"
     container_name       = "terraform-state"
-    key                  = "io-fims.repository.tfstate"
+    key                  = "io-fims.bootstrapper.prod.tfstate"
   }
 }
 
@@ -28,7 +27,3 @@ provider "azurerm" {
 provider "github" {
   owner = "pagopa"
 }
-
-data "azurerm_client_config" "current" {}
-
-data "azurerm_subscription" "current" {}

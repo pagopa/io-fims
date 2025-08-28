@@ -32,6 +32,8 @@ resource "azurerm_redis_cache" "fims_redis_itn" {
   resource_group_name = module.itn_resource_group.name
   location            = module.itn_resource_group.location
 
+  public_network_access_enabled = false
+
   capacity            = 2
   family              = "C"
   sku_name            = "Standard"
