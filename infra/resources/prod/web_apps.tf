@@ -43,7 +43,7 @@ module "web_apps_itn" {
   key_vault            = module.key_vaults.fims
   redis_cache          = module.redis_cache.fims
   cosmosdb_account     = module.cosmos.fims
-  storage              = module.storage.fims
+  storage              = module.storage_itn.fims_itn
   audit_storage        = module.storage.audit
   application_insights = data.azurerm_application_insights.common
 }
