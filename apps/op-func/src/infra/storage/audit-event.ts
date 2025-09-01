@@ -1,11 +1,10 @@
 import { AuditEventRepository } from "@/domain/audit-event.js";
+import { BaseContainerClientWithFallback } from "@pagopa/azure-storage-migration-kit";
 import {
   AuditEvent,
   auditEventSchema,
 } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
-
-import { BaseContainerClientWithFallback } from "@pagopa/azure-storage-migration-kit";
 import { Readable } from "stream";
 
 // A helper function used to read a Node.js readable stream into a String
