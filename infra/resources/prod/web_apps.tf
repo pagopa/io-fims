@@ -13,7 +13,7 @@ module "web_apps" {
   tags = local.tags
 
   # backing services
-  key_vault = module.key_vaults.fims
+  key_vault = module.key_vaults_itn.fims
 }
 
 module "web_apps_itn" {
