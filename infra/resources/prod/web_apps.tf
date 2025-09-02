@@ -13,7 +13,7 @@ module "web_apps" {
   tags = local.tags
 
   # backing services
-  key_vault = module.key_vaults.fims
+  key_vault = module.key_vaults_itn.fims
 }
 
 module "web_apps_itn" {
@@ -40,11 +40,11 @@ module "web_apps_itn" {
   private_dns_zone_resource_group_name = "${local.common_project}-rg-common"
 
   # backing services
-  key_vault              = module.key_vaults.fims
-  redis_cache            = module.redis_cache.fims
+  key_vault              = module.key_vaults_itn.fims
+  redis_cache            = azurerm_redis_cache.fims_redis_itn
   cosmosdb_account       = module.cosmos.fims
   storage                = module.storage.fims
-  audit_storage          = module.storage_itn.audit_itn
+  audit_storage          = module.storage.audit
   audit_storage_fallback = module.storage.audit
   application_insights   = data.azurerm_application_insights.common
 }

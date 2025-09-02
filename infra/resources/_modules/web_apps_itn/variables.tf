@@ -100,9 +100,10 @@ variable "audit_storage_fallback" {
 
 variable "redis_cache" {
   type = object({
-    id         = string
-    url        = string
-    access_key = string
+    id                 = string
+    hostname           = string
+    primary_access_key = string
+    ssl_port           = string
   })
 }
 

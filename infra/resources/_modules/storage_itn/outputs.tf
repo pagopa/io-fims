@@ -22,4 +22,3 @@ output "audit_itn" {
     }
   }
 }
-
