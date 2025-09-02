@@ -36,8 +36,8 @@ locals {
   }
 
   runner = {
-    cae_name                = "${local.prefix}-${local.env_short}-github-runner-cae"
-    cae_resource_group_name = "${local.prefix}-${local.env_short}-github-runner-rg"
+    cae_name                = "${local.prefix}-${local.env_short}-itn-github-runner-cae-01"
+    cae_resource_group_name = "${local.prefix}-${local.env_short}-itn-github-runner-rg-01"
     secret = {
       kv_name                = "${local.prefix}-${local.env_short}-kv-common"
       kv_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
@@ -55,28 +55,8 @@ locals {
   }
 
   key_vault = {
-    name                = "io-p-kv-common"
-    resource_group_name = "io-p-rg-common"
-  }
-
-  ci = {
-    secrets = {
-      "ARM_CLIENT_ID" = data.azurerm_user_assigned_identity.identity_prod_ci.client_id
-    }
-  }
-
-  cd = {
-    secrets = {
-      "ARM_CLIENT_ID" = data.azurerm_user_assigned_identity.identity_prod_cd.client_id
-    }
-    reviewers_teams = ["io-communication-backend"]
-  }
-
-  app_cd = {
-    secrets = {
-      "ARM_CLIENT_ID" = data.azurerm_user_assigned_identity.identity_app_prod_cd.client_id
-    }
-    reviewers_teams = ["io-communication-backend"]
+    name                = "io-p-fims-kv"
+    resource_group_name = "io-p-fims-rg"
   }
 
   tags = {
