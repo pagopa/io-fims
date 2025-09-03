@@ -41,7 +41,7 @@ module "web_apps_itn" {
 
   # backing services
   key_vault            = module.key_vaults_itn.fims
-  redis_cache          = azurerm_redis_cache.fims_redis_itn
+  redis_cache          = azurerm_redis_cache.fims_redis
   cosmosdb_account     = module.cosmos.fims
   storage              = module.storage.fims
   audit_storage        = module.storage.audit

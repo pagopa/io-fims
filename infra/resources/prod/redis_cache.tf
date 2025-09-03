@@ -1,4 +1,4 @@
-resource "azurerm_redis_cache" "fims_redis_itn" {
+resource "azurerm_redis_cache" "fims_redis" {
 
   name = provider::dx::resource_name({
     prefix          = local.prefix
@@ -30,7 +30,7 @@ resource "azurerm_redis_cache" "fims_redis_itn" {
   tags = local.tags
 }
 
-resource "azurerm_private_endpoint" "fims_redis_pep_itn" {
+resource "azurerm_private_endpoint" "fims_redis_pep" {
 
   name = provider::dx::resource_name({
     prefix          = local.prefix
@@ -46,13 +46,13 @@ resource "azurerm_private_endpoint" "fims_redis_pep_itn" {
   subnet_id           = data.azurerm_subnet.itn_pep.id
 
   private_dns_zone_group {
-    name                 = "${azurerm_redis_cache.fims_redis_itn.name}-private-dns-zone-group"
+    name                 = "${azurerm_redis_cache.fims_redis.name}-private-dns-zone-group"
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis_cache.id]
   }
 
   private_service_connection {
-    name                           = "${azurerm_redis_cache.fims_redis_itn.name}-private-service-connection"
-    private_connection_resource_id = azurerm_redis_cache.fims_redis_itn.id
+    name                           = "${azurerm_redis_cache.fims_redis.name}-private-service-connection"
+    private_connection_resource_id = azurerm_redis_cache.fims_redis.id
     is_manual_connection           = false
     subresource_names              = ["redisCache"]
   }
