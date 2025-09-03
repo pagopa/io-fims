@@ -20,7 +20,6 @@
 |------|--------|---------|
 | <a name="module_cosmos"></a> [cosmos](#module\_cosmos) | ../_modules/cosmos | n/a |
 | <a name="module_itn_resource_group"></a> [itn\_resource\_group](#module\_itn\_resource\_group) | ../_modules/resource_group | n/a |
-| <a name="module_key_vaults"></a> [key\_vaults](#module\_key\_vaults) | ../_modules/key_vaults | n/a |
 | <a name="module_key_vaults_itn"></a> [key\_vaults\_itn](#module\_key\_vaults\_itn) | ../_modules/key_vaults_itn | n/a |
 | <a name="module_redis_cache"></a> [redis\_cache](#module\_redis\_cache) | ../_modules/redis_cache | n/a |
 | <a name="module_storage"></a> [storage](#module\_storage) | ../_modules/storage | n/a |
