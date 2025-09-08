@@ -11,3 +11,14 @@ output "fims_itn" {
     }
   }
 }
+
+output "audit_itn" {
+  value = {
+    id                  = module.storage_account_audit_st_itn.id
+    name                = module.storage_account_audit_st_itn.name
+    resource_group_name = module.storage_account_audit_st_itn.resource_group_name
+    containers = {
+      events = azurerm_storage_container.events_itn
+    }
+  }
+}
