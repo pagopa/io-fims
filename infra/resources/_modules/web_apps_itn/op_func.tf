@@ -67,7 +67,7 @@ resource "azurerm_role_assignment" "audit_event_container_op_func" {
   ])
   scope                = var.audit_storage_fallback.id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = module.op_func.function_app.function_app.principal_id
+  principal_id         = each.value
 }
 
 resource "azurerm_role_assignment" "audit_event_container_op_func_itn" {
@@ -77,7 +77,7 @@ resource "azurerm_role_assignment" "audit_event_container_op_func_itn" {
   ])
   scope                = var.audit_storage.id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = module.op_func.function_app.function_app.principal_id
+  principal_id         = each.value
 }
 
 resource "azurerm_cosmosdb_sql_role_assignment" "op_func" {
