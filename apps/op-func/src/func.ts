@@ -7,8 +7,8 @@ import {
   httpAzureFunction,
 } from "@pagopa/handler-kit-azure-func";
 import { loadConfigFromEnvironment } from "io-fims-common/adapters/config";
-import { StorageBlobHealthChecker } from "io-fims-common/adapters/storage-blob/health";
 import healthHandler from "io-fims-common/adapters/handlers/health";
+import { StorageBlobHealthChecker } from "io-fims-common/adapters/storage-blob/health";
 import { HealthUseCase } from "io-fims-common/use-cases/health";
 
 import { Config, configFromEnvironment } from "./adapters/config.js";

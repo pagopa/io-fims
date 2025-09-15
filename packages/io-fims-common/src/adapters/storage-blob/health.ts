@@ -1,4 +1,5 @@
 import type { HealthChecker } from "@/use-cases/health.js";
+
 import { BlobServiceClient } from "@azure/storage-blob";
 
 export class StorageBlobHealthChecker implements HealthChecker {
