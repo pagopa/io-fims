@@ -1,9 +1,6 @@
 import { app } from "@azure/functions";
 import { DefaultAzureCredential } from "@azure/identity";
-// temporary fix to avoid type mismatch between @azure/storage-blob adn @pagopa/azure-storage-migration-kit
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { BlobServiceClient } = require("@azure/storage-blob");
-// import { BlobServiceClient } from "@azure/storage-blob";
+import { BlobServiceClient } from "@azure/storage-blob";
 import { BlobServiceClientWithFallBack } from "@pagopa/azure-storage-migration-kit";
 import {
   azureFunction,

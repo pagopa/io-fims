@@ -24,6 +24,6 @@
     "vitest": "^1.5.0"
   },
   "resolutions": {
-    "@azure/storage-blob": "12.28.0"
+    "@azure/storage-blob": "12.24.0"
   }
 }
