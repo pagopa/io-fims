@@ -26,3 +26,8 @@ data "azurerm_storage_account" "audit" {
   name                = var.audit_storage.name
   resource_group_name = var.audit_storage.resource_group_name
 }
+
+data "azurerm_storage_account" "audit_fallback" {
+  name                = var.audit_storage_fallback.name
+  resource_group_name = var.audit_storage_fallback.resource_group_name
+}
