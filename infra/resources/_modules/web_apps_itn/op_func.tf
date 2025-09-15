@@ -39,7 +39,8 @@ module "op_func" {
   })
 
   slot_app_settings = merge(local.op_func.common_app_settings, {
-    NODE_ENV = "development"
+    NODE_ENV                               = "development",
+    AzureWebJobs.ManageAuditEvent.Disabled = "1",
   })
 
   sticky_app_setting_names = ["NODE_ENV"]
