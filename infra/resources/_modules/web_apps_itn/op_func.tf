@@ -39,11 +39,11 @@ module "op_func" {
   })
 
   slot_app_settings = merge(local.op_func.common_app_settings, {
-    NODE_ENV                               = "development",
-    AzureWebJobs.ManageAuditEvent.Disabled = "1",
+    NODE_ENV                                 = "development",
+    "AzureWebJobs.ManageAuditEvent.Disabled" = "1",
   })
 
-  sticky_app_setting_names = ["NODE_ENV"]
+  sticky_app_setting_names = ["NODE_ENV", "AzureWebJobs.ManageAuditEvent.Disabled"]
 
   private_dns_zone_resource_group_name = var.private_dns_zone_resource_group_name
   virtual_network                      = var.virtual_network
