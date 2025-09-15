@@ -29,8 +29,11 @@ async function main(config: Config) {
   );
 
   const health = new HealthUseCase([
-    new StorageBlobHealthChecker(blobServiceClient),
-    new StorageBlobHealthChecker(legacyBlobServiceClient),
+    new StorageBlobHealthChecker(blobServiceClient, "Azure Blob Storage"),
+    new StorageBlobHealthChecker(
+      legacyBlobServiceClient,
+      "Azure Blob Storage Fallback",
+    ),
   ]);
 
   const blobServiceClientWithFallback = new BlobServiceClientWithFallBack(
