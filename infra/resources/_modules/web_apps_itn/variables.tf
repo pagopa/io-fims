@@ -85,6 +85,19 @@ variable "audit_storage" {
   })
 }
 
+variable "audit_storage_fallback" {
+  type = object({
+    id                  = string
+    name                = string
+    resource_group_name = string
+    containers = object({
+      events = object({
+        name = string
+      })
+    })
+  })
+}
+
 variable "redis_cache" {
   type = object({
     id                 = string
