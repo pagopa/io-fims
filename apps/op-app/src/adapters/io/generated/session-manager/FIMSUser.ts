@@ -5,9 +5,9 @@
 /* eslint-disable  */
 
 import * as t from "io-ts";
+import { EmailAddress } from "./EmailAddress.js";
 import { SpidLevel } from "./SpidLevel.js";
 import { DateFromString } from "@pagopa/ts-commons/lib/dates.js";
-import { EmailString } from "@pagopa/ts-commons/lib/strings.js";
 import { FederatedUser } from "./FederatedUser.js";
 
 // required attributes
@@ -21,7 +21,7 @@ const FIMSUser1R = t.interface({
 
 // optional attributes
 const FIMSUser1O = t.partial({
-  email: EmailString,
+  email: EmailAddress,
 });
 
 export const FIMSUser1 = t.intersection([FIMSUser1R, FIMSUser1O], "FIMSUser1");
