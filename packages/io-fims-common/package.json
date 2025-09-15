@@ -26,6 +26,7 @@
   "dependencies": {
     "@azure/cosmos": "^4.0.0",
     "@azure/identity": "^4.1.0",
+    "@azure/storage-blob": "^12.24.0",
     "@azure/storage-queue": "^12.24.0",
     "@pagopa/handler-kit": "^1.1.0",
     "@pagopa/logger": "^1.0.1",
