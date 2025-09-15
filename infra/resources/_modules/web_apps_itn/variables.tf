@@ -74,9 +74,10 @@ variable "storage" {
 
 variable "audit_storage" {
   type = object({
-    id                  = string
-    name                = string
-    resource_group_name = string
+    id                    = string
+    name                  = string
+    resource_group_name   = string
+    primary_blob_endpoint = string
     containers = object({
       events = object({
         name = string
@@ -87,9 +88,10 @@ variable "audit_storage" {
 
 variable "audit_storage_fallback" {
   type = object({
-    id                  = string
-    name                = string
-    resource_group_name = string
+    id                    = string
+    name                  = string
+    resource_group_name   = string
+    primary_blob_endpoint = string
     containers = object({
       events = object({
         name = string

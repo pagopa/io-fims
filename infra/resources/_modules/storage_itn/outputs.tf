@@ -14,9 +14,10 @@ output "fims_itn" {
 
 output "audit_itn" {
   value = {
-    id                  = module.storage_account_audit_st_itn.id
-    name                = module.storage_account_audit_st_itn.name
-    resource_group_name = module.storage_account_audit_st_itn.resource_group_name
+    id                    = module.storage_account_audit_st_itn.id
+    name                  = module.storage_account_audit_st_itn.name
+    resource_group_name   = module.storage_account_audit_st_itn.resource_group_name
+    primary_blob_endpoint = module.storage_account_audit_st_itn.primary_blob_endpoint
     containers = {
       events = azurerm_storage_container.events_itn
     }

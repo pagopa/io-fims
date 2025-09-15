@@ -10,6 +10,7 @@ locals {
       AUDIT_EVENT_QUEUE_NAME            = var.storage.queues.audit_events.name
       AUDIT_EVENT_CONTAINER_NAME        = var.audit_storage.containers.events.name
       AUDIT_STORAGE_URI                 = data.azurerm_storage_account.audit.primary_blob_endpoint
+      AUDIT_STORAGE_FALLBACK_URI        = var.audit_storage_fallback.primary_blob_endpoint
     }
   }
 }
