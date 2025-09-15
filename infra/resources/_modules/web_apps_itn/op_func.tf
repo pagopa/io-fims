@@ -61,12 +61,20 @@ resource "azurerm_role_assignment" "config_queue_op_func" {
 }
 
 resource "azurerm_role_assignment" "audit_event_container_op_func" {
+  for_each = toset([
+    module.op_func.function_app.function_app.principal_id,
+    module.op_func.function_app.function_app.slot.principal_id
+  ])
   scope                = var.audit_storage_fallback.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = module.op_func.function_app.function_app.principal_id
 }
 
 resource "azurerm_role_assignment" "audit_event_container_op_func_itn" {
+  for_each = toset([
+    module.op_func.function_app.function_app.principal_id,
+    module.op_func.function_app.function_app.slot.principal_id
+  ])
   scope                = var.audit_storage.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = module.op_func.function_app.function_app.principal_id
