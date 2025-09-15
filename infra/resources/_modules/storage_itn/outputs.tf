@@ -17,7 +17,7 @@ output "audit_itn" {
     id                    = module.storage_account_audit_st_itn.id
     name                  = module.storage_account_audit_st_itn.name
     resource_group_name   = module.storage_account_audit_st_itn.resource_group_name
-    primary_blob_endpoint = module.storage_account_audit_st_itn.primary_blob_endpoint
+    primary_blob_endpoint = module.storage_account_audit_st_itn.primary_web_host
     containers = {
       events = azurerm_storage_container.events_itn
     }
