@@ -70,15 +70,15 @@ resource "azurerm_role_assignment" "audit_event_container_op_func" {
   principal_id         = each.value
 }
 
-resource "azurerm_role_assignment" "audit_event_container_op_func_itn" {
-  for_each = toset([
-    module.op_func.function_app.function_app.principal_id,
-    module.op_func.function_app.function_app.slot.principal_id
-  ])
-  scope                = var.audit_storage.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = each.value
-}
+# resource "azurerm_role_assignment" "audit_event_container_op_func_itn" {
+#   for_each = toset([
+#     module.op_func.function_app.function_app.principal_id,
+#     module.op_func.function_app.function_app.slot.principal_id
+#   ])
+#   scope                = var.audit_storage.id
+#   role_definition_name = "Storage Blob Data Contributor"
+#   principal_id         = each.value
+# }
 
 resource "azurerm_cosmosdb_sql_role_assignment" "op_func" {
   resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
