@@ -70,7 +70,7 @@ export class BlobAuditEventRepository implements AuditEventRepository {
       );
       return content;
     } catch (error) {
-      throw new Error("Error creating new blob", {
+      throw new Error(`Error creating new blob: ${JSON.stringify(error)}`, {
         cause: error,
       });
     }
