@@ -1,7 +1,6 @@
 import { app } from "@azure/functions";
 import { DefaultAzureCredential } from "@azure/identity";
 import { BlobServiceClient } from "@azure/storage-blob";
-import { BlobServiceClientWithFallBack } from "@pagopa/azure-storage-migration-kit";
 import {
   azureFunction,
   httpAzureFunction,
@@ -23,25 +22,12 @@ async function main(config: Config) {
     config.auditEventStorage.uri,
     new DefaultAzureCredential(),
   );
-  const legacyBlobServiceClient = new BlobServiceClient(
-    config.auditEventStorage.fallback,
-    new DefaultAzureCredential(),
-  );
 
   const health = new HealthUseCase([
     new StorageBlobHealthChecker(blobServiceClient, "Azure Blob Storage"),
-    new StorageBlobHealthChecker(
-      legacyBlobServiceClient,
-      "Azure Blob Storage Fallback",
-    ),
   ]);
 
-  const blobServiceClientWithFallback = new BlobServiceClientWithFallBack(
-    blobServiceClient,
-    legacyBlobServiceClient,
-  );
-
-  const containerClient = blobServiceClientWithFallback.getContainerClient(
+  const containerClient = blobServiceClient.getContainerClient(
     config.auditEventStorage.containerName,
   );
 
