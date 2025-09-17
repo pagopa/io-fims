@@ -123,6 +123,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/core-auth@npm:^1.7.2":
+  version: 1.10.1
+  resolution: "@azure/core-auth@npm:1.10.1"
+  dependencies:
+    "@azure/abort-controller": "npm:^2.1.2"
+    "@azure/core-util": "npm:^1.13.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/83fd96e43cf8ca3e1cf6c7677915ca1433d6e331cb7352b64a3f93d9fd71dcddf77e8b46f2bb2a5db49ce87016ed30ebaca88034a0acf321e86ba17c0eb3329e
+  languageName: node
+  linkType: hard
+
 "@azure/core-auth@npm:^1.8.0":
   version: 1.9.0
   resolution: "@azure/core-auth@npm:1.9.0"
@@ -292,6 +303,17 @@ __metadata:
     "@azure/abort-controller": "npm:^2.0.0"
     tslib: "npm:^2.6.2"
   checksum: 10c0/245c93ec7fb3f2cb3a0b2f3a3be8d02ee401acba3cdd71620aa9e4e3ca50d831849f692332327bdbe1238ab979a76218f16a5166488ee31d5b67004298d110a3
+  languageName: node
+  linkType: hard
+
+"@azure/core-util@npm:^1.13.0":
+  version: 1.13.1
+  resolution: "@azure/core-util@npm:1.13.1"
+  dependencies:
+    "@azure/abort-controller": "npm:^2.1.2"
+    "@typespec/ts-http-runtime": "npm:^0.3.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/37067621cdac933c51775c26648fdcea315f07b08bd875cff4610e403eabf9c12532525f0bf094e258dadc03a55d35f12c9242f662526847b32c85cdcc2d6603
   languageName: node
   linkType: hard
 
@@ -1822,6 +1844,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pagopa/azure-storage-migration-kit@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "@pagopa/azure-storage-migration-kit@npm:0.0.1"
+  dependencies:
+    "@azure/core-auth": "npm:^1.7.2"
+    "@azure/storage-blob": "npm:^12.24.0"
+    fp-ts: "npm:^2.13.1"
+    io-ts: "npm:^2.2.20"
+    tsup: "npm:^6.6.3"
+  checksum: 10c0/9d56caf95aaf547be3d7e1791a25d0df136319eb012d3d2c533abd0d21fe762d5753a5155af8bc744b3b102d7ef19f4e5af30df4f0d4834c64c21523ce1b9a12
+  languageName: node
+  linkType: hard
+
 "@pagopa/eslint-config@npm:^4.0.1":
   version: 4.0.1
   resolution: "@pagopa/eslint-config@npm:4.0.1"
@@ -2708,6 +2743,17 @@ __metadata:
     "@typescript-eslint/types": "npm:7.10.0"
     eslint-visitor-keys: "npm:^3.4.3"
   checksum: 10c0/049e812bcd28869059d04c7bf3543bb55f5205f468b777439c4f120417fb856fb6024cb1d25291aa12556bd08e84f043a96d754ffb2cde37abb604d6f3c51634
+  languageName: node
+  linkType: hard
+
+"@typespec/ts-http-runtime@npm:^0.3.0":
+  version: 0.3.1
+  resolution: "@typespec/ts-http-runtime@npm:0.3.1"
+  dependencies:
+    http-proxy-agent: "npm:^7.0.0"
+    https-proxy-agent: "npm:^7.0.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/9444cc2a073a55f7218ae6e1946b61184f6ec941add16892fdf4417066cf976fb071071c918a00a80a4b80e203dd5f189bc57b513bb8225d171c4e0cedb5a469
   languageName: node
   linkType: hard
 
@@ -7723,6 +7769,7 @@ __metadata:
     "@azure/functions": "npm:^4.3.0"
     "@azure/identity": "npm:^4.1.0"
     "@azure/storage-blob": "npm:^12.18.0"
+    "@pagopa/azure-storage-migration-kit": "npm:^0.0.1"
     "@pagopa/eslint-config": "npm:^4.0.1"
     "@pagopa/handler-kit": "npm:^1.1.0"
     "@pagopa/handler-kit-azure-func": "npm:^2.0.7"

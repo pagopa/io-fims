@@ -22,5 +22,8 @@
     "turbo": "^2.5.0",
     "typescript": "5.6.3",
     "vitest": "^1.5.0"
+  },
+  "resolutions": {
+    "@pagopa/azure-storage-migration-kit/@azure/storage-blob": "12.24.0"
   }
 }
