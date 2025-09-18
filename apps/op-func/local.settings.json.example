@@ -9,7 +9,6 @@
     "CONFIG_QUEUE_NAME": "config-queue",
     "AUDIT_EVENT_QUEUE_NAME": "audit-events",
     "AUDIT_STORAGE_URI": "https://lcavallaro.blob.core.windows.net/",
-    "AUDIT_STORAGE_FALLBACK_URI": "https://lcavallaro.blob.core.windows.net/",
     "AUDIT_EVENT_CONTAINER_NAME": "events"
   }
 }

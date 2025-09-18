@@ -10,7 +10,6 @@ locals {
       AUDIT_EVENT_QUEUE_NAME            = var.storage.queues.audit_events.name
       AUDIT_EVENT_CONTAINER_NAME        = var.audit_storage.containers.events.name
       AUDIT_STORAGE_URI                 = data.azurerm_storage_account.audit.primary_blob_endpoint
-      AUDIT_STORAGE_FALLBACK_URI        = data.azurerm_storage_account.audit_fallback.primary_blob_endpoint
     }
   }
 }
@@ -59,16 +58,6 @@ resource "azurerm_role_assignment" "config_queue_op_func" {
   scope                = var.storage.id
   role_definition_name = each.key
   principal_id         = module.op_func.function_app.function_app.principal_id
-}
-
-resource "azurerm_role_assignment" "audit_event_container_op_func" {
-  for_each = toset([
-    module.op_func.function_app.function_app.principal_id,
-    module.op_func.function_app.function_app.slot.principal_id
-  ])
-  scope                = var.audit_storage_fallback.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = each.value
 }
 
 resource "azurerm_role_assignment" "audit_event_container_op_func_itn" {

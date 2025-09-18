@@ -18,7 +18,6 @@ export const configFromEnvironment = envSchema
     (env): Config => ({
       auditEventStorage: {
         containerName: env.AUDIT_EVENT_CONTAINER_NAME,
-        fallback: env.AUDIT_STORAGE_FALLBACK_URI,
         uri: env.AUDIT_STORAGE_URI,
       },
       cosmos: {

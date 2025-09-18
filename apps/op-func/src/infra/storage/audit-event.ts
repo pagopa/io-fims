@@ -1,11 +1,12 @@
 import { AuditEventRepository } from "@/domain/audit-event.js";
-import { BaseContainerClientWithFallback } from "@pagopa/azure-storage-migration-kit";
+import { ContainerClient } from "@azure/storage-blob";
 import {
   AuditEvent,
   auditEventSchema,
 } from "io-fims-common/domain/audit-event";
 import * as assert from "node:assert/strict";
-import { Readable } from "stream";
+
+import { BlobNotFoundError } from "./blob-error.js";
 
 // A helper function used to read a Node.js readable stream into a String
 export async function getStreamIntoString(
@@ -21,18 +22,24 @@ export async function getStreamIntoString(
 }
 
 export class BlobAuditEventRepository implements AuditEventRepository {
-  #container: BaseContainerClientWithFallback;
+  #container: ContainerClient;
 
-  constructor(client: BaseContainerClientWithFallback) {
+  constructor(client: ContainerClient) {
     this.#container = client;
   }
 
   async get(name: string): Promise<AuditEvent> {
     const blobClient = this.#container.getBlobClient(name);
-    const downloadBlockBlobResponse = await blobClient.downloadToBuffer();
+    const downloadBlockBlobResponse = await blobClient.download();
+
+    assert.notStrictEqual(
+      downloadBlockBlobResponse.errorCode,
+      "BlobNotFound",
+      new BlobNotFoundError(`No Blob with name ${name} found`),
+    );
 
     try {
-      const downloadedStream = Readable.from(downloadBlockBlobResponse);
+      const downloadedStream = downloadBlockBlobResponse.readableStreamBody;
       assert.ok(downloadedStream, `No Blob with name ${name} found`);
       const blobString = await getStreamIntoString(downloadedStream);
       return auditEventSchema.parse({
