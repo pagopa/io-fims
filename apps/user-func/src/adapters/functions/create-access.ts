@@ -5,10 +5,13 @@ import { accessMetadataSchema } from "io-fims-common/domain/access-metadata";
 import { StorageQueueConfig } from "../config.js";
 
 export const getOptions = (
-  queueConfig: Pick<StorageQueueConfig, "accessQueueName" | "connectionPrefix">,
+  queueConfig: Pick<
+    StorageQueueConfig,
+    "accessQueueName" | "connectionPrefix" | "legacyConnectionPrefix"
+  >,
   repository: AccessRepository,
 ): StorageQueueFunctionOptions => ({
-  connection: queueConfig.connectionPrefix,
+  connection: queueConfig.legacyConnectionPrefix,
   handler: async (queueItem) => {
     try {
       const metadata = accessMetadataSchema.parse(queueItem);
