@@ -507,7 +507,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/storage-blob@npm:^12.18.0":
+"@azure/storage-blob@npm:12.24.0, @azure/storage-blob@npm:^12.18.0":
   version: 12.24.0
   resolution: "@azure/storage-blob@npm:12.24.0"
   dependencies:
@@ -5992,6 +5992,7 @@ __metadata:
   dependencies:
     "@azure/cosmos": "npm:^4.0.0"
     "@azure/identity": "npm:^4.1.0"
+    "@azure/storage-blob": "npm:12.24.0"
     "@azure/storage-queue": "npm:^12.24.0"
     "@pagopa/eslint-config": "npm:^4.0.1"
     "@pagopa/handler-kit": "npm:^1.1.0"

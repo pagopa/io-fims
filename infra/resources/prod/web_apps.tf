@@ -45,6 +45,6 @@ module "web_apps_itn" {
   cosmosdb_account     = module.cosmos.fims
   storage              = module.storage_itn.fims_itn
   storage_legacy       = module.storage.fims
-  audit_storage        = module.storage.audit
+  audit_storage        = module.storage_itn.audit_itn
   application_insights = data.azurerm_application_insights.common
 }

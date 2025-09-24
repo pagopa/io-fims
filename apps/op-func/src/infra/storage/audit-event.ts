@@ -64,13 +64,14 @@ export class BlobAuditEventRepository implements AuditEventRepository {
         parsedContent,
         parsedContent.length,
       );
-      assert.ok(
-        typeof response.errorCode !== "undefined",
-        `Blob Error: ${response.errorCode}`,
+      assert.strictEqual(
+        response._response.status,
+        201,
+        `Error during upload (${response.errorCode})`,
       );
       return content;
     } catch (error) {
-      throw new Error("Error creating new blob", {
+      throw new Error(`Error creating new blob: ${JSON.stringify(error)}`, {
         cause: error,
       });
     }

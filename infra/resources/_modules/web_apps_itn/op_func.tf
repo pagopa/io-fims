@@ -38,10 +38,11 @@ module "op_func" {
   })
 
   slot_app_settings = merge(local.op_func.common_app_settings, {
-    NODE_ENV = "development"
+    NODE_ENV                                 = "development",
+    "AzureWebJobs.ManageAuditEvent.Disabled" = "1",
   })
 
-  sticky_app_setting_names = ["NODE_ENV"]
+  sticky_app_setting_names = ["NODE_ENV", "AzureWebJobs.ManageAuditEvent.Disabled"]
 
   private_dns_zone_resource_group_name = var.private_dns_zone_resource_group_name
   virtual_network                      = var.virtual_network
@@ -53,16 +54,20 @@ module "op_func" {
 }
 
 resource "azurerm_role_assignment" "config_queue_op_func" {
-  for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Reader"])
+  for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Contributor", "Storage Queue Data Reader"])
   scope                = var.storage_legacy.id
   role_definition_name = each.key
   principal_id         = module.op_func.function_app.function_app.principal_id
 }
 
-resource "azurerm_role_assignment" "audit_event_container_op_func" {
+resource "azurerm_role_assignment" "audit_event_container_op_func_itn" {
+  for_each = toset([
+    module.op_func.function_app.function_app.principal_id,
+    module.op_func.function_app.function_app.slot.principal_id
+  ])
   scope                = var.audit_storage.id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = module.op_func.function_app.function_app.principal_id
+  principal_id         = each.value
 }
 
 resource "azurerm_cosmosdb_sql_role_assignment" "op_func" {
