@@ -30,9 +30,3 @@ module "audit_st" {
 
   tags = var.tags
 }
-
-resource "azurerm_storage_container" "events" {
-  name                  = "events"
-  storage_account_name  = module.audit_st.name
-  container_access_type = "private"
-}
