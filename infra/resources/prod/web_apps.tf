@@ -40,11 +40,11 @@ module "web_apps_itn" {
   private_dns_zone_resource_group_name = "${local.common_project}-rg-common"
 
   # backing services
-  key_vault            = module.key_vaults_itn.fims
-  redis_cache          = azurerm_redis_cache.fims_redis_itn
-  cosmosdb_account     = module.cosmos.fims
-  storage              = module.storage_itn.fims_itn
-  storage_legacy       = module.storage.fims
+  key_vault        = module.key_vaults_itn.fims
+  redis_cache      = azurerm_redis_cache.fims_redis_itn
+  cosmosdb_account = module.cosmos.fims
+  storage          = module.storage_itn.fims_itn
+
   audit_storage        = module.storage_itn.audit_itn
   application_insights = data.azurerm_application_insights.common
 }

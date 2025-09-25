@@ -10,7 +10,6 @@ export const storageQueueConfigSchema = z.object({
   connectionPrefix: z.string().min(1),
   exportQueueName: z.string().min(1),
   exportQueueUrl: z.string().url(),
-  legacyConnectionPrefix: z.string().min(1),
 });
 
 export const mailerConfigSchema = z.object({
@@ -64,7 +63,6 @@ export const configFromEnvironment = envSchema.transform(
         exportQueueName: env.EXPORT_QUEUE_NAME,
         exportQueueUrl:
           env.FIMS_STORAGE__queueServiceUri + env.EXPORT_QUEUE_NAME,
-        legacyConnectionPrefix: "FIMS_STORAGE_LEGACY",
       },
     }),
 );
