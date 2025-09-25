@@ -60,6 +60,13 @@ resource "azurerm_role_assignment" "config_queue_op_func" {
   principal_id         = module.op_func.function_app.function_app.principal_id
 }
 
+resource "azurerm_role_assignment" "config_queue_op_func_itn" {
+  for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Contributor", "Storage Queue Data Reader"])
+  scope                = var.storage.id
+  role_definition_name = each.key
+  principal_id         = module.op_func.function_app.function_app.principal_id
+}
+
 resource "azurerm_role_assignment" "audit_event_container_op_func_itn" {
   for_each = toset([
     module.op_func.function_app.function_app.principal_id,

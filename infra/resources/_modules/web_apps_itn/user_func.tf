@@ -55,14 +55,14 @@ module "user_func" {
 
 resource "azurerm_role_assignment" "storage_user_func" {
   for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Reader", "Storage Queue Data Message Sender"])
-  scope                = var.storage.id
+  scope                = var.storage_legacy.id
   role_definition_name = each.key
   principal_id         = module.user_func.function_app.function_app.principal_id
 }
 
-resource "azurerm_role_assignment" "storage_user_func_legacy" {
+resource "azurerm_role_assignment" "storage_user_func_itn" {
   for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Reader", "Storage Queue Data Message Sender"])
-  scope                = var.storage_legacy.id
+  scope                = var.storage.id
   role_definition_name = each.key
   principal_id         = module.user_func.function_app.function_app.principal_id
 }
