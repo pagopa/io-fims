@@ -52,7 +52,7 @@ module "user_func" {
   tags = var.tags
 }
 
-resource "azurerm_role_assignment" "storage_user_func" {
+resource "azurerm_role_assignment" "storage_user_func_itn" {
   for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Reader", "Storage Queue Data Message Sender"])
   scope                = var.storage.id
   role_definition_name = each.key

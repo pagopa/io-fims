@@ -53,7 +53,7 @@ module "op_func" {
   tags = var.tags
 }
 
-resource "azurerm_role_assignment" "config_queue_op_func" {
+resource "azurerm_role_assignment" "config_queue_op_func_itn" {
   for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Contributor", "Storage Queue Data Reader"])
   scope                = var.storage.id
   role_definition_name = each.key
