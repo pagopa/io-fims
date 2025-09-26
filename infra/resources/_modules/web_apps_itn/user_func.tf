@@ -5,7 +5,7 @@ locals {
       WEBSITE_SWAP_WARMUP_PING_STATUSES    = "200"
       COSMOS_ENDPOINT                      = data.azurerm_cosmosdb_account.fims.endpoint
       COSMOS_DBNAME                        = data.azurerm_cosmosdb_sql_database.fims_user.name,
-      ACCESS_QUEUE_NAME                    = var.storage_legacy.queues.access.name,
+      ACCESS_QUEUE_NAME                    = var.storage.queues.access.name,
       EXPORT_QUEUE_NAME                    = var.storage.queues.export.name,
       FIMS_STORAGE__queueServiceUri        = data.azurerm_storage_account.fims.primary_queue_endpoint,
       FIMS_STORAGE_LEGACY__queueServiceUri = data.azurerm_storage_account.fims_legacy.primary_queue_endpoint,

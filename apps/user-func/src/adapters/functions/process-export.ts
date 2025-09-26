@@ -5,10 +5,13 @@ import { StorageQueueFunctionOptions } from "@azure/functions";
 import { StorageQueueConfig } from "../config.js";
 
 export const getOptions = (
-  queueConfig: Pick<StorageQueueConfig, "connectionPrefix" | "exportQueueName">,
+  queueConfig: Pick<
+    StorageQueueConfig,
+    "connectionPrefix" | "exportQueueName" | "legacyConnectionPrefix"
+  >,
   processExport: ProcessExportUseCase,
 ): StorageQueueFunctionOptions => ({
-  connection: queueConfig.connectionPrefix,
+  connection: queueConfig.legacyConnectionPrefix,
   handler: async (queueItem) => {
     try {
       const exportRequest = exportRequestSchema.parse(queueItem);
