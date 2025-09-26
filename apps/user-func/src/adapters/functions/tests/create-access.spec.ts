@@ -7,6 +7,7 @@ const mocks = {
   queueConfig: {
     accessQueueName: "test-queue",
     connectionPrefix: "test-connection",
+    legacyConnectionPrefix: "test-legacy-connection",
   },
   queueItem: {
     fiscalCode: "AAABBB00C00A001X",

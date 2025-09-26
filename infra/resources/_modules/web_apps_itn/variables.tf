@@ -72,6 +72,28 @@ variable "storage" {
   })
 }
 
+variable "storage_legacy" {
+  type = object({
+    id                  = string
+    name                = string
+    resource_group_name = string
+    queues = object({
+      audit_events = object({
+        name = string
+      })
+      config = object({
+        name = string
+      })
+      access = object({
+        name = string
+      })
+      export = object({
+        name = string
+      })
+    })
+  })
+}
+
 variable "audit_storage" {
   type = object({
     id                  = string
