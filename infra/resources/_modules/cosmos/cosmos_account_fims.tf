@@ -61,7 +61,7 @@ module "azure-cosmos-account" {
     enabled = false
   }
 
-  subnet_pep_id = data.azurerm_subnet.private_endpoints_subnet.id
+  subnet_pep_id = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
   tags = var.tags
 }
