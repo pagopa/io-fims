@@ -34,5 +34,11 @@
     "version": "0.0.7",
     "name": "azure_naming_convention",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-naming-convention/azurerm/0.0.7"
+  },
+  "cosmos.azure-cosmos-account": {
+    "hash": "6971ba58a30c6f02f935ac28976d4e20ee87d2238aa5175d4f8c4126bf20a13c",
+    "version": "0.3.0",
+    "name": "azure_cosmos_account",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cosmos-account/azurerm/0.3.0"
   }
 }

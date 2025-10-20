@@ -18,3 +18,17 @@ variable "common_project" {
 variable "resource_group_name" {
   type = string
 }
+
+variable "itn_resource_group_name" {
+  type = string
+}
+
+variable "environment" {
+  type = object({
+    prefix          = string
+    env_short       = string
+    location        = string
+    app_name        = string
+    instance_number = string
+  })
+}

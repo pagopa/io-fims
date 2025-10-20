@@ -37,3 +37,31 @@ module "cosmosdb_account_fims" {
 
   tags = var.tags
 }
+
+module "azure-cosmos-account" {
+  source  = "pagopa-dx/azure-cosmos-account/azurerm"
+  version = "0.3.0"
+
+  providers = {
+    azurerm = azurerm
+  }
+
+  resource_group_name = var.itn_resource_group_name
+
+  environment = var.environment
+
+  consistency_policy = {
+    consistency_preset      = "Custom"
+    consistency_level       = "Session"
+    max_interval_in_seconds = null
+    max_staleness_prefix    = null
+  }
+
+  alerts = {
+    enabled = false
+  }
+
+  subnet_pep_id = data.azurerm_subnet.private_endpoints_subnet.id
+
+  tags = var.tags
+}
