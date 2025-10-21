@@ -42,10 +42,6 @@ module "azure-cosmos-account" {
   source  = "pagopa-dx/azure-cosmos-account/azurerm"
   version = "0.3.0"
 
-  providers = {
-    azurerm = azurerm
-  }
-
   resource_group_name = var.itn_resource_group_name
 
   environment = var.environment
@@ -56,6 +52,14 @@ module "azure-cosmos-account" {
     max_interval_in_seconds = null
     max_staleness_prefix    = null
   }
+
+  secondary_geo_locations = [
+    {
+      location          = "spaincentral"
+      failover_priority = 1
+      zone_redundant    = false
+    }
+  ]
 
   alerts = {
     enabled = false
