@@ -1,6 +1,6 @@
 module "repo" {
   source  = "pagopa-dx/azure-github-environment-bootstrap/azurerm"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   environment = {
     prefix          = local.prefix
@@ -29,15 +29,8 @@ module "repo" {
   }
 
   repository = {
-    name                     = local.repository.name
-    description              = local.repository.description
-    topics                   = local.repository.topics
-    reviewers_teams          = local.repository.reviewers_teams
-    default_branch_name      = local.repository.default_branch_name
-    infra_cd_policy_branches = local.repository.infra_cd_policy_branches
-    opex_cd_policy_branches  = local.repository.opex_cd_policy_branches
-    app_cd_policy_branches   = local.repository.app_cd_policy_branches
-    jira_boards_ids          = ["IOCOM"]
+    owner = "pagopa"
+    name  = local.repository.name
   }
 
   github_private_runner = {
@@ -55,28 +48,14 @@ module "repo" {
   opex_resource_group_id             = data.azurerm_resource_group.dashboards.id
 
   keyvault_common_ids = [
-    data.azurerm_key_vault.fims_kv.id
+    data.azurerm_key_vault.fims.id
   ]
 
   tags = local.tags
 }
 
-# Role assignments for CD identity
-# Resource group level roles for CD
-resource "azurerm_role_assignment" "cd_fims_rg_kv_admin" {
-  scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/io-p-fims-rg"
-  role_definition_name = "Key Vault Administrator"
-  principal_id         = module.repo.identities.infra.cd.principal_id
-}
-
-resource "azurerm_role_assignment" "cd_weu_fims_rg_kv_admin" {
-  scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/io-p-weu-fims-rg-01"
-  role_definition_name = "Key Vault Administrator"
-  principal_id         = module.repo.identities.infra.cd.principal_id
-}
-
-resource "azurerm_role_assignment" "cd_itn_fims_rg_kv_admin" {
-  scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/io-p-itn-fims-rg-01"
-  role_definition_name = "Key Vault Administrator"
-  principal_id         = module.repo.identities.infra.cd.principal_id
+resource "github_actions_secret" "codecov_token" {
+  repository      = local.repository.name
+  secret_name     = "CODECOV_TOKEN"
+  plaintext_value = data.azurerm_key_vault_secret.codecov_token.value
 }
