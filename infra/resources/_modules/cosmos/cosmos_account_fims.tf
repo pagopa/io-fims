@@ -69,3 +69,15 @@ module "azure-cosmos-account" {
 
   tags = var.tags
 }
+
+resource "azurerm_role_assignment" "cosno_fims_com_admins" {
+  scope                = module.azure-cosmos-account.id
+  principal_id         = var.com_admins_azuread_group.object_id
+  role_definition_name = "DocumentDB Account Contributor"
+}
+
+resource "azurerm_role_assignment" "cosno_fims_com_devs" {
+  scope                = module.azure-cosmos-account.id
+  principal_id         = var.com_devs_azuread_group.object_id
+  role_definition_name = "DocumentDB Account Contributor"
+}

@@ -32,3 +32,15 @@ variable "environment" {
     instance_number = string
   })
 }
+
+variable "com_admins_azuread_group" {
+  type = object({
+    object_id = string
+  })
+}
+
+variable "com_devs_azuread_group" {
+  type = object({
+    object_id = string
+  })
+}
