@@ -13,6 +13,9 @@ module "cosmos" {
     instance_number = "01"
   }
 
+  com_admins_azuread_group = data.azuread_group.com_admins
+  com_devs_azuread_group   = data.azuread_group.com_devs
+
   location                = azurerm_resource_group.fims.location
   project                 = local.project_legacy
   common_project          = local.common_project
