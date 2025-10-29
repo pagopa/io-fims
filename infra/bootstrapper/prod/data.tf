@@ -1,8 +1,3 @@
-data "azurerm_key_vault" "fims" {
-  name                = "io-p-fims-kv"
-  resource_group_name = "io-p-fims-rg"
-}
-
 data "azurerm_key_vault_secret" "codecov_token" {
   name         = "codecov-token"
   key_vault_id = data.azurerm_key_vault.fims.id
@@ -38,7 +33,7 @@ data "azurerm_container_app_environment" "runner" {
   resource_group_name = local.runner.cae_resource_group_name
 }
 
-data "azurerm_key_vault" "fims_kv" {
+data "azurerm_key_vault" "fims" {
   name                = local.key_vault.name
   resource_group_name = local.key_vault.resource_group_name
 }
