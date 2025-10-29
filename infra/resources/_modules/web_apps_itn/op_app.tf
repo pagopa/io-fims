@@ -71,14 +71,14 @@ resource "azurerm_role_assignment" "key_vault_op_app_slot" {
   principal_id         = module.op_app.app_service.app_service.slot.principal_id
 }
 
-resource "azurerm_role_assignment" "storage_op_app" {
+resource "azurerm_role_assignment" "storage_op_app_itn" {
   for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Message Sender"])
   scope                = var.storage.id
   role_definition_name = each.key
   principal_id         = module.op_app.app_service.app_service.principal_id
 }
 
-resource "azurerm_role_assignment" "storage_op_app_slot" {
+resource "azurerm_role_assignment" "storage_op_app_slot_itn" {
   for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Message Sender"])
   scope                = var.storage.id
   role_definition_name = each.key
