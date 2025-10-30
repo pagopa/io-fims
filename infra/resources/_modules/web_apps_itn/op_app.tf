@@ -117,6 +117,22 @@ resource "azurerm_cosmosdb_sql_role_assignment" "op_app_slot" {
   scope               = data.azurerm_cosmosdb_account.fims.id
 }
 
+resource "azurerm_cosmosdb_sql_role_assignment" "itn_cosmos_op_app" {
+  resource_group_name = data.azurerm_cosmosdb_account.fims_itn.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.fims_itn.name
+  role_definition_id  = "${data.azurerm_cosmosdb_account.fims_itn.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
+  principal_id        = module.op_app.app_service.app_service.principal_id
+  scope               = data.azurerm_cosmosdb_account.fims_itn.id
+}
+
+resource "azurerm_cosmosdb_sql_role_assignment" "itn_cosmos_op_app_slot" {
+  resource_group_name = data.azurerm_cosmosdb_account.fims_itn.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.fims_itn.name
+  role_definition_id  = "${data.azurerm_cosmosdb_account.fims_itn.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
+  principal_id        = module.op_app.app_service.app_service.slot.principal_id
+  scope               = data.azurerm_cosmosdb_account.fims_itn.id
+}
+
 module "op_app_autoscaler" {
   source  = "pagopa-dx/azure-app-service-plan-autoscaler/azurerm"
   version = "~> 1.0"
