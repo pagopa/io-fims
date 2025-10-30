@@ -5,6 +5,11 @@ data "azurerm_cosmosdb_account" "fims" {
   resource_group_name = var.cosmosdb_account.resource_group_name
 }
 
+data "azurerm_cosmosdb_account" "fims_itn" {
+  name                = var.cosmosdb_account_itn.name
+  resource_group_name = var.cosmosdb_account_itn.resource_group_name
+}
+
 data "azurerm_cosmosdb_sql_database" "fims_user" {
   name                = "user"
   resource_group_name = var.cosmosdb_account.resource_group_name

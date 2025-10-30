@@ -50,6 +50,14 @@ variable "cosmosdb_account" {
   })
 }
 
+variable "cosmosdb_account_itn" {
+  type = object({
+    name                = string
+    resource_group_name = string
+  })
+}
+
+
 variable "storage" {
   type = object({
     id                  = string
