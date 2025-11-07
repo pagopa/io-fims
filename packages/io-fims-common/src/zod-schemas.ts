@@ -16,5 +16,5 @@ export type EmailAddress = z.infer<typeof emailAddressSchema>;
 
 export const queueServiceUriSchema = z
   .string()
-  .regex(/^https:\/\/([a-z]+)\.queue\.core\.windows\.net\/$/)
+  .regex(/^https:\/\/([a-z0-9]+)\.queue\.core\.windows\.net\/$/)
   .brand("QueueServiceUri");
