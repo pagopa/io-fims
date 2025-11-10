@@ -44,3 +44,10 @@ data "azurerm_subnet" "itn_pep" {
   resource_group_name  = "${local.common_project}-itn-common-rg-01"
 }
 
+data "azuread_group" "com_admins" {
+  display_name = "io-p-adgroup-com-admins"
+}
+
+data "azuread_group" "com_devs" {
+  display_name = "io-p-adgroup-com-developers"
+}

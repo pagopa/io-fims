@@ -18,21 +18,11 @@ locals {
   }
 
   repository = {
-    name                     = "io-fims"
-    description              = "This is the repository that contains all the funcftionalities regarding FIMS"
-    topics                   = ["backend", "io", "comunicazione", "iocom"]
-    reviewers_teams          = ["io-communication-backend", "engineering-team-cloud-eng"]
-    default_branch_name      = "main"
-    infra_cd_policy_branches = ["main"]
-    opex_cd_policy_branches  = ["main"]
-    app_cd_policy_branches   = ["main"]
-    app_cd_policy_tags       = ["*@*"]
+    name = "io-fims"
   }
 
   repo_secrets = {
-    "ARM_TENANT_ID"       = data.azurerm_client_config.current.tenant_id,
-    "ARM_SUBSCRIPTION_ID" = data.azurerm_subscription.current.subscription_id
-    "CODECOV_TOKEN"       = data.azurerm_key_vault_secret.codecov_token.value
+    "CODECOV_TOKEN" = data.azurerm_key_vault_secret.codecov_token.value
   }
 
   runner = {
@@ -55,8 +45,8 @@ locals {
   }
 
   key_vault = {
-    name                = "io-p-fims-kv"
-    resource_group_name = "io-p-fims-rg"
+    name                = "io-p-itn-fims-kv-01"
+    resource_group_name = "io-p-itn-fims-rg-01"
   }
 
   tags = {
@@ -64,7 +54,7 @@ locals {
     Environment    = "Prod"
     BusinessUnit   = "App IO"
     ManagementTeam = "IO Comunicazione"
-    Source         = "https://github.com/pagopa/io-fims/tree/main/infra/repository"
+    Source         = "https://github.com/pagopa/io-fims/tree/main/infra/bootstrapper/prod"
     CostCenter     = "TS000 - Tecnologia e Servizi"
   }
 }

@@ -50,6 +50,36 @@ variable "cosmosdb_account" {
   })
 }
 
+variable "cosmosdb_account_itn" {
+  type = object({
+    name                = string
+    resource_group_name = string
+  })
+}
+
+
+variable "storage_itn" {
+  type = object({
+    id                  = string
+    name                = string
+    resource_group_name = string
+    queues = object({
+      audit_events = object({
+        name = string
+      })
+      config = object({
+        name = string
+      })
+      access = object({
+        name = string
+      })
+      export = object({
+        name = string
+      })
+    })
+  })
+}
+
 variable "storage" {
   type = object({
     id                  = string
