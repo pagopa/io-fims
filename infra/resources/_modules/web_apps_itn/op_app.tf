@@ -13,8 +13,8 @@ locals {
       SESSION_MANAGER_BASE_URL = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-app-session-manager-base-url)"
       LOLLIPOP_BASE_URL        = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-app-lollipop-base-url)"
       LOLLIPOP_API_KEY         = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-app-lollipop-api-key)"
-      ACCESS_QUEUE_URL         = "${data.azurerm_storage_account.fims_itn.primary_queue_endpoint}${var.storage.queues.access.name}"
-      AUDIT_EVENT_QUEUE_URL    = "${data.azurerm_storage_account.fims_itn.primary_queue_endpoint}${var.storage.queues.audit_events.name}"
+      ACCESS_QUEUE_URL         = "${data.azurerm_storage_account.fims_itn.primary_queue_endpoint}${var.storage_itn.queues.access.name}"
+      AUDIT_EVENT_QUEUE_URL    = "${data.azurerm_storage_account.fims_itn.primary_queue_endpoint}${var.storage_itn.queues.audit_events.name}"
       KEY_VAULT_URL            = var.key_vault.vault_uri
       KEY_VAULT_KEY_NAME       = "op-app-key"
       COOKIE_KEY               = "@Microsoft.KeyVault(VaultName=${var.key_vault.name};SecretName=op-app-cookie-secret)"
@@ -71,25 +71,11 @@ resource "azurerm_role_assignment" "key_vault_op_app_slot" {
   principal_id         = module.op_app.app_service.app_service.slot.principal_id
 }
 
-resource "azurerm_role_assignment" "storage_op_app" {
-  for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Message Sender"])
-  scope                = var.storage.id
-  role_definition_name = each.key
-  principal_id         = module.op_app.app_service.app_service.principal_id
-}
-
 resource "azurerm_role_assignment" "storage_op_app_itn" {
   for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Message Sender"])
   scope                = var.storage_itn.id
   role_definition_name = each.key
   principal_id         = module.op_app.app_service.app_service.principal_id
-}
-
-resource "azurerm_role_assignment" "storage_op_app_slot" {
-  for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Message Sender"])
-  scope                = var.storage.id
-  role_definition_name = each.key
-  principal_id         = module.op_app.app_service.app_service.slot.principal_id
 }
 
 resource "azurerm_role_assignment" "storage_op_app_slot_itn" {

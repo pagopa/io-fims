@@ -6,8 +6,8 @@ locals {
       COSMOS_ENDPOINT                   = data.azurerm_cosmosdb_account.fims.endpoint
       COSMOS_DBNAME                     = data.azurerm_cosmosdb_sql_database.fims_op.name,
       FIMS_STORAGE__queueServiceUri     = data.azurerm_storage_account.fims_itn.primary_queue_endpoint,
-      CONFIG_QUEUE_NAME                 = var.storage.queues.config.name
-      AUDIT_EVENT_QUEUE_NAME            = var.storage.queues.audit_events.name
+      CONFIG_QUEUE_NAME                 = var.storage_itn.queues.config.name
+      AUDIT_EVENT_QUEUE_NAME            = var.storage_itn.queues.audit_events.name
       AUDIT_EVENT_CONTAINER_NAME        = var.audit_storage.containers.events.name
       AUDIT_STORAGE_URI                 = data.azurerm_storage_account.audit.primary_blob_endpoint
     }
@@ -51,13 +51,6 @@ module "op_func" {
   subnet_pep_id = var.subnet_pep_id
 
   tags = var.tags
-}
-
-resource "azurerm_role_assignment" "config_queue_op_func" {
-  for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Contributor", "Storage Queue Data Reader"])
-  scope                = var.storage.id
-  role_definition_name = each.key
-  principal_id         = module.op_func.function_app.function_app.principal_id
 }
 
 resource "azurerm_role_assignment" "config_queue_op_func_itn" {

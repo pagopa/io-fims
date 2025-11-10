@@ -5,8 +5,8 @@ locals {
       WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
       COSMOS_ENDPOINT                   = data.azurerm_cosmosdb_account.fims.endpoint
       COSMOS_DBNAME                     = data.azurerm_cosmosdb_sql_database.fims_user.name,
-      ACCESS_QUEUE_NAME                 = var.storage.queues.access.name,
-      EXPORT_QUEUE_NAME                 = var.storage.queues.export.name,
+      ACCESS_QUEUE_NAME                 = var.storage_itn.queues.access.name,
+      EXPORT_QUEUE_NAME                 = var.storage_itn.queues.export.name,
       FIMS_STORAGE__queueServiceUri     = data.azurerm_storage_account.fims_itn.primary_queue_endpoint,
       MAIL_FROM                         = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
     }
@@ -50,13 +50,6 @@ module "user_func" {
   subnet_pep_id = var.subnet_pep_id
 
   tags = var.tags
-}
-
-resource "azurerm_role_assignment" "storage_user_func" {
-  for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Reader", "Storage Queue Data Message Sender"])
-  scope                = var.storage.id
-  role_definition_name = each.key
-  principal_id         = module.user_func.function_app.function_app.principal_id
 }
 
 resource "azurerm_role_assignment" "storage_user_func_itn" {
