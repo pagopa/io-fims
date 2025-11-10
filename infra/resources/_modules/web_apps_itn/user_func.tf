@@ -7,7 +7,7 @@ locals {
       COSMOS_DBNAME                     = data.azurerm_cosmosdb_sql_database.fims_user.name,
       ACCESS_QUEUE_NAME                 = var.storage.queues.access.name,
       EXPORT_QUEUE_NAME                 = var.storage.queues.export.name,
-      FIMS_STORAGE__queueServiceUri     = data.azurerm_storage_account.fims.primary_queue_endpoint,
+      FIMS_STORAGE__queueServiceUri     = data.azurerm_storage_account.fims_itn.primary_queue_endpoint,
       MAIL_FROM                         = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
     }
   }
@@ -59,6 +59,13 @@ resource "azurerm_role_assignment" "storage_user_func" {
   principal_id         = module.user_func.function_app.function_app.principal_id
 }
 
+resource "azurerm_role_assignment" "storage_user_func_itn" {
+  for_each             = toset(["Storage Queue Data Message Processor", "Storage Queue Data Reader", "Storage Queue Data Message Sender"])
+  scope                = var.storage_itn.id
+  role_definition_name = each.key
+  principal_id         = module.user_func.function_app.function_app.principal_id
+}
+
 resource "azurerm_cosmosdb_sql_role_assignment" "user_func" {
   resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
   account_name        = data.azurerm_cosmosdb_account.fims.name
@@ -71,6 +78,12 @@ resource "azurerm_role_assignment" "key_vault_user_func" {
   scope                = var.key_vault.id
   role_definition_name = "Key Vault Secrets User"
   principal_id         = module.user_func.function_app.function_app.principal_id
+}
+
+resource "azurerm_role_assignment" "key_vault_user_func_slot" {
+  scope                = var.key_vault.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.user_func.function_app.function_app.slot.principal_id
 }
 
 module "user_autoscaler" {
