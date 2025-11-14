@@ -94,5 +94,31 @@ module "user_autoscaler" {
     }
   }
 
+  scale_metrics = {
+    cpu = {
+      cooldown_decrease         = 20,
+      cooldown_increase         = 3,
+      decrease_by               = 2,
+      increase_by               = 2,
+      lower_threshold           = 20,
+      statistic_decrease        = "Max",
+      statistic_increase        = "Max",
+      time_aggregation_decrease = "Maximum",
+      time_aggregation_increase = "Maximum",
+      time_window_decrease      = 5,
+      time_window_increase      = 2,
+      upper_threshold           = 60
+    },
+  }
+
+  scheduler = {
+    normal_load = {
+      default = 3,
+      minimum = 2
+    },
+
+    maximum = 30,
+  }
+
   tags = var.tags
 }
