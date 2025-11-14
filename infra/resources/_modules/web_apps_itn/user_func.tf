@@ -3,7 +3,7 @@ locals {
     common_app_settings = {
       WEBSITE_SWAP_WARMUP_PING_PATH     = "/api/v1/fims/health"
       WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
-      COSMOS_ENDPOINT                   = data.azurerm_cosmosdb_account.fims.endpoint
+      COSMOS_ENDPOINT                   = data.azurerm_cosmosdb_account.fims_itn.endpoint
       COSMOS_DBNAME                     = data.azurerm_cosmosdb_sql_database.fims_user.name,
       ACCESS_QUEUE_NAME                 = var.storage_itn.queues.access.name,
       EXPORT_QUEUE_NAME                 = var.storage_itn.queues.export.name,
@@ -60,11 +60,11 @@ resource "azurerm_role_assignment" "storage_user_func_itn" {
 }
 
 resource "azurerm_cosmosdb_sql_role_assignment" "user_func" {
-  resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
-  account_name        = data.azurerm_cosmosdb_account.fims.name
-  role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
+  resource_group_name = data.azurerm_cosmosdb_account.fims_itn.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.fims_itn.name
+  role_definition_id  = "${data.azurerm_cosmosdb_account.fims_itn.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
   principal_id        = module.user_func.function_app.function_app.principal_id
-  scope               = data.azurerm_cosmosdb_account.fims.id
+  scope               = data.azurerm_cosmosdb_account.fims_itn.id
 }
 
 resource "azurerm_role_assignment" "key_vault_user_func" {

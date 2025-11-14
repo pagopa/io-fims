@@ -101,22 +101,6 @@ resource "azurerm_redis_cache_access_policy_assignment" "op_app_slot" {
   object_id_alias    = "ServicePrincipal"
 }
 
-resource "azurerm_cosmosdb_sql_role_assignment" "op_app" {
-  resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
-  account_name        = data.azurerm_cosmosdb_account.fims.name
-  role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
-  principal_id        = module.op_app.app_service.app_service.principal_id
-  scope               = data.azurerm_cosmosdb_account.fims.id
-}
-
-resource "azurerm_cosmosdb_sql_role_assignment" "op_app_slot" {
-  resource_group_name = data.azurerm_cosmosdb_account.fims.resource_group_name
-  account_name        = data.azurerm_cosmosdb_account.fims.name
-  role_definition_id  = "${data.azurerm_cosmosdb_account.fims.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002"
-  principal_id        = module.op_app.app_service.app_service.slot.principal_id
-  scope               = data.azurerm_cosmosdb_account.fims.id
-}
-
 resource "azurerm_cosmosdb_sql_role_assignment" "itn_cosmos_op_app" {
   resource_group_name = data.azurerm_cosmosdb_account.fims_itn.resource_group_name
   account_name        = data.azurerm_cosmosdb_account.fims_itn.name

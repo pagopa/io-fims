@@ -43,13 +43,6 @@ variable "key_vault" {
   })
 }
 
-variable "cosmosdb_account" {
-  type = object({
-    name                = string
-    resource_group_name = string
-  })
-}
-
 variable "cosmosdb_account_itn" {
   type = object({
     name                = string

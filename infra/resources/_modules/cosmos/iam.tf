@@ -16,6 +16,12 @@ module "cosno_api_com_admins" {
       resource_group_name = module.azure-cosmos-account.resource_group_name
       database            = resource.azurerm_cosmosdb_sql_database.user.name
       role                = "reader"
+    },
+    {
+      account_name        = module.azure-cosmos-account.name
+      resource_group_name = module.azure-cosmos-account.resource_group_name
+      database            = resource.azurerm_cosmosdb_sql_database.op.name
+      role                = "writer"
     }
   ]
 }
