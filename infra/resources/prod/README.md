@@ -23,7 +23,6 @@
 | <a name="module_itn_resource_group"></a> [itn\_resource\_group](#module\_itn\_resource\_group) | ../_modules/resource_group | n/a |
 | <a name="module_key_vaults_itn"></a> [key\_vaults\_itn](#module\_key\_vaults\_itn) | ../_modules/key_vaults_itn | n/a |
 | <a name="module_storage_itn"></a> [storage\_itn](#module\_storage\_itn) | ../_modules/storage_itn | n/a |
-| <a name="module_web_apps"></a> [web\_apps](#module\_web\_apps) | ../_modules/web_apps | n/a |
 | <a name="module_web_apps_itn"></a> [web\_apps\_itn](#module\_web\_apps\_itn) | ../_modules/web_apps_itn | n/a |
 | <a name="module_weu_resource_group"></a> [weu\_resource\_group](#module\_weu\_resource\_group) | ../_modules/resource_group | n/a |
 
