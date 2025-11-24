@@ -16,10 +16,7 @@ module "cosmos" {
   com_admins_azuread_group = data.azuread_group.com_admins
   com_devs_azuread_group   = data.azuread_group.com_devs
 
-  location                = azurerm_resource_group.fims.location
-  project                 = local.project_legacy
   common_project          = local.common_project
-  resource_group_name     = azurerm_resource_group.fims.name
   itn_resource_group_name = module.itn_resource_group.name
   tags                    = local.tags
 }

@@ -1,21 +1,3 @@
-module "web_apps" {
-  source = "../_modules/web_apps"
-
-  resource_group_name = module.weu_resource_group.name
-
-  environment = {
-    prefix    = local.prefix
-    env_short = local.env_short
-    location  = local.location_legacy
-    domain    = local.domain
-  }
-
-  tags = local.tags
-
-  # backing services
-  key_vault = module.key_vaults_itn.fims
-}
-
 module "web_apps_itn" {
   source = "../_modules/web_apps_itn"
 
