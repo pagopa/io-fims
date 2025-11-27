@@ -32,7 +32,7 @@
     "fp-ts": "^2.16.9",
     "io-fims-common": "workspace:^",
     "io-ts": "^2.2.21",
-    "nodemailer": "^6.9.16",
+    "nodemailer": "^7.0.0",
     "ulid": "^2.3.0",
     "zod": "^3.23.8"
   },
