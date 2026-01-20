@@ -11,6 +11,7 @@
     "@azure/logger": "^1.1.2",
     "@azure/storage-queue": "^12.24.0",
     "@pagopa/ts-commons": "^13.1.2",
+    "applicationinsights": "^1.8.10",
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
     "fp-ts": "^2.16.6",

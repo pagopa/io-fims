@@ -1,6 +1,7 @@
 import { cosmosConfigSchema } from "io-fims-common/adapters/cosmos/config";
 import { z } from "zod";
 
+import { initializeAppInsights } from "./app-insights/index.js";
 import { envSchema } from "./env.js";
 import { ioConfigSchema } from "./io/config.js";
 import { keyVaultConfigSchema } from "./keyvault/config.js";
@@ -12,7 +13,12 @@ export const storageQueueConfigSchema = z.object({
   eventsQueueUrl: z.string().url(),
 });
 
+export const appInsightsConfigSchema = z.object({
+  connectionString: z.string(),
+});
+
 export const configSchema = z.object({
+  appInsights: appInsightsConfigSchema.optional(),
   cosmos: cosmosConfigSchema,
   io: ioConfigSchema,
   keyVault: keyVaultConfigSchema,
@@ -25,6 +31,11 @@ export type Config = z.TypeOf<typeof configSchema>;
 
 export const configFromEnvironment = envSchema.transform(
   (env): Config => ({
+    appInsights: env.APPLICATIONINSIGHTS_CONNECTION_STRING
+      ? {
+          connectionString: env.APPLICATIONINSIGHTS_CONNECTION_STRING,
+        }
+      : undefined,
     cosmos: {
       databaseName: env.COSMOS_DBNAME,
       endpoint: env.COSMOS_ENDPOINT,
@@ -57,3 +68,9 @@ export const configFromEnvironment = envSchema.transform(
     },
   }),
 );
+
+export function initializeConfig(config: Config) {
+  if (config.appInsights) {
+    initializeAppInsights(config.appInsights);
+  }
+}

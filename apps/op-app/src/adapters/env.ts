@@ -4,6 +4,7 @@ import { z } from "zod";
 export const envSchema = nodeEnvSchema.and(cosmosEnvSchema).and(
   z.object({
     ACCESS_QUEUE_URL: z.string().min(1),
+    APPLICATIONINSIGHTS_CONNECTION_STRING: z.string().optional(),
     AUDIT_EVENT_QUEUE_URL: z.string().url(),
     COOKIE_KEY: z.string().min(1),
     KEY_VAULT_KEY_NAME: z.string().min(1),
