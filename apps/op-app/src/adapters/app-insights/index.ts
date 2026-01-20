@@ -8,9 +8,6 @@ export function initializeAppInsights(
   config: AppInsightsConfig,
 ): appInsights.TelemetryClient | null {
   if (!config.connectionString) {
-    console.log(
-      "[AppInsights] Skipping initialization: no connection string provided",
-    );
     return null;
   }
 
