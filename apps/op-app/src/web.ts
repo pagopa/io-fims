@@ -9,7 +9,11 @@ import { pino } from "pino";
 import { createClient } from "redis";
 import { z } from "zod";
 
-import { Config, configFromEnvironment } from "./adapters/config.js";
+import {
+  Config,
+  configFromEnvironment,
+  initializeConfig,
+} from "./adapters/config.js";
 import { createAdapterFactory } from "./adapters/cosmos/oidc/index.js";
 import { envSchema } from "./adapters/env.js";
 import { createApplication } from "./adapters/express/application.js";
@@ -42,6 +46,8 @@ const logger = pino({
 });
 
 async function main(config: Config & WebConfig) {
+  initializeConfig(config);
+
   const redis = createClient(config.redis);
 
   redis.on("error", (err) => {
