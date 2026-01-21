@@ -1,6 +1,7 @@
 import appInsights from "applicationinsights";
 
 export interface AppInsightsConfig {
+  cloudName: string;
   connectionString: string;
 }
 
@@ -11,7 +12,14 @@ export function initializeAppInsights(
     return null;
   }
 
-  appInsights.setup(config.connectionString).start();
+  appInsights.setup(config.connectionString);
 
-  return new appInsights.TelemetryClient(config.connectionString);
+  if (appInsights.defaultClient) {
+    const cloudRoleKey = appInsights.defaultClient.context.keys.cloudRole;
+    appInsights.defaultClient.context.tags[cloudRoleKey] = config.cloudName;
+  }
+
+  appInsights.start();
+
+  return appInsights.defaultClient;
 }
