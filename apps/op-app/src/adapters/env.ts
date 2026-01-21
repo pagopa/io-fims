@@ -17,5 +17,6 @@ export const envSchema = nodeEnvSchema.and(cosmosEnvSchema).and(
     REDIS_PING_INTERVAL: z.coerce.number(),
     REDIS_URL: z.string().url(),
     SESSION_MANAGER_BASE_URL: z.string().url(),
+    WEBSITE_SITE_NAME: z.string().default("io-p-itn-fims-op-app-01"),
   }),
 );

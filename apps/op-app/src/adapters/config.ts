@@ -14,6 +14,7 @@ export const storageQueueConfigSchema = z.object({
 });
 
 export const appInsightsConfigSchema = z.object({
+  cloudName: z.string(),
   connectionString: z.string(),
 });
 
@@ -33,6 +34,7 @@ export const configFromEnvironment = envSchema.transform(
   (env): Config => ({
     appInsights: env.APPLICATIONINSIGHTS_CONNECTION_STRING
       ? {
+          cloudName: env.WEBSITE_SITE_NAME,
           connectionString: env.APPLICATIONINSIGHTS_CONNECTION_STRING,
         }
       : undefined,
