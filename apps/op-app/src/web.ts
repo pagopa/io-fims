@@ -1,3 +1,4 @@
+import { ConsistencyLevel } from "@azure/cosmos";
 import { DefaultAzureCredential } from "@azure/identity";
 import { QueueClient } from "@azure/storage-queue";
 import { loadConfigFromEnvironment } from "io-fims-common/adapters/config";
@@ -62,7 +63,7 @@ async function main(config: Config & WebConfig) {
 
   const credential = new DefaultAzureCredential();
 
-  const cosmos = initCosmos(config.cosmos, credential);
+  const cosmos = initCosmos(config.cosmos, credential, ConsistencyLevel.Strong);
 
   const keyStore = new KeyVaultKeystore(
     config.keyVault.url,
