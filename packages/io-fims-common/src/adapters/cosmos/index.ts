@@ -5,6 +5,11 @@ import type { CosmosConfig } from "./config.js";
 
 import { CosmosDBHealthChecker } from "./health.js";
 
+/*
+ * Initialize a cosmos client, database and healthChecker.
+ *
+ * Be aware that consistency level cannot be stronger than the one set at the database configuration level.
+ * */
 export function initCosmos(
   config: CosmosConfig,
   aadCredentials: TokenCredential,

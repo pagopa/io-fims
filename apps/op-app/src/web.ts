@@ -66,6 +66,7 @@ async function main(config: Config & WebConfig) {
   const cosmos = initCosmos(
     config.cosmos,
     credential,
+    // Be aware that consistency level cannot be stronger than the one set at the database configuration level.
     ConsistencyLevel.Session,
   );
 
