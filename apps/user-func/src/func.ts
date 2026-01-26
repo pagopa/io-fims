@@ -1,3 +1,4 @@
+import { ConsistencyLevel } from "@azure/cosmos";
 import { app } from "@azure/functions";
 import { DefaultAzureCredential } from "@azure/identity";
 import { QueueClient } from "@azure/storage-queue";
@@ -23,7 +24,11 @@ import { RequestExportUseCase } from "./use-cases/request-export.js";
 async function main(config: Config) {
   const credential = new DefaultAzureCredential();
 
-  const cosmos = initCosmos(config.cosmos, credential);
+  const cosmos = initCosmos(
+    config.cosmos,
+    credential,
+    ConsistencyLevel.Session,
+  );
 
   app.http("Health", HealthFunction.getOptions([cosmos.healthChecker]));
 
