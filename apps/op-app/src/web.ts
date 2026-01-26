@@ -63,7 +63,11 @@ async function main(config: Config & WebConfig) {
 
   const credential = new DefaultAzureCredential();
 
-  const cosmos = initCosmos(config.cosmos, credential, ConsistencyLevel.Strong);
+  const cosmos = initCosmos(
+    config.cosmos,
+    credential,
+    ConsistencyLevel.Session,
+  );
 
   const keyStore = new KeyVaultKeystore(
     config.keyVault.url,
