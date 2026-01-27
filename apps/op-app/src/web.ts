@@ -67,7 +67,7 @@ async function main(config: Config & WebConfig) {
     config.cosmos,
     credential,
     // Be aware that consistency level cannot be stronger than the one set at the database configuration level.
-    ConsistencyLevel.Session,
+    ConsistencyLevel.Strong,
   );
 
   const keyStore = new KeyVaultKeystore(
