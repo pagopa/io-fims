@@ -36,7 +36,7 @@
     "@types/express-session": "^1",
     "@types/node": "^20.14.2",
     "esbuild": "^0.25.0",
-    "eslint": "8.57.0",
+    "eslint": "9.26.0",
     "pino-pretty": "^11.2.0",
     "prettier": "3.2.5"
   }
