@@ -17,3 +17,11 @@ variable "env_short" {
     error_message = "Length must be 1 chars."
   }
 }
+
+variable "key_vault" {
+  type = object({
+    id        = string
+    name      = string
+    vault_uri = string
+  })
+}
