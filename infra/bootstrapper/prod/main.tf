@@ -12,7 +12,8 @@ module "repo" {
 
   additional_resource_group_ids = [
     data.azurerm_resource_group.fims_weu_01.id,
-    data.azurerm_resource_group.fims.id
+    data.azurerm_resource_group.fims.id,
+    data.azurerm_resource_group.com_itn_01.id,
   ]
 
   subscription_id = data.azurerm_subscription.current.id

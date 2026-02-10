@@ -3,11 +3,6 @@ data "azurerm_key_vault_secret" "codecov_token" {
   key_vault_id = data.azurerm_key_vault.fims.id
 }
 
-data "github_organization_teams" "all" {
-  root_teams_only = true
-  summary_only    = true
-}
-
 data "azurerm_client_config" "current" {}
 
 data "azurerm_subscription" "current" {}
@@ -26,6 +21,10 @@ data "azuread_group" "admins" {
 
 data "azuread_group" "developers" {
   display_name = local.adgroups.devs_name
+}
+
+data "azurerm_resource_group" "com_itn_01" {
+  name = "io-p-itn-com-rg-01"
 }
 
 data "azurerm_container_app_environment" "runner" {
