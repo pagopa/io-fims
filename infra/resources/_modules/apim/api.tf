@@ -40,6 +40,7 @@ resource "azurerm_api_management_api_policy" "io_fims_base" {
   resource_group_name = data.azurerm_api_management.apim_itn_platform_api.resource_group_name
 
   xml_content = file("${path.module}/api/backend/_api_base_policy.xml")
+  depends_on  = [azurerm_api_management_named_value.app_backend_key]
 }
 
 resource "azurerm_api_management_api_tag" "io_fims_api_tag" {
