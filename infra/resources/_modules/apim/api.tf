@@ -1,5 +1,5 @@
 resource "azurerm_api_management_api_version_set" "fims_v1" {
-  name                = "fims_v1"
+  name                = "fims_appbackend_v1"
   resource_group_name = data.azurerm_api_management.apim_itn_platform_api.resource_group_name
   api_management_name = data.azurerm_api_management.apim_itn_platform_api.name
   display_name        = "FIMS AppBackend v1"
