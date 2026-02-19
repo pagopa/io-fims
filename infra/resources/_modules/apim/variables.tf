@@ -20,8 +20,9 @@ variable "env_short" {
 
 variable "key_vault" {
   type = object({
-    id        = string
-    name      = string
-    vault_uri = string
+    id                  = string
+    name                = string
+    vault_uri           = string
+    resource_group_name = string
   })
 }
