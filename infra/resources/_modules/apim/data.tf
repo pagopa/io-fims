@@ -1,5 +1,3 @@
-data "azurerm_client_config" "current" {}
-
 data "azurerm_api_management" "apim_itn_platform_api" {
   name                = local.apim_itn_platform_name
   resource_group_name = local.apim_itn_platform_resource_group_name
