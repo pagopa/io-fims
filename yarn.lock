@@ -2425,7 +2425,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^20.12.2, @types/node@npm:^20.12.4":
+"@types/node@npm:*":
   version: 20.12.5
   resolution: "@types/node@npm:20.12.5"
   dependencies:
@@ -2434,21 +2434,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.12.7":
-  version: 20.12.7
-  resolution: "@types/node@npm:20.12.7"
+"@types/node@npm:^22.19.15":
+  version: 22.19.15
+  resolution: "@types/node@npm:22.19.15"
   dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 10c0/dce80d63a3b91892b321af823d624995c61e39c6a223cc0ac481a44d337640cc46931d33efb3beeed75f5c85c3bda1d97cef4c5cd4ec333caf5dee59cff6eca0
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^20.14.2":
-  version: 20.14.2
-  resolution: "@types/node@npm:20.14.2"
-  dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 10c0/2d86e5f2227aaa42212e82ea0affe72799111b888ff900916376450b02b09b963ca888b20d9c332d8d2b833ed4781987867a38eaa2e4863fa8439071468b0a6f
+    undici-types: "npm:~6.21.0"
+  checksum: 10c0/f17eaf3d0d1da5e93ad9e287efb78201f8a5282973c004c5f70d91675c5c6b926a23acaa7b158a42b3d7e27e36b349d65a531710c91c308fca53dd7fa280ef98
   languageName: node
   linkType: hard
 
@@ -5997,7 +5988,7 @@ __metadata:
     "@pagopa/eslint-config": "npm:^4.0.1"
     "@pagopa/handler-kit": "npm:^1.1.0"
     "@pagopa/logger": "npm:^1.0.1"
-    "@types/node": "npm:^20.12.4"
+    "@types/node": "npm:^22.19.15"
     "@vitest/coverage-v8": "npm:^1.5.0"
     eslint: "npm:8.57.0"
     fp-ts: "npm:^2.16.5"
@@ -7686,7 +7677,7 @@ __metadata:
     "@types/cookie-parser": "npm:^1.4.7"
     "@types/express": "npm:^4.17.21"
     "@types/i18n": "npm:^0.13.12"
-    "@types/node": "npm:^20.14.2"
+    "@types/node": "npm:^22.19.15"
     "@types/oidc-provider": "patch:@types/oidc-provider@npm%3A8.5.2#~/.yarn/patches/@types-oidc-provider-npm-8.5.2-752a22b18a.patch"
     "@types/oidc-token-hash": "npm:^5.0.0"
     "@types/supertest": "npm:^6.0.2"
@@ -7728,7 +7719,7 @@ __metadata:
     "@pagopa/handler-kit": "npm:^1.1.0"
     "@pagopa/handler-kit-azure-func": "npm:^2.0.7"
     "@pagopa/logger": "npm:^1.0.1"
-    "@types/node": "npm:^20.12.2"
+    "@types/node": "npm:^22.19.15"
     "@vitest/coverage-v8": "npm:^1.5.0"
     esbuild: "npm:^0.25.0"
     eslint: "npm:8.57.0"
@@ -8818,7 +8809,7 @@ __metadata:
     "@types/ejs": "npm:^3"
     "@types/express": "npm:^4.17.21"
     "@types/express-session": "npm:^1"
-    "@types/node": "npm:^20.14.2"
+    "@types/node": "npm:^22.19.15"
     ejs: "npm:^3.1.10"
     esbuild: "npm:^0.25.0"
     eslint: "npm:8.57.0"
@@ -8847,7 +8838,7 @@ __metadata:
     "@pagopa/handler-kit": "npm:^1.1.0"
     "@pagopa/handler-kit-azure-func": "npm:^2.0.7"
     "@pagopa/logger": "npm:^1.0.1"
-    "@types/node": "npm:^20.12.2"
+    "@types/node": "npm:^22.19.15"
     "@vitest/coverage-v8": "npm:^1.5.0"
     "@zodios/core": "npm:^10.9.6"
     axios: "npm:^1.6.8"
@@ -10035,6 +10026,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici-types@npm:~6.21.0":
+  version: 6.21.0
+  resolution: "undici-types@npm:6.21.0"
+  checksum: 10c0/c01ed51829b10aa72fc3ce64b747f8e74ae9b60eafa19a7b46ef624403508a54c526ffab06a14a26b3120d055e1104d7abe7c9017e83ced038ea5cf52f8d5e04
+  languageName: node
+  linkType: hard
+
 "undici@npm:^5.13.0":
   version: 5.28.4
   resolution: "undici@npm:5.28.4"
@@ -10225,7 +10223,7 @@ __metadata:
     "@pagopa/io-functions-commons": "npm:^29.3.0"
     "@pagopa/openapi-codegen-ts": "npm:^14.0.0"
     "@pagopa/ts-commons": "npm:^13.1.2"
-    "@types/node": "npm:^20.12.7"
+    "@types/node": "npm:^22.19.15"
     "@types/nodemailer": "npm:^6.4.16"
     "@vitest/coverage-v8": "npm:^1.5.0"
     eslint: "npm:8.57.0"
