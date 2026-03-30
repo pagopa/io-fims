@@ -23,6 +23,8 @@ module "user_func" {
 
   tier = "m"
 
+  node_version = "22"
+
   resource_group_name = var.resource_group_name
 
   health_check_path = local.user_func.common_app_settings.WEBSITE_SWAP_WARMUP_PING_PATH

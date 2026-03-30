@@ -24,6 +24,8 @@ module "op_func" {
 
   tier = "l"
 
+  node_version = "22"
+
   # reuse op-app plan
   app_service_plan_id = module.op_app.app_service.plan.id
 

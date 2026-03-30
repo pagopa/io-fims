@@ -32,6 +32,8 @@ module "op_app" {
 
   tier = "l"
 
+  node_version = "22"
+
   resource_group_name = var.resource_group_name
 
   health_check_path = local.op_app.common_app_settings.WEBSITE_SWAP_WARMUP_PING_PATH
