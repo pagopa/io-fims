@@ -7452,10 +7452,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:^6.9.13, nodemailer@npm:^6.9.16":
+"nodemailer@npm:^6.9.13":
   version: 6.9.16
   resolution: "nodemailer@npm:6.9.16"
   checksum: 10c0/9fd73ab4ab5b81544c3c9820afbe386369aba442f997b2f58d171222a898a7aed580fc100bfe6eebc194f18ba6e169d67ee40ca64d32d69022d89e575cef97a4
+  languageName: node
+  linkType: hard
+
+"nodemailer@npm:^8.0.0":
+  version: 8.0.4
+  resolution: "nodemailer@npm:8.0.4"
+  checksum: 10c0/5fb6fa72645b541c18b84b861de46f4740449e1d7c987b4d9ef715d815d613f93262225bc319e217df6215d6f123efadb9a412dcf937fe0a41cbecf279dfb2a0
   languageName: node
   linkType: hard
 
@@ -10232,7 +10239,7 @@ __metadata:
     fp-ts: "npm:^2.16.9"
     io-fims-common: "workspace:^"
     io-ts: "npm:^2.2.21"
-    nodemailer: "npm:^6.9.16"
+    nodemailer: "npm:^8.0.0"
     prettier: "npm:3.2.5"
     tsup: "npm:^8.0.2"
     typescript: "npm:5.6.3"
