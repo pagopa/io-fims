@@ -14,7 +14,8 @@ locals {
 }
 
 module "user_func" {
-  source = "git::https://github.com/pagopa/dx.git//infra/modules/azure_function_app?ref=5f795b96d84a866de514ab32199ba3f54286f702"
+  source  = "pagopa-dx/azure-function-app/azurerm"
+  version = "~> 1.0"
 
   environment = merge(var.environment, {
     app_name        = "user",
