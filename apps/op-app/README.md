@@ -5,7 +5,7 @@
 1. Install the dependencies:
 
    ```sh
-   yarn install
+   yarn install --frozen-lockfile
    ```
 
 2. Copy the example environment file:
@@ -25,6 +25,31 @@
    ```sh
    yarn start:dev
    ```
+
+## Test locally with bruno
+
+Prerequisites:
+
+1. Start the `rp-example-app` locally.
+2. Perform a lollipop login and obtain a FIMS token via the `get session` call.
+3. Add a new cookie inside bruno as follows:
+
+| Domain      | Path | Key              | Value                               |
+| ----------- | ---- | ---------------- | ----------------------------------- |
+| `localhost` | `/`  | `_io_fims_token` | The FIMS token obtained after login |
+
+[!IMPORTANT]
+Clear all cookies from previous calls before starting; otherwise, the flow will
+fail with a 500 Internal Server Error.
+
+### Execution
+
+1. Call the Authentication Request endpoint. You will receive a consent URL in
+   the response payload.
+2. Open a new tab in Bruno to call the consent URL.
+3. Perform a GET request to this URL.
+   > [!NOTE]
+   > Ensure that all cookies set by the Authentication Request are included in this call.
 
 ## FAQ
 
