@@ -1,0 +1,16 @@
+meta {
+  name: GetAccessHistory
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{user-func-base-url}}/api/v1/fims/accesses
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
