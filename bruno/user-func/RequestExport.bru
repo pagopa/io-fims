@@ -1,0 +1,20 @@
+meta {
+  name: RequestExport
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{user-func-base-url}}/api/v1/fims/export-requests
+  body: none
+  auth: inherit
+}
+
+headers {
+  user: LVTEST00A00A199X
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
