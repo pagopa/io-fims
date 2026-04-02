@@ -14,6 +14,9 @@ resource "azurerm_redis_cache" "fims_redis_itn" {
 
   public_network_access_enabled = false
 
+  access_keys_authentication_enabled = true
+  non_ssl_port_enabled               = false
+
   capacity            = 2
   family              = "C"
   sku_name            = "Standard"
@@ -25,6 +28,8 @@ resource "azurerm_redis_cache" "fims_redis_itn" {
 
   redis_configuration {
     active_directory_authentication_enabled = true
+    authentication_enabled                  = true
+    data_persistence_authentication_method  = "SAS"
   }
 
   tags = local.tags

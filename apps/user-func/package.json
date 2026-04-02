@@ -39,7 +39,7 @@
   "devDependencies": {
     "@pagopa/eslint-config": "^4.0.1",
     "@pagopa/openapi-codegen-ts": "^14.0.0",
-    "@types/node": "^20.12.7",
+    "@types/node": "^22.19.15",
     "@types/nodemailer": "^6.4.16",
     "@vitest/coverage-v8": "^1.5.0",
     "eslint": "8.57.0",

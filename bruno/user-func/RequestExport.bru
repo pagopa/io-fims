@@ -6,12 +6,18 @@ meta {
 
 post {
   url: {{user-func-base-url}}/api/v1/fims/export-requests
-  body: none
+  body: json
   auth: inherit
 }
 
 headers {
   user: LVTEST00A00A199X
+}
+
+body:json {
+  {
+    "email": "lvtest@gmail.com"
+  }
 }
 
 settings {
