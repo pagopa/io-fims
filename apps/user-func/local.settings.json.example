@@ -2,6 +2,14 @@
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "node"
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "NODE_ENV": "development",
+    "COSMOS_ENDPOINT": "https://io-d-itn-common-cosno-01.documents.azure.com:443/",
+    "COSMOS_DBNAME": "fims",
+    "ACCESS_QUEUE_NAME": "access-queue",
+    "EXPORT_QUEUE_NAME": "export-queue",
+    "FIMS_STORAGE__queueServiceUri": "https://testgiovannist.queue.core.windows.net/",
+    "MAIL_FROM": "IO - l'app dei servizi pubblici <no-reply@io.italia.it>",
+    "MAILHOG_HOSTNAME": "localhost"
   }
 }
