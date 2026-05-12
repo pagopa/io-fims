@@ -5,14 +5,8 @@ data "azurerm_key_vault_secret" "codecov_token" {
 
 data "azurerm_client_config" "current" {}
 
-data "azurerm_subscription" "current" {}
-
 data "azurerm_resource_group" "dashboards" {
   name = "dashboards"
-}
-
-data "azurerm_resource_group" "fims_weu_01" {
-  name = "io-p-weu-fims-rg-01"
 }
 
 data "azuread_group" "admins" {
