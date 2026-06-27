@@ -10,7 +10,7 @@ jobs:
     secrets: inherit
     with:
       workspace_name: rp-example-app
-      environment: app-prod
+      environment: app-dev
       resource_group_name: io-p-weu-fims-rg-01
       web_app_name: io-p-weu-fims-rp-example-app-02
       use_staging_slot: false
