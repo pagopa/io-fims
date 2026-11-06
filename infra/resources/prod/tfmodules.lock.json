@@ -41,6 +41,12 @@
     "name": "azure_role_assignments",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
   },
+  "cosmos.cosno_api_service_management": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
   "web_apps_itn.op_app": {
     "hash": "1578c3d974a6e23784264e334d4a5fc51fc11bb42e73d650d7f6ff335346184c",
     "version": "1.0.1",

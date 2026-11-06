@@ -51,3 +51,7 @@ data "azuread_group" "com_admins" {
 data "azuread_group" "com_devs" {
   display_name = "io-p-adgroup-com-developers"
 }
+
+data "azuread_group" "service_management" {
+  display_name = "io-p-adgroup-servicemanagement"
+}

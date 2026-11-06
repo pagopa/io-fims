@@ -25,3 +25,22 @@ module "cosno_api_com_admins" {
     }
   ]
 }
+
+module "cosno_api_service_management" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
+
+  principal_id = var.service_management_azuread_group.object_id
+
+  cosmos = [
+    for database in [
+      azurerm_cosmosdb_sql_database.op.name,
+      azurerm_cosmosdb_sql_database.user.name
+      ] : {
+      account_name        = module.azure-cosmos-account.name
+      resource_group_name = module.azure-cosmos-account.resource_group_name
+      database            = database
+      role                = "reader"
+    }
+  ]
+}
