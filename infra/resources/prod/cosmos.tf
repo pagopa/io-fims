@@ -13,8 +13,9 @@ module "cosmos" {
     instance_number = "01"
   }
 
-  com_admins_azuread_group = data.azuread_group.com_admins
-  com_devs_azuread_group   = data.azuread_group.com_devs
+  com_admins_azuread_group         = data.azuread_group.com_admins
+  com_devs_azuread_group           = data.azuread_group.com_devs
+  service_management_azuread_group = data.azuread_group.service_management
 
   common_project          = local.common_project
   itn_resource_group_name = module.itn_resource_group.name

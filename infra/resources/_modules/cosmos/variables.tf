@@ -31,3 +31,9 @@ variable "com_devs_azuread_group" {
     object_id = string
   })
 }
+
+variable "service_management_azuread_group" {
+  type = object({
+    object_id = string
+  })
+}
